@@ -1,6 +1,9 @@
 // src/app/auth/login/route.ts
+// export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { NextResponse, NextRequest } from 'next/server';
-import { User } from '@/models/associations';
+// import { User } from '@/models/associations';
+import * as helpers from '@/db/helpers';
 import { setUserDataCookie, setJWT, checkTurnstileToken } from '@/lib/server/auth';
 import { apiErrorResponse } from '@/lib/server/api/errorResponse';
 
@@ -12,8 +15,6 @@ export interface I_ApiUserLoginRequest {
 }
 
 export interface I_ApiUserLoginResponse extends ApiResponse {}
-
-export const dynamic = 'force-dynamic';
 
 // Create a POST endpoint
 export async function POST(request: NextRequest) {
@@ -52,10 +53,10 @@ export async function POST(request: NextRequest) {
 	}
 	try {
 		// Fetch our user from the database
-		const user = await User.login(login, password);
+		const user = await helpers.login(login, password);
 
 		// Check if user is active
-		if (user.status !== 'active') throw new Error('User account is not active');
+		if (user.status.toLowerCase() !== 'active') throw new Error('User account is not active');
 
 		// create our response object
 		const res: I_ApiUserLoginResponse = {
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
 		const response = NextResponse.json(res);
 
 		// Store public user data as a cookie
-		const userData = user.exportPublic();
+		const userData = helpers.exportPublic(user);
 
 		// Set auth cookies
 		setUserDataCookie(userData);

@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, FunctionComponent } from 'react';
 import { getUserData, isLoggedIn } from '@/lib/client/auth';
 import { usePathname } from 'next/navigation';
-import { I_UserPublic } from '@/models/User.types';
+// import { I_UserPublic } from '@/models/User.types';
 import { I_ApiAuthResponse } from '@/app/api/auth/route';
 
 interface AppContextProps {
 	isLoading: boolean;
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	logoutCleanup: () => Promise<void>;
-	userData: I_UserPublic | null;
+	userData: any | null; // I_UserPublic
 	userDataLoaded: boolean;
 	loadUserData: () => void;
 }
@@ -31,14 +31,14 @@ const USERDATA_TTL = 60 * 5; // 5 minutes
 export const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
 	const pathname = usePathname();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [userData, setUserData] = useState<I_UserPublic | null>(null);
+	const [userData, setUserData] = useState<any | null>(null); // I_UserPublic
 	const [userDataLoaded, setUserDataLoaded] = useState<boolean>(false);
 	const [userDataLastLoad, setUserDataLastLoad] = useState<Date>(new Date());
-	const fetcher = async (url: string) => {
-		const response = await fetch(url);
-		const data = await response.json();
-		return data.data;
-	};
+	// const fetcher = async (url: string) => {
+	// 	const response = await fetch(url);
+	// 	const data = await response.json();
+	// 	return data.data;
+	// };
 	const logoutCleanup = async () => {
 		setUserData(null);
 		setUserDataLoaded(false);
@@ -51,7 +51,7 @@ export const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) =
 	};
 	const loadUserDataFromServer = async () => {
 		if (!isLoggedIn()) return;
-		
+
 		try {
 			const response = await fetch('/api/auth');
 			const data = (await response.json()) as I_ApiAuthResponse;

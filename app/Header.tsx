@@ -65,7 +65,8 @@ export default function Header() {
 		setAnchorElUser(null);
 	};
 
-	const displayName = userData ? `${userData.firstName} ${userData.lastName}` : undefined;
+	// const displayName = userData ? `${userData.firstName} ${userData.lastName}` : undefined;
+	const displayName = userData ? `${userData.email}` : undefined;
 
 	type MenuItem = {
 		name: string;
@@ -160,18 +161,22 @@ export default function Header() {
 								<DropdownItem key="account" onClick={() => router.push('/account')}>
 									My Profile
 								</DropdownItem>
-								{menuItems.map((item, index) => {
-									if (item.role === '*' || (userData.role && userData.role === item.role)) {
-										return (
-											<DropdownItem
-												key={index}
-												onClick={() => handleRoute(item.route)}
-											>
-												{item.name}
-											</DropdownItem>
-										);
-									}
-								})}
+								{menuItems &&
+									menuItems.map((item, index) => {
+										if (
+											item.role === '*' ||
+											(userData.role && userData.role === item.role)
+										) {
+											return (
+												<DropdownItem
+													key={index}
+													onClick={() => handleRoute(item.route)}
+												>
+													{item.name}
+												</DropdownItem>
+											);
+										}
+									})}
 								<DropdownItem key="logout">
 									<Button className="bg-danger text-white" onClick={handleAuthButton}>
 										Log Out
@@ -185,17 +190,18 @@ export default function Header() {
 			{/* {Sidebar} */}
 			{userData ? (
 				<NavbarMenu>
-					{menuItems.map((item, index) => {
-						if (item.role === '*' || (userData.role && userData.role === item.role)) {
-							return (
-								<NavbarMenuItem key={index}>
-									<Link href={item.route} onClick={() => handleRoute(item.route)}>
-										{item.name}
-									</Link>
-								</NavbarMenuItem>
-							);
-						}
-					})}
+					{menuItems &&
+						menuItems.map((item, index) => {
+							if (item.role === '*' || (userData.role && userData.role === item.role)) {
+								return (
+									<NavbarMenuItem key={index}>
+										<Link href={item.route} onClick={() => handleRoute(item.route)}>
+											{item.name}
+										</Link>
+									</NavbarMenuItem>
+								);
+							}
+						})}
 				</NavbarMenu>
 			) : null}
 		</Navbar>

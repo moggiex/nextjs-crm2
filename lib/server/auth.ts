@@ -2,7 +2,7 @@ import { jwtVerify, JWTPayload, decodeJwt, SignJWT } from 'jose';
 import { cookies } from 'next/headers';
 import authConfig from '@/config/authConfig';
 
-import { I_UserPublic } from '@/models/User.types';
+// import { I_UserPublic } from '@/models/User.types';
 
 export function getJwtSecretKey() {
 	const secret = process.env.JWT_SECRET;
@@ -48,7 +48,7 @@ export async function getJwt() {
 					firstName: payload.firstName as string,
 					lastName: payload.lastName as string,
 					email: payload.email as string,
-					phone: payload.phone as string,
+					// phone: payload.phone as string,
 					role: payload.role as string,
 					iat: payload.iat as number,
 					exp: payload.exp as number,
@@ -96,7 +96,8 @@ export async function logout() {
 	return null;
 }
 
-export function setUserDataCookie(userData: I_UserPublic) {
+// was I_UserPublic
+export function setUserDataCookie(userData: any) {
 	const cookieStore = cookies();
 
 	cookieStore.set({
@@ -108,13 +109,14 @@ export function setUserDataCookie(userData: I_UserPublic) {
 	});
 }
 
-export async function setJWT(userData: I_UserPublic) {
+// was I_UserPublic
+export async function setJWT(userData: any) {
 	const token = await new SignJWT({
 		id: userData.id,
 		firstName: userData.firstName,
 		lastName: userData.lastName,
 		email: userData.email,
-		phone: userData.phone,
+		// phone: userData.phone,
 		role: userData.role,
 	})
 		.setProtectedHeader({ alg: 'HS256' })

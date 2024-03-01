@@ -1,6 +1,6 @@
 // src/app/auth/create/route.ts
 import { NextResponse, NextRequest } from 'next/server';
-import { User } from '@/models/associations';
+import * as helpers from '@/db/helpers';
 import { setUserDataCookie, setJWT, checkTurnstileToken } from '@/lib/server/auth';
 import { apiErrorResponse } from '@/lib/server/api/errorResponse';
 
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 	try {
 		// Fetch our user from the database
 		// WTF???
-		const user = await User.createAccount(firstName, email, password);
+		const user = await helpers.createAccount(firstName, email, password);
 
 		// create our response object
 		const res: I_ApiUserCreateResponse = {
@@ -65,7 +65,8 @@ export async function POST(request: NextRequest) {
 		const response = NextResponse.json(res);
 
 		// Store public user data as a cookie
-		const userData = user.exportPublic();
+		// TODO: Is this missing the user?
+		const userData = helpers.exportPublic(user);
 
 		// Set auth cookies
 		setUserDataCookie(userData);

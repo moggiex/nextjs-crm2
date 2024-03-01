@@ -1,0 +1,190 @@
+// npx prisma generate
+// npx prisma migrate dev --name alter_accounts_table_3
+// ts-node prisma/seed.ts
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+// ---------- User
+enum UserRole {
+  Admin
+  Support
+  Customer
+}
+
+enum UserStatus {
+  Pending
+  Active
+  Inactive
+  Banned
+}
+
+model User {
+  id            String      @id @default(cuid())
+  email         String      @unique
+  username      String?     @unique
+  firstName     String
+	lastName      String?
+  emailVerified DateTime?
+  phone         String?
+	password      String
+  avatar        String?
+
+	role          UserRole    @default(Customer)
+	status        UserStatus  @default(Active)
+  isAdmin       Boolean     @default(false) // Add this line for the isAdmin flag
+  isSupport     Boolean     @default(false)
+
+  createdAt     DateTime    @default(now())
+	updatedAt     DateTime    @updatedAt
+	deletedAt     DateTime?
+	lastLogin     DateTime    @default(now())
+	lastSeen      DateTime?
+
+  // relationship 
+  addresses     Address[] // No need for addressId in a one-to-many setup
+  messages      Message[]
+  accounts      Account[]
+  sessions      Session[]
+  createdTickets Ticket[]
+
+  // Tickets assigned to the user (for support staff and 'god' users)
+  assignedTickets Ticket[] @relation("SupportUser")
+
+}
+
+// ---------- Account
+enum AccountType {
+  ebay
+  amazon
+  other
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              AccountType
+  account_name      String   @unique
+  provider          String?
+  providerAccountId String?
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+
+  // relationship to messages
+  message       Message[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+// ---------- Session
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+// ---------- VerificationToken
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ---------- Address
+model Address {
+  id            String   @id @default(cuid())
+  userId        String 
+  businessName  String?
+  addressLine1  String
+  addressLine2  String?
+  city          String
+  countyOrState String
+  postZipCode   String
+  countryId     Int      // Foreign key for Country
+  country       Country  @relation(fields: [countryId], references: [id])
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@map("addresses")
+
+}
+
+// ---------- Define the Country model
+model Country {
+  id        Int     @id @default(autoincrement())
+  iso       String  @db.Char(2)
+  name      String  @db.VarChar(80)
+  nicename  String  @db.VarChar(80)
+  iso3      String? @db.Char(3)
+  numcode   Int?    @db.SmallInt
+  phonecode Int
+  addresses Address[] // Relation to Address model
+
+  @@map("country")
+}
+// ---------- Message
+model Message {
+  id          String   @id @default(cuid())
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId      String   // References the User model
+  accountId   String   // References the Account model (assuming this is the eBay account)
+  parentId    String?  // Optional, for threading replies to a message
+
+  sender      String   // eBay username of the sender
+  subject     String
+  body        String
+  receiveDate DateTime // When the message was received
+  read        Boolean  @default(false)
+  replied     Boolean  @default(false)
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+  account     Account  @relation(fields: [accountId], references: [id])
+  parent      Message? @relation("MessageToMessage", fields: [parentId], references: [id])
+  replies     Message[] @relation("MessageToMessage")
+
+  @@unique([id, accountId]) // Ensuring uniqueness for each message in an account
+}
+// ---------- Tickets
+enum TicketStatus {
+  Open
+  Closed
+  Pending
+}
+
+enum TicketType {
+  Issue
+  FeatureRequest
+  Query
+}
+
+model Ticket {
+  id          String      @id @default(cuid())
+  subject     String
+  message     String
+  type        TicketType
+  status      TicketStatus @default(Open)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  userId      String      // ID of the user who created the ticket
+  assignedTo  String?     // ID of the support or 'god' user assigned to the ticket, optional
+
+  // Relations
+  user        User        @relation(fields: [userId], references: [id])
+  supportUser User?       @relation("SupportUser", fields: [assignedTo], references: [id])
+}
+

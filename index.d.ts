@@ -8,7 +8,7 @@ declare interface AuthPayload {
 	firstName: string;
 	lastName: string;
 	email: string;
-	phone: string;
+	// phone: string;
 	role: string;
 	iat: number;
 	exp: number;

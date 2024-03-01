@@ -6,12 +6,37 @@ This is a starter boilerplate for Next.js 14. It had everything you need to kick
 
 -    DONE: Create account page and api route
 -    DONE: Change site design
--    Change to prismaclientand models
--    Add firstName, lastName, businessName and address columns
+-    Change to prismaclient and models
+-    Check imports work
+-    Add fake addresses and truncate counties table
+-    Add zod for checking inputs
+-    xonsider updating syncDb.ts to run imports?
 -    Update user detail spage
 -    accounts table
 -    add messages fields
 -    Create support tickets database and pages
+
+## Steps to first start
+
+```bash
+npx prisma generate
+npx prisma db push
+npx prisma migrate dev
+npm run seed-counties       // run once for counties
+npm run seed-fake-data      // run create/recreate users
+npm run dev
+```
+
+## Steps for updating
+
+```bash
+npx prisma generate
+npx prisma db push
+npx prisma migrate dev
+npm run seed-counties       // run once for counties
+npm run seed-fake-data      // run create/recreate users
+npm run dev
+```
 
 ## Features
 
