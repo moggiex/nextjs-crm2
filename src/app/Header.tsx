@@ -9,14 +9,6 @@ import { useApp } from '@/contexts/AppContext';
 import { useRouter } from 'nextjs13-progress';
 import { usePathname } from 'next/navigation';
 
-// MUI
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-// import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-
 // Next UI
 import {
 	Navbar,
@@ -28,11 +20,10 @@ import {
 	DropdownTrigger,
 	Dropdown,
 	DropdownMenu,
-	// Avatar,
+	Avatar,
 	NavbarMenuToggle,
 	NavbarMenu,
 	NavbarMenuItem,
-	Avatar,
 } from '@nextui-org/react';
 
 // import logo from '@/assets/svg/designly-logo-trans.svg';
@@ -76,7 +67,13 @@ export default function Header() {
 
 	const displayName = userData ? `${userData.firstName} ${userData.lastName}` : undefined;
 
-	const menuItems = [
+	type MenuItem = {
+		name: string;
+		route: string;
+		role: string;
+	};
+
+	const menuItems: MenuItem[] = [
 		{ name: 'Dashboard', route: '/app', role: '*' },
 		{ name: 'My Account', route: '/account', role: '*' },
 		{ name: 'Admin Dashboard', route: '/admin', role: 'admin' },
@@ -113,7 +110,7 @@ export default function Header() {
 				/>
 				<NavbarBrand>
 					<Link href="/">
-						<Image src={logo} alt="Designly" width={displayWidth} height={displayHeight} />
+						<Image src={logo} alt="Logo" width={0} height={0} priority />
 					</Link>
 				</NavbarBrand>
 			</NavbarContent>
@@ -134,12 +131,13 @@ export default function Header() {
 			</NavbarContent> */}
 
 			<NavbarContent as="div" justify="end">
-				<NavbarItem>
-					<Button className="text-center bg-primary text-white" onClick={handleAuthButton}>
-						{userData ? 'Logout' : 'Login'}
-					</Button>
-				</NavbarItem>
-
+				{!userData && (
+					<NavbarItem>
+						<Button className="text-center bg-primary text-white" onClick={handleAuthButton}>
+							Login
+						</Button>
+					</NavbarItem>
+				)}
 				{userData && (
 					<>
 						<Dropdown placement="bottom-end">
@@ -157,11 +155,23 @@ export default function Header() {
 							<DropdownMenu aria-label="Profile Actions" variant="flat">
 								<DropdownItem key="profile" className="h-14 gap-2">
 									<p className="font-semibold">Signed in as</p>
-									<p className="font-semibold">{userData.email}</p>
+									<p className="font-semibold">{displayName}</p>
 								</DropdownItem>
 								<DropdownItem key="account" onClick={() => router.push('/account')}>
 									My Profile
 								</DropdownItem>
+								{menuItems.map((item, index) => {
+									if (item.role === '*' || (userData.role && userData.role === item.role)) {
+										return (
+											<DropdownItem
+												key={index}
+												onClick={() => handleRoute(item.route)}
+											>
+												{item.name}
+											</DropdownItem>
+										);
+									}
+								})}
 								<DropdownItem key="logout">
 									<Button className="bg-danger text-white" onClick={handleAuthButton}>
 										Log Out
@@ -172,25 +182,22 @@ export default function Header() {
 					</>
 				)}
 			</NavbarContent>
-			<NavbarMenu>
-				{menuItems.map((item, index) => (
-					<NavbarMenuItem key={`${item[0]}-${index}`}>
-						<Link
-							color={
-								index === 2
-									? 'primary'
-									: index === menuItems.length - 1
-									? 'danger'
-									: 'foregrond'
-							}
-							className="w-full"
-							href={item[1]}
-						>
-							{item[0]}
-						</Link>
-					</NavbarMenuItem>
-				))}
-			</NavbarMenu>
+			{/* {Sidebar} */}
+			{userData ? (
+				<NavbarMenu>
+					{menuItems.map((item, index) => {
+						if (item.role === '*' || (userData.role && userData.role === item.role)) {
+							return (
+								<NavbarMenuItem key={index}>
+									<Link href={item.route} onClick={() => handleRoute(item.route)}>
+										{item.name}
+									</Link>
+								</NavbarMenuItem>
+							);
+						}
+					})}
+				</NavbarMenu>
+			) : null}
 		</Navbar>
 	);
 }

@@ -23,6 +23,14 @@ export interface I_User {
 	avatar: string;
 	role: T_UserRole;
 	status: T_UserStatus;
+
+	// businessName: string;
+	// addressLine1: string;
+	// addressLine2: string;
+	// city: string;
+	// postOrZipCode: string;
+	// country: string;
+
 	createdAt: Date;
 	updatedAt: Date;
 	deletedAt: Date;

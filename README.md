@@ -5,9 +5,10 @@ This is a starter boilerplate for Next.js 14. It had everything you need to kick
 ## to do
 
 -    DONE: Create account page and api route
--    Chnage site design
--    Update user detail spage
+-    DONE: Change site design
+-    Change to prsimaclient
 -    Add firstName, lastName, businessName and address columns
+-    Update user detail spage
 -    accounts table
 -    add messages fields
 -    Create support tickets database and pages
