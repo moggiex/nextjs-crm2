@@ -6,7 +6,7 @@ This is a starter boilerplate for Next.js 14. It had everything you need to kick
 
 -    DONE: Create account page and api route
 -    DONE: Change site design
--    Change to prsimaclient
+-    Change to prismaclient
 -    Add firstName, lastName, businessName and address columns
 -    Update user detail spage
 -    accounts table
