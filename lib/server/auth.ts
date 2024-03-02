@@ -1,8 +1,13 @@
 import { jwtVerify, JWTPayload, decodeJwt, SignJWT } from 'jose';
 import { cookies } from 'next/headers';
-import authConfig from '@/config/authConfig';
+// import authConfig from '@/config/authConfig';
 
 // import { I_UserPublic } from '@/models/User.types';
+export const authConfig = {
+	saltRounds: 12,
+	jwtExpires: 86400 * 7, // 7 days
+	jwtExpiresString: '7d',
+};
 
 export function getJwtSecretKey() {
 	const secret = process.env.JWT_SECRET;

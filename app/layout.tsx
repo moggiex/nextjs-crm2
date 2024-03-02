@@ -7,8 +7,8 @@ import AppWrapper from './AppWrapper';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-	title: 'Next.js Auth + Sequelize Starter by Designly',
-	description: 'Next.js Auth + Sequelize Starter by Designly',
+	title: 'Next.js Auth + Prisma',
+	description: 'Next.js Auth +Prisma',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

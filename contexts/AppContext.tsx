@@ -34,11 +34,7 @@ export const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) =
 	const [userData, setUserData] = useState<any | null>(null); // I_UserPublic
 	const [userDataLoaded, setUserDataLoaded] = useState<boolean>(false);
 	const [userDataLastLoad, setUserDataLastLoad] = useState<Date>(new Date());
-	// const fetcher = async (url: string) => {
-	// 	const response = await fetch(url);
-	// 	const data = await response.json();
-	// 	return data.data;
-	// };
+
 	const logoutCleanup = async () => {
 		setUserData(null);
 		setUserDataLoaded(false);

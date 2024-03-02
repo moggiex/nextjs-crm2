@@ -41,10 +41,7 @@ export default function LogoutPage() {
 					<p className="text-xl">
 						You have been logged out. You can <a href="/login">login</a> again.
 					</p>
-					<Link
-						className="btn btn-primary"
-						href="/"
-					>
+					<Link className="btn btn-primary" href={'/'}>
 						Go back home
 					</Link>
 				</>

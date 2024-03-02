@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import ErrorView from '@/components/views/ErrorView';
 
-import { seedUsers, syncDb } from '@/lib/utils/db/syncDb';
+import { seedUsers, syncDb } from '@/db/syncDb';
 import { useApp } from '@/contexts/AppContext';
 
 const EXECUTE = true;

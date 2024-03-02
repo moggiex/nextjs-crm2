@@ -2,12 +2,8 @@
 import { hashSync, compareSync } from 'bcryptjs';
 import * as log from '@/lib/common/logger';
 import { getJwt, logout } from '@/lib/server/auth';
-// import authConfig from '@/config/authConfig';
 import { db } from '@/db/index';
 // import { getByLoginId } from '@/db/helpers';
-// import { object } from 'yup';
-
-// export const jwtExpires = authConfig.jwtExpires;
 
 export const getByLoginId = async (loginId: string) => {
 	const user = await db.user.findFirst({

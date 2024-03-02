@@ -1,4 +1,7 @@
-import { db } from '../db';
+// import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require('@prisma/client');
+
+const db = new PrismaClient();
 
 // Source: https://gist.github.com/ereli/0c94ec74a1807aaa895b912766556cc2
 
