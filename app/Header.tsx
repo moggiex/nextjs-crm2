@@ -134,7 +134,7 @@ export default function Header() {
 			<NavbarContent as="div" justify="end">
 				{!userData && (
 					<NavbarItem>
-						<Button className="btn-primary" onClick={handleAuthButton}>
+						<Button type="submit" color="primary" variant="solid" onClick={handleAuthButton}>
 							Login
 						</Button>
 					</NavbarItem>
@@ -178,7 +178,12 @@ export default function Header() {
 										}
 									})}
 								<DropdownItem key="logout">
-									<Button className="bg-danger text-white" onClick={handleAuthButton}>
+									<Button
+										type="submit"
+										color="danger"
+										variant="solid"
+										onClick={handleAuthButton}
+									>
 										Log Out
 									</Button>
 								</DropdownItem>

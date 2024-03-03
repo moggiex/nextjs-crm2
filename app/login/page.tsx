@@ -9,6 +9,7 @@ import Turnstile from 'react-hook-turnstile';
 
 import { I_ApiUserLoginRequest, I_ApiUserLoginResponse } from '../auth/login/route';
 import Link from 'next/link';
+import { Button } from '@nextui-org/react';
 
 export default function LoginPage() {
 	const isDev = process.env.NODE_ENV === 'development';
@@ -132,17 +133,22 @@ export default function LoginPage() {
 							<span className="label-text-alt text-error">{error}</span>
 						</label>
 					</div>
-					<button className="btn btn-primary w-full" onClick={handleLogin}>
+					<Button color="primary" variant="solid" onClick={handleLogin}>
 						Login
-					</button>
+					</Button>
 					{!isDev && !isLoading ? (
 						<Turnstile
 							sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
 							onVerify={token => setTsToken(token)}
 						/>
 					) : null}
-					<p>
-						Or... <Link href="/create"> Create an Account</Link>
+					<p className="text-center">
+						Or... <br />
+						<br />
+						<Button as="a" color="secondary" variant="solid" href="/create">
+							{' '}
+							Create an Account
+						</Button>
 					</p>
 				</>
 			)}

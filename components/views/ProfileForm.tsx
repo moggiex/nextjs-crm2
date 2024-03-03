@@ -32,7 +32,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userDetails, countries }) => 
 	return (
 		<>
 			{user && countries && (
-				<div>
+				<div className="mb-4">
 					<h1 className="text-3xl font-bold">Account Profile</h1>
 					<p>Here you can update your account profile information and billing address</p>
 					<Divider className="my-4" />
@@ -194,7 +194,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userDetails, countries }) => 
 							/>
 						)}
 
-						<Button type="submit" color="primary" variant="bordered">
+						<Button type="submit" color="primary" variant="solid">
 							Update
 						</Button>
 					</form>
