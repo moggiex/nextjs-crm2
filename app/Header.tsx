@@ -76,7 +76,7 @@ export default function Header() {
 
 	const menuItems: MenuItem[] = [
 		{ name: 'Dashboard', route: '/app', role: '*' },
-		{ name: 'My Account', route: '/account', role: '*' },
+		{ name: 'My Account', route: '/profile', role: '*' },
 		{ name: 'Admin Dashboard', route: '/admin', role: 'admin' },
 	];
 
@@ -134,7 +134,7 @@ export default function Header() {
 			<NavbarContent as="div" justify="end">
 				{!userData && (
 					<NavbarItem>
-						<Button className="text-center bg-primary text-white" onClick={handleAuthButton}>
+						<Button className="btn-primary" onClick={handleAuthButton}>
 							Login
 						</Button>
 					</NavbarItem>
@@ -158,7 +158,7 @@ export default function Header() {
 									<p className="font-semibold">Signed in as</p>
 									<p className="font-semibold">{displayName}</p>
 								</DropdownItem>
-								<DropdownItem key="account" onClick={() => router.push('/account')}>
+								<DropdownItem key="profile2" onClick={() => router.push('/profile')}>
 									My Profile
 								</DropdownItem>
 								{menuItems &&

@@ -1,6 +1,6 @@
 // 'use client';
 import React from 'react';
-import { getUserProfile } from '@/db/actions/profile';
+import { getUserProfile, getCountries } from '@/db/actions/profile';
 import ProfileForm from '@/components/views/ProfileForm';
 // import PlaceholderView from '@/components/views/PlaceholderView';
 // import { useApp } from '@/contexts/AppContext';
@@ -11,12 +11,16 @@ export default async function AccountMainPage() {
 	// if (userData) {
 	// 	console.log(userData);
 	// }
-	const { user, countries } = await getUserProfile();
+	const userDetails = await getUserProfile();
+	const countries = await getCountries();
+	// const countries = [];
+
+	// console.log(user);
 	return (
 		<>
 			{/* <pre>{JSON.stringify(userData, null, 2)}</pre> */}
 			{/* <PlaceholderView title="Account Main Page" text="This page is only accessible to logged in users!" /> */}
-			<ProfileForm user={user} countries={countries} />;
+			<ProfileForm userDetails={userDetails} countries={countries} />
 		</>
 	);
 }

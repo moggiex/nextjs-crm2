@@ -48,12 +48,18 @@ model User {
 	lastLogin     DateTime    @default(now())
 	lastSeen      DateTime?
 
+  address       Address? @relation("UserAddress")
+  
+
   // relationship 
-  addresses     Address[] // No need for addressId in a one-to-many setup
+  // addresses     Address[] // No need for addressId in a one-to-many setup
+  // address       Address?   @relation(fields: [addressId], references: [id])
+  
   messages      Message[]
   accounts      Account[]
   sessions      Session[]
   createdTickets Ticket[]
+
 
   // Tickets assigned to the user (for support staff and 'god' users)
   assignedTickets Ticket[] @relation("SupportUser")
@@ -105,7 +111,7 @@ model VerificationToken {
 // ---------- Address
 model Address {
   id            String   @id @default(cuid())
-  userId        String 
+  userId        String   @unique  // This is the foreign key
   businessName  String?
   addressLine1  String
   addressLine2  String?
@@ -113,10 +119,10 @@ model Address {
   countyOrState String
   postZipCode   String
   countryId     Int      // Foreign key for Country
+  user          User     @relation("UserAddress", fields: [userId], references: [id])
   country       Country  @relation(fields: [countryId], references: [id])
-  user          User     @relation(fields: [userId], references: [id])
 
-  @@map("addresses")
+  @@map("address")
 
 }
 
