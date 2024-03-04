@@ -1,0 +1,22 @@
+.spinner {
+	animation: spin infinite 1s linear;
+	/* Set the font size to scale the icon. React-icons scale with font-size. */
+	/* font-size: 4rem; Adjust the size as needed */
+	/* color: #bfdbfe; Example color: Tailwind CSS blue-400 */
+
+	/* Center the spinner in the page */
+	/* position: fixed; Fixed positioning relative to the viewport */
+	/* top: 50%; Center vertically */
+	/* left: 50%; Center horizontally */
+	/* Use transform to truly center the icon by its center point */
+	transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}

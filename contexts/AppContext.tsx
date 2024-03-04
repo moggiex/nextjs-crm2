@@ -83,6 +83,7 @@ export const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) =
 			}
 		}
 	}, [pathname]);
+	// console.log(userData);
 	return (
 		<AppContext.Provider
 			value={{

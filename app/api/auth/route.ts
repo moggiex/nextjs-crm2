@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest } from 'next/server';
-import { setUserDataCookie, logout } from '@/lib/server/auth';
+import { setUserDataCookie, logout, setJWT } from '@/lib/server/auth';
 import { apiErrorResponse } from '@/lib/server/api/errorResponse';
 import { I_UserPublic } from '@/models/User.types';
 
@@ -33,6 +33,8 @@ export async function GET(request: NextRequest) {
 
 		// Refresh our userdata cookie in case information was changed elsewhere
 		setUserDataCookie(userData);
+		// setUserDataCookie(userData);
+		await setJWT(userData);
 		return new Response(JSON.stringify(response), {
 			headers: {
 				'content-type': 'application/json',

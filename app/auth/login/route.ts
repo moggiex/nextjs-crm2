@@ -3,7 +3,7 @@
 export const revalidate = 0;
 import { NextResponse, NextRequest } from 'next/server';
 // import { User } from '@/models/associations';
-import * as helpers from '@/db/helpers';
+import { login as userLogin, exportPublic } from '@/db/helpers';
 import { setUserDataCookie, setJWT, checkTurnstileToken } from '@/lib/server/auth';
 import { apiErrorResponse } from '@/lib/server/api/errorResponse';
 
@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
 	const { login, password, tsToken } = Object.fromEntries(
 		Object.entries(body).map(([key, value]) => [key, value?.trim()]),
 	) as I_ApiUserLoginRequest;
+
 	if (!login || !password) {
 		const res: I_ApiUserLoginResponse = {
 			success: false,
@@ -51,13 +52,20 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json(res, { status: 400 });
 		}
 	}
+
 	try {
 		// Fetch our user from the database
-		const user = await helpers.login(login, password);
+		const resp = await userLogin(login, password);
 
-		// Check if user is active
-		if (user.status.toLowerCase() !== 'active') throw new Error('User account is not active');
+		// console.log(resp);
 
+		if (!resp || resp?.success === false) {
+			const res: I_ApiUserLoginResponse = {
+				success: false,
+				message: resp.message,
+			};
+			return NextResponse.json(resp, { status: 400 });
+		}
 		// create our response object
 		const res: I_ApiUserLoginResponse = {
 			success: true,
@@ -65,11 +73,15 @@ export async function POST(request: NextRequest) {
 		const response = NextResponse.json(res);
 
 		// Store public user data as a cookie
-		const userData = helpers.exportPublic(user);
+		// console.log(resp);
+		const userData = await exportPublic(resp);
 
+		// console.log(userData);
 		// Set auth cookies
 		setUserDataCookie(userData);
 		await setJWT(userData);
+
+		// console.log(userData);
 
 		return response;
 	} catch (err: any) {

@@ -66,7 +66,7 @@ export default function Header() {
 	};
 
 	// const displayName = userData ? `${userData.firstName} ${userData.lastName}` : undefined;
-	const displayName = userData ? `${userData.email}` : undefined;
+	const displayName = userData?.email ? `${userData.email}` : null;
 
 	type MenuItem = {
 		name: string;
@@ -154,11 +154,23 @@ export default function Header() {
 								/>
 							</DropdownTrigger>
 							<DropdownMenu aria-label="Profile Actions" variant="flat">
-								<DropdownItem key="profile" className="h-14 gap-2">
-									<p className="font-semibold">Signed in as</p>
-									<p className="font-semibold">{displayName}</p>
-								</DropdownItem>
-								<DropdownItem key="profile2" onClick={() => router.push('/profile')}>
+								{displayName && (
+									<DropdownItem
+										key="profile"
+										className="h-14 gap-2"
+										textValue="Profile Details"
+									>
+										<>
+											<p className="font-semibold">Signed in as</p>
+											<p className="font-semibold">{displayName}</p>
+										</>
+									</DropdownItem>
+								)}
+								<DropdownItem
+									key="profile2"
+									onClick={() => router.push('/profile')}
+									textValue="My Profile"
+								>
 									My Profile
 								</DropdownItem>
 								{menuItems &&
@@ -171,13 +183,14 @@ export default function Header() {
 												<DropdownItem
 													key={index}
 													onClick={() => handleRoute(item.route)}
+													textValue={item.name}
 												>
 													{item.name}
 												</DropdownItem>
 											);
 										}
 									})}
-								<DropdownItem key="logout">
+								<DropdownItem key="logout" textValue="Logout">
 									<Button
 										type="submit"
 										color="danger"

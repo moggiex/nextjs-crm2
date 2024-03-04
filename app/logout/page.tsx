@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'nextjs13-progress';
 
 import { useApp } from '@/contexts/AppContext';
+import { Button } from '@nextui-org/react';
 
 export default function LogoutPage() {
 	const [isLoading, setIsLoading] = useState(true);
@@ -41,9 +42,10 @@ export default function LogoutPage() {
 					<p className="text-xl">
 						You have been logged out. You can <a href="/login">login</a> again.
 					</p>
-					<Link className="btn btn-primary" href={'/'}>
-						Go back home
-					</Link>
+					<Button as="a" color="primary" variant="solid" className="text-white" href="/">
+						{' '}
+						Go back Home
+					</Button>
 				</>
 			) : (
 				<>

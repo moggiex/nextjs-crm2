@@ -4,6 +4,9 @@ import * as log from '@/lib/common/logger';
 import { getJwt, logout } from '@/lib/server/auth';
 import { db } from '@/db/index';
 // import { getByLoginId } from '@/db/helpers';
+// import { I_ApiUserLoginResponse } from '@/';
+
+export interface I_ApiUserLoginResponse extends ApiResponse {}
 
 export const getByLoginId = async (loginId: string) => {
 	const user = await db.user.findFirst({
@@ -21,18 +24,33 @@ export const login = async (email: string, password: string) => {
 		const user = await getByLoginId(cleanEmail);
 
 		if (!user) {
-			throw new Error('User not found');
+			const res: I_ApiUserLoginResponse = {
+				success: false,
+				message: 'User not found',
+			};
+			return res;
+			// throw new Error('User not found');
 		}
 
 		// Check user status
 		if (user.status.toLowerCase() === 'inactive' || user.status.toLowerCase() === 'banned') {
-			throw new Error('User is inactive or banned');
+			const res: I_ApiUserLoginResponse = {
+				success: false,
+				message: 'User is inactive or banned',
+			};
+			return res;
+			// throw new Error('User is inactive or banned');
 		}
 
 		// Compare provided password with stored hash
 		const isPasswordValid = compareSync(password, user.password);
 		if (!isPasswordValid) {
-			throw new Error('Invalid password');
+			const res: I_ApiUserLoginResponse = {
+				success: false,
+				message: 'Invalid password',
+			};
+			return res;
+			// throw new Error('Invalid password');
 		}
 
 		const updatedUser = await db.user.update({
@@ -44,10 +62,19 @@ export const login = async (email: string, password: string) => {
 			},
 		});
 
+		// console.log(`--------`);
+		// console.log(updatedUser);
+		// console.log(`--------`);
+
 		return updatedUser;
 	} catch (error: any) {
 		log.error(error);
-		throw new Error('Invalid login or password');
+		// throw new Error('Invalid login or password');
+		const res: I_ApiUserLoginResponse = {
+			success: false,
+			message: error,
+		};
+		return res;
 	}
 };
 
@@ -117,12 +144,19 @@ export const getAuthUserFromDb = async () => {
 	return user;
 };
 
-export const filterPublic = async (user: any) => {
+export const filterPublic = (user: any) => {
 	const { password, ...userPublic } = user;
 	return userPublic;
 };
 
-export const exportPublic = async (user: any | null) => {
-	const { password, ...userWithoutPassword } = user;
-	return userWithoutPassword;
+export const exportPublic = (user: any | null) => {
+	if (!user) return null;
+
+	const { password, status, isAdmin, isSupport, ...userWithoutSensitiveData } = user;
+	return userWithoutSensitiveData;
 };
+
+// export const exportPublic = (user: any | null) => {
+// 	const { password, ...userWithoutPassword } = user;
+// 	return userWithoutPassword;
+// };

@@ -5,15 +5,62 @@ import { Input, Button, Chip, Divider } from '@nextui-org/react';
 import { FaEnvelope, FaImage, FaPhone, FaUser, FaUserAlt } from 'react-icons/fa';
 import CountriesSelect from '@/components/CountriesSelect';
 
+import { z } from 'zod';
+
 import { Country } from '@/prisma/typescript.models';
 interface ProfileFormProps {
 	userDetails: any;
 	countries: Country[];
 }
 
+const UpdateUserFormSchema = z.object({
+	email: z.string().email('Enter a valid email address'), // Email is required and must be a valid email
+	username: z
+		.string()
+		.optional()
+		.refine(
+			val => {
+				// If a value is provided, it must be at least 5 characters long
+				return val === undefined || val.length >= 5;
+			},
+			{
+				message: 'Username must be at least 5 characters long', // Custom error message
+				path: ['username'], // Specify the path to associate the error message with the username field
+			},
+		),
+	firstName: z.string().min(3, 'First name is required'), // First name is required and cannot be empty
+	lastName: z.string().min(3, 'Last name is required'), // Last name is required and cannot be empty
+	phone: z.string().min(1, 'Phone number is required'), // Phone number is required and cannot be empty
+	// Skipping avatar as it's commented out in your snippet
+
+	// Address details
+	businessName: z.string().optional(), // Business name is optional
+	addressLine1: z.string().min(5, 'Address line 1 is required'), // Address line 1 is required and cannot be empty
+	addressLine2: z.string().optional(), // Address line 2 is optional
+	city: z.string().min(3, 'City is required'), // City is required and cannot be empty
+	countyOrState: z.string().min(3, 'County or State is required'), // County or State is required and cannot be empty
+	postZipCode: z.string().min(6, 'Post/Zip code is required'), // Post/Zip code is required and cannot be empty
+	countryId: z.number('Country must be selected'), // Country should be a number indicating the selected country ID
+});
+
 const ProfileForm: React.FC<ProfileFormProps> = ({ userDetails, countries }) => {
 	const user = userDetails;
 	console.log(user.address);
+
+	const [emailError, setEmailError] = useState('');
+	const [usernameError, setUsernameError] = useState('');
+	const [firstNameError, setFirstNameError] = useState('');
+	const [lastNameError, setLastNameError] = useState('');
+	const [phoneError, setPhoneError] = useState('');
+	// States for address fields
+	const [businessNameError, setBusinessNameError] = useState('');
+	const [addressLine1Error, setAddressLine1Error] = useState('');
+	const [addressLine2Error, setAddressLine2Error] = useState('');
+	const [cityError, setCityError] = useState('');
+	const [countyOrStateError, setCountyOrStateError] = useState('');
+	const [postZipCodeError, setPostZipCodeError] = useState('');
+	const [countryIdError, setCountryIdError] = useState('');
+
 	// const [image, setImage] = useState(null);
 	// const [imageUrl, setImageUrl] = useState((''));
 
