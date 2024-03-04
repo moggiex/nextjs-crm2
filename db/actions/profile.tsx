@@ -60,59 +60,78 @@ export const updateProfile = async (formData: FormData) => {
 
 	// Update or create address
 	let addressId: string;
-	if (user.address) {
-		// User already has an address, update it
-		addressId = user.address.id;
-		await db.address.update({
-			where: { id: addressId },
-			data: {
-				businessName,
-				addressLine1,
-				addressLine2,
-				city,
-				countyOrState,
-				postZipCode,
-				countryId: parseInt(countryId), // Convert countryId to number
-			},
-		});
-		console.error(`AddressId ${addressId} updated for user ${user.id}`);
-	} else {
-		// User doesn't have an address, create a new one
-		const newAddress = await db.address.create({
-			data: {
-				userId: user.id,
-				businessName,
-				addressLine1,
-				addressLine2,
-				city,
-				countyOrState,
-				postZipCode,
-				countryId: parseInt(countryId), // Convert countryId to number
-			},
-		});
+	try {
+		if (user.address) {
+			// User already has an address, update it
+			addressId = user.address.id;
+			await db.address.update({
+				where: { id: addressId },
+				data: {
+					businessName,
+					addressLine1,
+					addressLine2,
+					city,
+					countyOrState,
+					postZipCode,
+					countryId: parseInt(countryId), // Convert countryId to number
+				},
+			});
+			console.log(`AddressId ${addressId} updated for user ${user.id}`);
+		} else {
+			// User doesn't have an address, create a new one
+			const newAddress = await db.address.create({
+				data: {
+					userId: user.id,
+					businessName,
+					addressLine1,
+					addressLine2,
+					city,
+					countyOrState,
+					postZipCode,
+					countryId: parseInt(countryId), // Convert countryId to number
+				},
+			});
 
-		addressId = newAddress.id;
-		console.error(`AddressId ${addressId} created for user ${user.id}`);
+			addressId = newAddress.id;
+			console.log(`AddressId ${addressId} created for user ${user.id}`);
+		}
+	} catch (error) {
+		if (typeof error === 'string') {
+			console.error('Error updating user:', error);
+			return { sucess: false, message: error };
+		} else {
+			console.error('Error updating user:', JSON.stringify(error));
+			return { sucess: false, message: JSON.stringify(error) };
+		}
 	}
 
 	// Update user information
-	await db.user.update({
-		where: { id: user.id },
-		data: {
-			username,
-			firstName,
-			lastName,
-			phone,
-			avatar,
-			// Update address relation
-			address: {
-				connect: { id: addressId },
+	try {
+		await db.user.update({
+			where: { id: user.id },
+			data: {
+				...(username && { username }),
+				firstName,
+				lastName,
+				phone,
+				avatar,
+				// Update address relation
+				address: {
+					connect: { id: addressId },
+				},
 			},
-		},
-	});
-
-	console.log('User information updated successfully.');
-	return { sucess: true, message: 'Updated detals successfully' };
+		});
+		console.log('User information updated successfully.');
+		return { sucess: true, message: 'Updated detals successfully' };
+	} catch (error) {
+		if (typeof error === 'string') {
+			console.error('Error updating user:', error);
+			return { sucess: false, message: error };
+		} else {
+			console.error('Error updating user:', JSON.stringify(error));
+			return { sucess: false, message: JSON.stringify(error) };
+		}
+	}
 };
 
 export const getCountries = async () => {

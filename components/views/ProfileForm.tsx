@@ -45,21 +45,21 @@ const UpdateUserFormSchema = z.object({
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ userDetails, countries }) => {
 	const user = userDetails;
-	console.log(user.address);
+	// console.log(user.address);
 
-	const [emailError, setEmailError] = useState('');
-	const [usernameError, setUsernameError] = useState('');
-	const [firstNameError, setFirstNameError] = useState('');
-	const [lastNameError, setLastNameError] = useState('');
-	const [phoneError, setPhoneError] = useState('');
-	// States for address fields
-	const [businessNameError, setBusinessNameError] = useState('');
-	const [addressLine1Error, setAddressLine1Error] = useState('');
-	const [addressLine2Error, setAddressLine2Error] = useState('');
-	const [cityError, setCityError] = useState('');
-	const [countyOrStateError, setCountyOrStateError] = useState('');
-	const [postZipCodeError, setPostZipCodeError] = useState('');
-	const [countryIdError, setCountryIdError] = useState('');
+	// const [emailError, setEmailError] = useState('');
+	// const [usernameError, setUsernameError] = useState('');
+	// const [firstNameError, setFirstNameError] = useState('');
+	// const [lastNameError, setLastNameError] = useState('');
+	// const [phoneError, setPhoneError] = useState('');
+	// // States for address fields
+	// const [businessNameError, setBusinessNameError] = useState('');
+	// const [addressLine1Error, setAddressLine1Error] = useState('');
+	// const [addressLine2Error, setAddressLine2Error] = useState('');
+	// const [cityError, setCityError] = useState('');
+	// const [countyOrStateError, setCountyOrStateError] = useState('');
+	// const [postZipCodeError, setPostZipCodeError] = useState('');
+	// const [countryIdError, setCountryIdError] = useState('');
 
 	// const [image, setImage] = useState(null);
 	// const [imageUrl, setImageUrl] = useState((''));
@@ -83,7 +83,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userDetails, countries }) => 
 					<h1 className="text-3xl font-bold">Account Profile</h1>
 					<p>Here you can update your account profile information and billing address</p>
 					<Divider className="my-4" />
-					<h2 className="text-xl font-bold">Basic Profile</h2>
 
 					{/* <Suspense fallback={<div className="loading">Loading...</div>}> */}
 
@@ -91,66 +90,74 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userDetails, countries }) => 
 						{/* <p className="my-4">
 					Status: <Chip color="success">{user?.status ? user.status : ''}</Chip>
 				</p> */}
-						<Input
-							id="email"
-							label="Email Address"
-							name="email"
-							type="email"
-							defaultValue={user.email}
-							placeholder="Email Address"
-							variant="bordered"
-							startContent={
-								<FaEnvelope className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							isDisabled
-						/>
-						<Input
-							id="username"
-							label="User Name"
-							name="username"
-							defaultValue={user?.username ? user.username : ''}
-							placeholder="User Name"
-							startContent={
-								<FaUser className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-							readOnly={false}
-							disabled={false}
-						/>
-						<Input
-							id="firstName"
-							label="First Name"
-							name="firstName"
-							defaultValue={user?.firstName ? user.firstName : ''}
-							placeholder="First Name"
-							startContent={
-								<FaUserAlt className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-						/>
-						<Input
-							id="lastName"
-							label="Last Name"
-							name="lastName"
-							defaultValue={user?.lastName ? user.lastName : ''}
-							placeholder="Last Name"
-							startContent={
-								<FaUserAlt className=" text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-						/>
-						<Input
-							id="phone"
-							label="Phone Number"
-							name="phone"
-							defaultValue={user?.phone ? user.phone : ''}
-							placeholder="Phone Number"
-							startContent={
-								<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-						/>
-						{/* <Input
+						<div className="flex flex-wrap">
+							<div className="w-1/2">
+								<h2 className="text-xl font-bold mb-2">Basic Details</h2>
+								<Input
+									id="email"
+									label="Email Address"
+									name="email"
+									type="email"
+									defaultValue={user.email}
+									placeholder="Email Address"
+									variant="bordered"
+									startContent={
+										<FaEnvelope className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									isDisabled
+									className="mb-4"
+								/>
+								<Input
+									id="username"
+									label="User Name"
+									name="username"
+									defaultValue={user?.username ? user.username : ''}
+									placeholder="User Name"
+									startContent={
+										<FaUser className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									readOnly={false}
+									disabled={false}
+									className="mb-4"
+								/>
+								<Input
+									id="firstName"
+									label="First Name"
+									name="firstName"
+									defaultValue={user?.firstName ? user.firstName : ''}
+									placeholder="First Name"
+									startContent={
+										<FaUserAlt className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									className="mb-4"
+								/>
+								<Input
+									id="lastName"
+									label="Last Name"
+									name="lastName"
+									defaultValue={user?.lastName ? user.lastName : ''}
+									placeholder="Last Name"
+									startContent={
+										<FaUserAlt className=" text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									className="mb-4"
+								/>
+								<Input
+									id="phone"
+									label="Phone Number"
+									name="phone"
+									defaultValue={user?.phone ? user.phone : ''}
+									placeholder="Phone Number"
+									startContent={
+										<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									className="mb-4"
+								/>
+								{/* <Input
 					id="avatar"
 					label="Avatar"
 					name="avatar"
@@ -162,88 +169,99 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userDetails, countries }) => 
 					// startContent={<FaImage className="text-default-400 pointer-events-none flex-shrink-0" />}
 					variant="bordered"
 				/> */}
+							</div>
+							<div className="w-1/2 pl-2">
+								<h2 className="text-xl font-bold mb-2">Address Details</h2>
 
-						<Divider className="my-4" />
-						<h2 className="text-xl font-bold">Address Details</h2>
+								<Input
+									id="businessName"
+									label="Business Name"
+									name="businessName"
+									defaultValue={user.address?.businessName ? user.address.businessName : ''}
+									placeholder="Business Name"
+									startContent={
+										<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									className="mb-4"
+								/>
 
-						<Input
-							id="businessName"
-							label="Business Name"
-							name="businessName"
-							defaultValue={user.address?.businessName ? user.address.businessName : ''}
-							placeholder="Business Name"
-							startContent={
-								<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-						/>
-						<Input
-							id="addressLine1"
-							label="Address Line 1"
-							name="addressLine1"
-							defaultValue={user.address?.addressLine1 ? user.address.addressLine1 : ''}
-							placeholder="Address Line 1"
-							startContent={
-								<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-						/>
-						<Input
-							id="addressLine2"
-							label="Address Line 2"
-							name="addressLine2"
-							defaultValue={user.address?.addressLine2 ? user.address.addressLine2 : ''}
-							placeholder="Address Line 2"
-							startContent={
-								<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-						/>
-						<Input
-							id="city"
-							label="City"
-							name="city"
-							defaultValue={user.address?.city ? user.address.city : ''}
-							placeholder="City"
-							startContent={
-								<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-						/>
-						<Input
-							id="countyOrState"
-							label="County Or State"
-							name="countyOrState"
-							defaultValue={user.address?.countyOrState ? user.address.countyOrState : ''}
-							placeholder="County Or State"
-							startContent={
-								<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-						/>
-						<Input
-							id="postZipCode"
-							label="Post Code or Zip Code"
-							name="postZipCode"
-							defaultValue={user.address?.postZipCode ? user.address.postZipCode : ''}
-							placeholder="Post Code or Zip Code"
-							startContent={
-								<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
-							}
-							variant="bordered"
-						/>
+								<Input
+									id="addressLine1"
+									label="Address Line 1"
+									name="addressLine1"
+									defaultValue={user.address?.addressLine1 ? user.address.addressLine1 : ''}
+									placeholder="Address Line 1"
+									startContent={
+										<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									className="mb-4"
+								/>
+								<Input
+									id="addressLine2"
+									label="Address Line 2"
+									name="addressLine2"
+									defaultValue={user.address?.addressLine2 ? user.address.addressLine2 : ''}
+									placeholder="Address Line 2"
+									startContent={
+										<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									className="mb-4"
+								/>
+								<Input
+									id="city"
+									label="City"
+									name="city"
+									defaultValue={user.address?.city ? user.address.city : ''}
+									placeholder="City"
+									startContent={
+										<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									className="mb-4"
+								/>
+								<Input
+									id="countyOrState"
+									label="County Or State"
+									name="countyOrState"
+									defaultValue={
+										user.address?.countyOrState ? user.address.countyOrState : ''
+									}
+									placeholder="County Or State"
+									startContent={
+										<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									className="mb-4"
+								/>
+								<Input
+									id="postZipCode"
+									label="Post Code or Zip Code"
+									name="postZipCode"
+									defaultValue={user.address?.postZipCode ? user.address.postZipCode : ''}
+									placeholder="Post Code or Zip Code"
+									startContent={
+										<FaPhone className="text-default-400 pointer-events-none flex-shrink-0" />
+									}
+									variant="bordered"
+									className="mb-4"
+								/>
 
-						{countries && countries.length > 0 && (
-							<CountriesSelect
-								countries={countries}
-								countryId={user.address?.countryId ? user.address.countryId : '225'}
-								// countryId={user.address?.countryId ? user.address?.countryId : '1'}
-							/>
-						)}
+								{countries && countries.length > 0 && (
+									<CountriesSelect
+										countries={countries}
+										countryId={user.address?.countryId ? user.address.countryId : '225'}
+										// countryId={user.address?.countryId ? user.address?.countryId : '1'}
+									/>
+								)}
 
-						<Button type="submit" color="primary" variant="solid">
-							Update
-						</Button>
+								<Button type="submit" color="primary" variant="solid" className="mt-4">
+									Update
+								</Button>
+							</div>
+						</div>
 					</form>
 
 					{/* </Suspense> */}
