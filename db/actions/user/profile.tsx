@@ -1,9 +1,9 @@
+'use server';
 import { db } from '@/db/index';
 import { getJwt, logout } from '@/lib/server/auth';
 import { User, Address } from '@/prisma/typescript.models'; // Import User and Address interfaces
 
 export const updateProfile = async (formData: FormData) => {
-	'use server';
 	// User info
 	const username = formData.get('username') as string;
 	const firstName = formData.get('firstName') as string;
@@ -19,35 +19,20 @@ export const updateProfile = async (formData: FormData) => {
 	const postZipCode = formData.get('postZipCode') as string;
 	const countryId = formData.get('countryId') as string;
 
-	// const {
-	// 	username,
-	// 	firstName,
-	// 	lastName,
-	// 	phone,
-	// 	avatar,
-	// 	businessName,
-	// 	addressLine1,
-	// 	addressLine2,
-	// 	city,
-	// 	countyOrState,
-	// 	postZipCode,
-	// 	countryId,
-	// } = formData;
-
 	// Address Info
-	console.log(username);
-	console.log(firstName);
-	console.log(lastName);
-	console.log(phone);
-	console.log(avatar);
+	// console.log(username);
+	// console.log(firstName);
+	// console.log(lastName);
+	// console.log(phone);
+	// console.log(avatar);
 
-	console.log(businessName);
-	console.log(addressLine1);
-	console.log(addressLine2);
-	console.log(countyOrState);
-	console.log(postZipCode);
-	console.log(city);
-	console.log(countryId);
+	// console.log(businessName);
+	// console.log(addressLine1);
+	// console.log(addressLine2);
+	// console.log(countyOrState);
+	// console.log(postZipCode);
+	// console.log(city);
+	// console.log(countryId);
 
 	// return true;
 
@@ -183,6 +168,8 @@ export const getUserProfile = async () => {
 			address: true,
 		},
 	});
+
+	console.log(user);
 
 	if (!user) {
 		await logout();

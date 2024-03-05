@@ -1,6 +1,6 @@
 // 'use client';
 import React from 'react';
-import { getUserProfile, getCountries } from '@/db/actions/profile';
+import { getUserProfile, getCountries } from '@/db/actions/user/profile';
 import ProfileForm from '@/components/views/ProfileForm';
 // import PlaceholderView from '@/components/views/PlaceholderView';
 // import { useApp } from '@/contexts/AppContext';

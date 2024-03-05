@@ -1,6 +1,6 @@
 // 'use server';
 import React, { Suspense, useState } from 'react';
-import { updateProfile } from '@/db/actions/profile';
+import { updateProfile } from '@/db/actions/user/profile';
 import { Input, Button, Chip, Divider } from '@nextui-org/react';
 import { FaEnvelope, FaImage, FaPhone, FaUser, FaUserAlt } from 'react-icons/fa';
 import CountriesSelect from '@/components/CountriesSelect';

@@ -3,7 +3,7 @@
 export const revalidate = 0;
 import { NextResponse, NextRequest } from 'next/server';
 // import { User } from '@/models/associations';
-import { login as userLogin, exportPublic } from '@/db/helpers';
+import { login as userLogin, exportPublic } from '@/db/actions/user/helpers';
 import { setUserDataCookie, setJWT, checkTurnstileToken } from '@/lib/server/auth';
 import { apiErrorResponse } from '@/lib/server/api/errorResponse';
 

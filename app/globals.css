@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global heading styles */
+h1 {
+	@apply text-4xl font-bold py-4; /* Tailwind classes for h1 */
+}
+
+h2 {
+	@apply text-3xl font-bold py-3; /* Tailwind classes for h2 */
+}
+
+h3 {
+	@apply text-2xl font-bold py-2; /* Tailwind classes for h3 */
+}
+
+h4 {
+	@apply text-xl font-bold py-1; /* Tailwind classes for h4 */
+}

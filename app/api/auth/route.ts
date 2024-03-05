@@ -4,7 +4,7 @@ import { setUserDataCookie, logout, setJWT } from '@/lib/server/auth';
 import { apiErrorResponse } from '@/lib/server/api/errorResponse';
 import { I_UserPublic } from '@/models/User.types';
 
-import { getAuthUserFromDb, exportPublic } from '@/db/helpers';
+import { getAuthUserFromDb, exportPublic } from '@/db/actions/user/helpers';
 import { db } from '@/db';
 
 export interface I_ApiAuthResponse extends ApiResponse {
