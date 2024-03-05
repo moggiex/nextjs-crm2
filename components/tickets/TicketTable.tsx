@@ -7,7 +7,9 @@ import styles from '@/components/tickets/style.module.css';
 const TicketTable = ({ tickets, status = 'Open' }) => {
 	const router = useRouter();
 	const getStatusColour = (ticketStatus: string) => {
-		let chipColor: string;
+		type ChipColor = 'success' | 'default' | 'warning' | 'primary' | 'secondary' | 'danger';
+
+		let chipColor: ChipColor;
 		switch (ticketStatus) {
 			case 'Open':
 				chipColor = 'success'; // Assuming 'success' color indicates open tickets

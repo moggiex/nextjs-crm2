@@ -12,6 +12,7 @@ import { ZodError, z } from 'zod';
 const CreateTicketPage = () => {
 	const [selectedIssueType, setSelectedIssueType] = useState('Issue'); // Default selection
 	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState('');
 	const [subjectError, setSubjectError] = useState('');
 	const [messageError, setMessageError] = useState('');
 	const [typeError, setTypeError] = useState('');
@@ -151,6 +152,8 @@ const CreateTicketPage = () => {
 					className="p-2 mb-2"
 				/>
 				{messageError && <InlineError errorMessage={messageError} />}
+
+				{error && <InlineError errorMessage={error} />}
 
 				<div className="flex justify-end mb-2">
 					<Button

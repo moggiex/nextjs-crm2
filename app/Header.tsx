@@ -77,6 +77,7 @@ export default function Header() {
 	const menuItems: MenuItem[] = [
 		{ name: 'Dashboard', route: '/app', role: '*' },
 		{ name: 'My Account', route: '/profile', role: '*' },
+		{ name: 'Support Tickets', route: '/tickets', role: '*' },
 		{ name: 'Admin Dashboard', route: '/admin', role: 'admin' },
 	];
 

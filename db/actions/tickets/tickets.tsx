@@ -4,6 +4,32 @@ import { getUserId } from '@/db/actions/user/profile';
 import { checkId } from '@/db/helpers';
 import { revalidatePath } from 'next/cache';
 
+export const createTicketReply = async ticketReplyData => {
+	const user = await getUserId();
+
+	if (!user.id || !checkId(user.id) || !checkId(ticketReplyData.parentId)) {
+		return { success: false, message: 'Invlaid user' };
+	}
+
+	console.log(ticketReplyData);
+
+	const newTicketReply = await db.ticketMessage.create({
+		data: {
+			ticketId: ticketReplyData.parentId,
+			message: ticketReplyData.message.trim(),
+			createdAt: new Date(),
+			createdBy: user.id,
+		},
+	});
+
+	if (!newTicketReply) {
+		return { success: false, message: 'Unable to create ticket reply' };
+	}
+
+	revalidatePath(`/tickets/${ticketReplyData.parentId}`);
+	return { success: true, message: 'Ticket reply created' };
+};
+
 export const createTicket = async ticketData => {
 	const user = await getUserId();
 
