@@ -1,8 +1,11 @@
 'use client';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button, Chip } from '@nextui-org/react';
 import { FaSearch, FaTimes } from 'react-icons/fa';
+import { useRouter } from 'nextjs13-progress';
+import styles from '@/components/tickets/style.module.css';
 
 const TicketTable = ({ tickets, status = 'Open' }) => {
+	const router = useRouter();
 	const getStatusColour = (ticketStatus: string) => {
 		let chipColor: string;
 		switch (ticketStatus) {
@@ -27,8 +30,9 @@ const TicketTable = ({ tickets, status = 'Open' }) => {
 	return (
 		<Table
 			aria-label="Example static collection table"
-			onRowAction={key => alert(`Opening item ${key}...`)}
+			onRowAction={key => router.push(`/tickets/${key}`)}
 			selectionMode="single"
+			className="mb-4"
 		>
 			<TableHeader>
 				<TableColumn>Subject</TableColumn>
@@ -51,8 +55,8 @@ const TicketTable = ({ tickets, status = 'Open' }) => {
 				)}
 				{tickets.length > 0 &&
 					tickets.map(ticket => (
-						<TableRow key={ticket.id}>
-							<TableCell>{ticket.subject}</TableCell>
+						<TableRow key={ticket.id} className={styles.clickableRow}>
+							<TableCell className={styles.clickableRow}>{ticket.subject}</TableCell>
 							<TableCell>{ticket.message}</TableCell>
 							<TableCell>{ticket.type}</TableCell>
 							<TableCell>
@@ -61,7 +65,15 @@ const TicketTable = ({ tickets, status = 'Open' }) => {
 								</Chip>
 							</TableCell>
 							<TableCell>
-								<Button variant="solid" size="sm" color="primary" isIconOnly className="mr-2">
+								<Button
+									as="a"
+									variant="solid"
+									size="sm"
+									color="primary"
+									isIconOnly
+									className="mr-2"
+									href={`/tickets/${ticket.id}`}
+								>
 									<FaSearch className="mr-0" />
 								</Button>
 								<Button variant="solid" size="sm" color="danger" isIconOnly>

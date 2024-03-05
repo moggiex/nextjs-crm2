@@ -8,11 +8,11 @@ const TicketList = async ({ status = 'Open' }) => {
 	const tickets = await getTickets(status);
 
 	// console.log('---');
-	console.log(tickets);
+	// console.log(tickets);
 
 	return (
 		<>
-			<TicketTable tickets={tickets} />
+			<TicketTable tickets={tickets} status={status} />
 		</>
 	);
 };
