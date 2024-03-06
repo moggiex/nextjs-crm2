@@ -179,7 +179,12 @@ export const getUserProfile = async () => {
 	return user;
 };
 
-type GetUserResult = User & { address?: Address | null };
+interface UserId {
+	id: string | null;
+	// other properties...
+}
+
+type GetUserResult = UserId & { address?: Address | null };
 
 // getUserId
 export const getUserId = async (includeAddress: boolean = false): Promise<GetUserResult | null> => {

@@ -7,6 +7,8 @@ import { getTicket } from '@/db/actions/tickets/tickets';
 import { FaCircleNotch } from 'react-icons/fa';
 import '@/app/loading.css';
 import TicketView from '@/components/tickets/TicketView';
+import TicketRepliesView from '@/components/tickets/TicketRepliesView';
+import TicketReply from '@/components/tickets/TicketReply';
 
 const TicketViewPage = () => {
 	const { id } = useParams();
@@ -48,7 +50,7 @@ const TicketViewPage = () => {
 		}
 	}, [id, ticket]);
 	return (
-		<>
+		<div className="mb-4">
 			{loading && (
 				<div>
 					<FaCircleNotch className="spinner text-3xl" />
@@ -58,10 +60,16 @@ const TicketViewPage = () => {
 			{!loading && ticket && (
 				<div>
 					<TicketView ticket={ticket} />
-					{ticket && JSON.stringify(ticket, null, 2)}
+					{/* {ticket && <pre>{JSON.stringify(ticket, null, 2)}</pre>} */}
 				</div>
 			)}
-		</>
+			{!loading &&
+				ticket &&
+				ticket.messages.length > 0 &&
+				ticket.messages.map((message, index) => <TicketRepliesView key={index} ticket={message} />)}
+
+			{!loading && ticket && <TicketReply parentTicketId={ticket.id} />}
+		</div>
 	);
 	// return <div>text</div>;
 };

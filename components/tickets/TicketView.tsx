@@ -1,5 +1,5 @@
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button, Chip } from '@nextui-org/react';
-import TicketReply from './TicketReply';
+// import TicketReply from './TicketReply';
 
 const TicketView = ({ ticket }) => {
 	const getStatusColour = (ticketStatus: string) => {
@@ -66,7 +66,7 @@ const TicketView = ({ ticket }) => {
 					</TableRow>
 				</TableBody>
 			</Table>
-			<TicketReply parentTicketId={ticket.id} />
+			
 		</>
 	);
 };
