@@ -39,6 +39,7 @@ const TicketTable = ({ tickets, status = 'Open' }) => {
 			<TableHeader>
 				<TableColumn>Subject</TableColumn>
 				<TableColumn>Message</TableColumn>
+				<TableColumn>Replies</TableColumn>
 				<TableColumn>Type</TableColumn>
 				<TableColumn>Status</TableColumn>
 				<TableColumn>Actions</TableColumn>
@@ -53,13 +54,19 @@ const TicketTable = ({ tickets, status = 'Open' }) => {
 						<TableCell className="hidden"> </TableCell>
 						<TableCell className="hidden"> </TableCell>
 						<TableCell className="hidden"> </TableCell>
+						<TableCell className="hidden"> </TableCell>
 					</TableRow>
 				)}
 				{tickets.length > 0 &&
 					tickets.map(ticket => (
 						<TableRow key={ticket.id} className={styles.clickableRow}>
 							<TableCell className={styles.clickableRow}>{ticket.subject}</TableCell>
-							<TableCell>{ticket.message}</TableCell>
+							<TableCell>
+								{ticket.message.length > 50
+									? `${ticket.message.substring(0, 50)}...`
+									: ticket.message}
+							</TableCell>
+							<TableCell>{ticket._count.messages}</TableCell>
 							<TableCell>{ticket.type}</TableCell>
 							<TableCell>
 								<Chip color={getStatusColour(ticket.status)} variant="flat">

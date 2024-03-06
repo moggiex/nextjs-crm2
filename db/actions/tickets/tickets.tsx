@@ -147,6 +147,16 @@ export const getTicket = async (ticketId: string): Promise<TicketResponse> => {
 			// userId: user.id,
 		},
 		include: {
+			user: {
+				// Include the ticket creator details
+				select: {
+					email: true,
+					firstName: true,
+					lastName: true,
+					username: true,
+					avatar: true,
+				},
+			},
 			messages: {
 				orderBy: {
 					createdAt: 'asc', // Use 'asc' for ascending order (oldest first)
@@ -204,6 +214,15 @@ export const getTickets = async (status: TicketStatus = TicketStatus.Open): Prom
 	if (!tickets) {
 		return { success: false, message: `No tickets for ${status}` };
 	}
+
+	// limit to 50 chars
+	// Map through each ticket and update its message value
+	// const modifiedTickets = tickets.map(ticket => ({
+	// 	...ticket, // Spread the original ticket properties
+	// 	message:
+	// 		ticket.message && ticket.message.length > 50 ? `${ticket.message.substring(0, 50)}...` : ticket.message, // Truncate the message to 50 characters and add an ellipsis if longer than 50 chars
+	// }));
+	// console.log(modifiedTickets);
 
 	return { success: true, tickets };
 };

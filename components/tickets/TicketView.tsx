@@ -1,5 +1,19 @@
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button, Chip } from '@nextui-org/react';
-// import TicketReply from './TicketReply';
+import {
+	Table,
+	TableHeader,
+	TableColumn,
+	TableBody,
+	TableRow,
+	TableCell,
+	Card,
+	CardHeader,
+	CardBody,
+	CardFooter,
+	Avatar,
+	Chip,
+} from '@nextui-org/react';
+import profileDefaultImage from '@/assets/images/profile.png';
+import { formatDateTime } from '@/lib/common/dateTime';
 
 const TicketView = ({ ticket }) => {
 	const getStatusColour = (ticketStatus: string) => {
@@ -29,44 +43,54 @@ const TicketView = ({ ticket }) => {
 				// onRowAction={key => router.push(`/tickets/${key}`)}
 				// selectionMode="single"
 				className="mb-4"
-				hideHeader
+				// hideHeader
 			>
 				<TableHeader>
-					<TableColumn width="20%">-</TableColumn>
-					<TableColumn width="80%">-</TableColumn>
+					<TableColumn>Status</TableColumn>
+					<TableColumn>Type</TableColumn>
+					<TableColumn>ID</TableColumn>
+					<TableColumn>Created</TableColumn>
 				</TableHeader>
 				<TableBody>
 					<TableRow key={0}>
-						<TableCell className="font-bold">Status</TableCell>
 						<TableCell>
 							<Chip color={getStatusColour(ticket.status)} variant="flat">
 								{ticket.status}
 							</Chip>
 						</TableCell>
-					</TableRow>
-					<TableRow key={1}>
-						<TableCell className="font-bold">Type</TableCell>
+
 						<TableCell>
 							<Chip color={getStatusColour(ticket.type)} variant="flat">
 								{ticket.type}
 							</Chip>
 						</TableCell>
-					</TableRow>
-					<TableRow key={2}>
-						<TableCell className="font-bold">ID</TableCell>
+
 						<TableCell>{ticket.id}</TableCell>
-					</TableRow>
-					<TableRow key={3}>
-						<TableCell className="font-bold">Subject:</TableCell>
-						<TableCell>{ticket.message}</TableCell>
-					</TableRow>
-					<TableRow key={4}>
-						<TableCell className="font-bold">Message:</TableCell>
-						<TableCell>{ticket.message}</TableCell>
+
+						<TableCell>{formatDateTime(ticket.createdAt)}</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>
-			
+
+			<Card className="text-white my-4 bg-sky-800">
+				<CardHeader className="justify-between">
+					<div className="flex gap-5">
+						<Avatar isBordered radius="full" size="md" src={profileDefaultImage.src} />
+						<div className="flex flex-col gap-1 items-start justify-center">
+							<h4 className="text-small font-semibold leading-none">
+								{ticket.user?.firstName ? ticket.user.firstName : ''}{' '}
+								{ticket.user?.lastName ? ticket.user.lastName : ''}
+							</h4>
+							<h5 className="text-small tracking-tight">
+								{ticket.user?.username ? ticket.user.username : ticket.user.email || ''}
+							</h5>
+						</div>
+					</div>
+				</CardHeader>
+				<CardBody className="px-4 py-4 font-semibold">
+					<p>{ticket.message}</p>
+				</CardBody>
+			</Card>
 		</>
 	);
 };

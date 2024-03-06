@@ -21,8 +21,15 @@ const TicketRepliesView = message => {
 								{message.ticket.author?.lastName ? message.ticket.author.lastName : ''}
 							</h4>
 							<h5 className="text-small tracking-tight">
-								{message.ticket.author?.userName ? message.ticket.author.userName : ''}
-								{message.ticket.author?.email ? message.ticket.author.email : ''}
+								{message.ticket.author.isSupport || message.ticket.author.isAdmin ? (
+									'Support Team'
+								) : (
+									<>
+										{message.ticket.author.userName
+											? message.ticket.author.userName
+											: message.ticket.author.email || ''}
+									</>
+								)}
 							</h5>
 						</div>
 					</div>
