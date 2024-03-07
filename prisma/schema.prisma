@@ -50,22 +50,16 @@ model User {
 
   address       Address? @relation("UserAddress")
   
-
   // relationship 
-  // addresses     Address[] // No need for addressId in a one-to-many setup
-  // address       Address?   @relation(fields: [addressId], references: [id])
-  
-  messages      Message[]
-  accounts      Account[]
-  sessions      Session[]
-  createdTickets Ticket[]
-
+  messages        Message[]
+  accounts        Account[]
+  sessions        Session[]
+  createdTickets  Ticket[]
+  userAlerts      UserAlert[]
 
   // Tickets assigned to the user (for support staff and 'god' users)
   assignedTickets Ticket[] @relation("SupportUser")
   ticketMessages TicketMessage[] // Assuming a user can have multiple ticket messages
-
-
 }
 
 // ---------- Account
@@ -207,4 +201,35 @@ model TicketMessage {
   // Relations
   ticket      Ticket    @relation(fields: [ticketId], references: [id])
   author      User      @relation(fields: [createdBy], references: [id])
+}
+
+// Alerts
+enum AlertType {
+  primary
+  warning
+  danger
+  success
+  info
+  other
+}
+
+model Alert {
+  id        String   @id @default(cuid())
+  type      AlertType
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation to track dismissed alerts
+  dismissedBy UserAlert[]
+}
+model UserAlert {
+  id      String @id @default(cuid())
+  userId  String
+  alertId String
+
+  user  User  @relation(fields: [userId], references: [id])
+  alert Alert @relation(fields: [alertId], references: [id])
+
+  @@unique([userId, alertId])
 }

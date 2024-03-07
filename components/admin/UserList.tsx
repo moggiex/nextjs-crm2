@@ -13,7 +13,7 @@ const UserList = ({ users }) => {
 	const router = useRouter();
 	// console.log(users);
 	return (
-		<table className="border">
+		<table className="border w-full">
 			<thead className="bg-slate-200">
 				<tr className="p-2">
 					<td className="p-2">Email</td>
