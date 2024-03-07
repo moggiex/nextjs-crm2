@@ -192,6 +192,24 @@ interface GetTicketsResponse {
 	tickets?: Ticket[];
 }
 
+export const getAdminTickets = async (status: TicketStatus = TicketStatus.Open): Promise<GetTicketsResponse> => {
+	const tickets = await db.ticket.findMany({
+		where: {
+			status,
+		},
+		include: {
+			_count: {
+				select: { messages: true }, // Count messages for each ticket
+			},
+		},
+	});
+
+	if (!tickets) {
+		return { success: false, message: `No tickets for ${status}` };
+	}
+	return { success: true, tickets };
+};
+
 export const getTickets = async (status: TicketStatus = TicketStatus.Open): Promise<GetTicketsResponse> => {
 	const user = await getUserId();
 
@@ -214,15 +232,5 @@ export const getTickets = async (status: TicketStatus = TicketStatus.Open): Prom
 	if (!tickets) {
 		return { success: false, message: `No tickets for ${status}` };
 	}
-
-	// limit to 50 chars
-	// Map through each ticket and update its message value
-	// const modifiedTickets = tickets.map(ticket => ({
-	// 	...ticket, // Spread the original ticket properties
-	// 	message:
-	// 		ticket.message && ticket.message.length > 50 ? `${ticket.message.substring(0, 50)}...` : ticket.message, // Truncate the message to 50 characters and add an ellipsis if longer than 50 chars
-	// }));
-	// console.log(modifiedTickets);
-
 	return { success: true, tickets };
 };

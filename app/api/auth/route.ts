@@ -25,6 +25,8 @@ export async function GET(request: NextRequest) {
 				lastSeen: new Date(), // Set the lastSeen field to the current date
 			},
 		});
+		// console.log('updatedUser::::', updatedUser);
+		await setJWT(updatedUser);
 		const userData = await exportPublic(updatedUser);
 		const response: I_ApiAuthResponse = {
 			success: true,
@@ -34,7 +36,8 @@ export async function GET(request: NextRequest) {
 		// Refresh our userdata cookie in case information was changed elsewhere
 		setUserDataCookie(userData);
 		// setUserDataCookie(userData);
-		await setJWT(userData);
+		// console.log('userData::::', userData);
+
 		return new Response(JSON.stringify(response), {
 			headers: {
 				'content-type': 'application/json',

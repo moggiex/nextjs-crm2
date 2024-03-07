@@ -14,8 +14,6 @@ const TicketReply = ({ parentTicketId }) => {
 
 	const router = useRouter();
 
-	console.log(parentTicketId);
-
 	const handleAddReply = async (formData: FormData) => {
 		setIsLoading(true);
 		setError('');

@@ -47,6 +47,7 @@ export async function getJwt() {
 	if (token) {
 		try {
 			const payload = await verifyJwtToken(token.value);
+			// console.log(payload);
 			if (payload) {
 				const authPayload: AuthPayload = {
 					id: payload.id as string,
@@ -54,6 +55,8 @@ export async function getJwt() {
 					lastName: payload.lastName as string,
 					email: payload.email as string,
 					// phone: payload.phone as string,
+					isAdmin: payload.isAdmin as boolean,
+					isSupport: payload.isSupport as boolean,
 					role: payload.role as string,
 					iat: payload.iat as number,
 					exp: payload.exp as number,
@@ -116,12 +119,16 @@ export function setUserDataCookie(userData: any) {
 
 // was I_UserPublic
 export async function setJWT(userData: any) {
+	// console.log(userData.isAdmin);
+	// console.log(userData.isSupport);
 	const token = await new SignJWT({
 		id: userData.id,
 		firstName: userData.firstName,
 		lastName: userData.lastName,
 		email: userData.email,
 		// phone: userData.phone,
+		isAdmin: userData.isAdmin,
+		isSupport: userData.isSupport,
 		role: userData.role,
 	})
 		.setProtectedHeader({ alg: 'HS256' })

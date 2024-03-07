@@ -4,7 +4,7 @@ import { FaSearch, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'nextjs13-progress';
 import styles from '@/components/tickets/style.module.css';
 
-const TicketTable = ({ tickets, status = 'Open' }) => {
+const TicketTable = ({ tickets, status = 'Open', isAdmin = false }) => {
 	const router = useRouter();
 	const getStatusColour = (ticketStatus: string) => {
 		type ChipColor = 'success' | 'default' | 'warning' | 'primary' | 'secondary' | 'danger';
@@ -32,7 +32,14 @@ const TicketTable = ({ tickets, status = 'Open' }) => {
 	return (
 		<Table
 			aria-label="Example static collection table"
-			onRowAction={key => router.push(`/tickets/${key}`)}
+			onRowAction={
+				tickets.length > 0
+					? key => {
+							const path = isAdmin ? `/admin/tickets/${key}` : `/tickets/${key}`;
+							router.push(path);
+					  }
+					: undefined
+			}
 			selectionMode="single"
 			className="mb-4"
 		>
@@ -47,7 +54,7 @@ const TicketTable = ({ tickets, status = 'Open' }) => {
 			<TableBody>
 				{tickets.length === 0 && (
 					<TableRow key="1">
-						<TableCell aria-colspan={3} colSpan={3}>
+						<TableCell aria-colspan={6} colSpan={6}>
 							{`There are no ${status} tickets`}
 						</TableCell>
 						<TableCell className="hidden"> </TableCell>

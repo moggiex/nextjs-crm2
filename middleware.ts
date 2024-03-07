@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyJwtToken } from '@/lib/server/auth';
 
 // Add whatever paths you want to PROTECT here
-const authRoutes = ['/app/*', '/account/*', '/api/*', '/admin/*'];
+const authRoutes = ['/app/*', '/profile/*', '/api/*', '/admin/*'];
 
 // Function to match the * wildcard character
 function matchesWildcard(path: string, pattern: string): boolean {
@@ -46,13 +46,18 @@ export async function middleware(request: NextRequest) {
 		}
 		try {
 			// Decode and verify JWT cookie
+			//	q: is the value of payload secure?
+
 			const payload = await verifyJwtToken(token.value);
 			if (!payload) {
 				return deleteCookiesAndRedirect(LOGIN);
 			}
+
+			// console.log('Payload:', payload);
+
 			// If you have an admin role and path, secure it here
 			if (request.nextUrl.pathname.startsWith('/admin')) {
-				if (payload.role !== 'admin') {
+				if (payload.role !== 'Admin' || payload.isAdmin !== true) {
 					return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/access-denied`);
 				}
 			}

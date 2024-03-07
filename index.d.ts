@@ -10,6 +10,8 @@ declare interface AuthPayload {
 	email: string;
 	// phone: string;
 	role: string;
+	isAdmin: boolean;
+	isSupport: boolean;
 	iat: number;
 	exp: number;
 	openIdSub?: string;

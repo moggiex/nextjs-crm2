@@ -20,13 +20,16 @@ export default function AppWrapper(props: Props) {
 			<NextUIProvider>
 				<div className="flex flex-col min-h-screen text-base-content">
 					<Header />
+
 					<main className="flex-1 w-full px-4 md:px-6 lg:px-0 pt-8">
 						<div className="max-w-4xl mx-auto">{children}</div>
 					</main>
+
 					<Footer />
 				</div>
 				<LoadingOverlay />
-				<Next13NProgress height={7} color="#fcba03" />
+
+				<Next13NProgress height={7} color="rgb(0, 112, 240)" />
 			</NextUIProvider>
 		</AppProvider>
 	);

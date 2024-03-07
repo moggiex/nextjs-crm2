@@ -2,10 +2,8 @@
 import React from 'react';
 import TicketList from '@/components/tickets/TicketList';
 import { Button } from '@nextui-org/react';
-// import { useRouter } from 'next/navigation';
-// import { Router } from 'next/router';
+
 const TicketsPage = () => {
-	// const router = useRouter();
 	return (
 		<div>
 			<h1>Support Tickets</h1>
