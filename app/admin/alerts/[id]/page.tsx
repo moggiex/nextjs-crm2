@@ -1,17 +1,12 @@
-'use client';
+// 'use client';
 import React from 'react';
-import { useParams } from 'next/navigation';
-import { getAlertById } from '@/db/actions/alerts/AlertsHelpers';
+import AlertForm from '@/components/admin/alerts/AlertForm';
 
-const EditAlertPage = async () => {
-	const { id } = useParams();
-	const alert = getAlertById(id);
+const EditAlertPage = async ({ params }: { params: { id?: string } }) => {
+	// const { id } = useParams();
+	// const router = useRouter();
 
-	return (
-		<div>
-			<pre>{JSON.stringify(alert)}</pre>
-		</div>
-	);
+	return <AlertForm id={params.id} />;
 };
 
 export default EditAlertPage;

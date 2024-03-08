@@ -10,7 +10,7 @@ interface CountryProps {
 
 const CountriesSelect: React.FC<CountryProps> = ({ countries, countryId }) => {
 	// console.log(countries);
-	console.log(`${countryId}---`);
+	// console.log(`${countryId}---`);
 	return (
 		<>
 			{countries && (

@@ -2,7 +2,7 @@
 import { Button, Chip } from '@nextui-org/react';
 import { useRouter } from 'nextjs13-progress';
 import React from 'react';
-import { FaSearch, FaTimes } from 'react-icons/fa';
+import { FaCheck, FaSearch, FaTimes } from 'react-icons/fa';
 import { AlertType, Alert } from '@/prisma/typescript.alerts';
 import { formatDateTime } from '@/lib/common/dateTime';
 
@@ -19,6 +19,7 @@ const AlertsList = ({ alerts }: AlertListType) => {
 				<tr className="p-2">
 					<td className="p-2">Type</td>
 					<td className="p-2">Message</td>
+					<td className="p-2">Enabled</td>
 					<td className="p-2">Created At</td>
 					<td className="p-2">Actions</td>
 				</tr>
@@ -31,6 +32,11 @@ const AlertsList = ({ alerts }: AlertListType) => {
 								<Chip color={`${alert.type}`}>{alert.type}</Chip>
 							</td>
 							<td>{alert.message}</td>
+							<td>
+								<Chip color={alert.enabled ? 'success' : 'danger'} className="text-white">
+									{alert.enabled ? <FaCheck /> : <FaTimes />}
+								</Chip>
+							</td>
 							<td>{formatDateTime(alert.createdAt)}</td>
 							<td>
 								<Button

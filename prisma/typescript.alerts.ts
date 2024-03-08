@@ -21,7 +21,8 @@ export interface Alert {
 	id: string;
 	type: AlertType;
 	message: string;
-	createdAt: Date;
-	updatedAt: Date;
-	dismissedBy: UserAlert[]; // Assuming you'll also define a TypeScript type for UserAlert
+	enabled: boolean;
+	createdAt: Date | null;
+	updatedAt: Date | null;
+	dismissedBy: UserAlert[] | null; // Assuming you'll also define a TypeScript type for UserAlert
 }

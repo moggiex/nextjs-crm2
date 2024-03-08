@@ -217,6 +217,7 @@ model Alert {
   id        String   @id @default(cuid())
   type      AlertType
   message   String
+  enabled   Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
