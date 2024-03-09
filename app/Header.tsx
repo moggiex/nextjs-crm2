@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useApp } from '@/contexts/AppContext';
 import { useRouter } from 'nextjs13-progress';
 import { usePathname } from 'next/navigation';
+import HeaderAlert from '@/components/admin/alerts/HeaderAlert';
 
 // Next UI
 import {
@@ -82,41 +83,43 @@ export default function Header() {
 	];
 
 	return (
-		<Navbar
-			shouldHideOnScroll
-			isBordered
-			onMenuOpenChange={setisMobileMenuOpen}
-			// className="bg-white"
-			classNames={{
-				item: [
-					'flex',
-					'relative',
-					'h-full',
-					'items-center',
-					"data-[active=true]:after:content-['']",
-					'data-[active=true]:after:absolute',
-					'data-[active=true]:after:bottom-0',
-					'data-[active=true]:after:left-0',
-					'data-[active=true]:after:right-0',
-					'data-[active=true]:after:h-[2px]',
-					'data-[active=true]:after:rounded-[2px]',
-					'data-[active=true]:after:bg-primary',
-					'data-[active=true]:text-primary',
-				],
-			}}
-		>
-			<NavbarContent>
-				<NavbarMenuToggle
-					aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-					className="sm:hidden"
-				/>
-				<NavbarBrand>
-					<Link href="/">
-						<Image src={logo} alt="Logo" width={0} height={0} priority />
-					</Link>
-				</NavbarBrand>
-			</NavbarContent>
-			{/* <NavbarContent className="hidden sm:flex gap-4" justify="center">
+		<>
+			<HeaderAlert />
+			<Navbar
+				shouldHideOnScroll
+				isBordered
+				onMenuOpenChange={setisMobileMenuOpen}
+				// className="bg-white"
+				classNames={{
+					item: [
+						'flex',
+						'relative',
+						'h-full',
+						'items-center',
+						"data-[active=true]:after:content-['']",
+						'data-[active=true]:after:absolute',
+						'data-[active=true]:after:bottom-0',
+						'data-[active=true]:after:left-0',
+						'data-[active=true]:after:right-0',
+						'data-[active=true]:after:h-[2px]',
+						'data-[active=true]:after:rounded-[2px]',
+						'data-[active=true]:after:bg-primary',
+						'data-[active=true]:text-primary',
+					],
+				}}
+			>
+				<NavbarContent>
+					<NavbarMenuToggle
+						aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+						className="sm:hidden"
+					/>
+					<NavbarBrand>
+						<Link href="/">
+							<Image src={logo} alt="Logo" width={0} height={0} priority />
+						</Link>
+					</NavbarBrand>
+				</NavbarContent>
+				{/* <NavbarContent className="hidden sm:flex gap-4" justify="center">
 				{userData
 					? menuItems.map((item, index) => {
 							if (item.role === '*' || (userData.role && userData.role === item.role)) {
@@ -132,98 +135,99 @@ export default function Header() {
 					: null}
 			</NavbarContent> */}
 
-			<NavbarContent as="div" justify="end">
-				{!userData && (
-					<NavbarItem>
-						<Button type="submit" color="primary" variant="solid" onClick={handleAuthButton}>
-							Login
-						</Button>
-					</NavbarItem>
-				)}
-				{userData && (
-					<>
-						<Dropdown placement="bottom-end">
-							<DropdownTrigger>
-								<Avatar
-									isBordered
-									as="button"
-									className="transition-transform"
-									color="primary"
-									name="Jason Hughes"
-									size="sm"
-									src={profileDefaultImage.src}
-								/>
-							</DropdownTrigger>
-							<DropdownMenu aria-label="Profile Actions" variant="flat">
-								{displayName && (
+				<NavbarContent as="div" justify="end">
+					{!userData && (
+						<NavbarItem>
+							<Button type="submit" color="primary" variant="solid" onClick={handleAuthButton}>
+								Login
+							</Button>
+						</NavbarItem>
+					)}
+					{userData && (
+						<>
+							<Dropdown placement="bottom-end">
+								<DropdownTrigger>
+									<Avatar
+										isBordered
+										as="button"
+										className="transition-transform"
+										color="primary"
+										name="Jason Hughes"
+										size="sm"
+										src={profileDefaultImage.src}
+									/>
+								</DropdownTrigger>
+								<DropdownMenu aria-label="Profile Actions" variant="flat">
+									{displayName && (
+										<DropdownItem
+											key="profile"
+											className="h-14 gap-2"
+											textValue="Profile Details"
+										>
+											<>
+												<p className="font-semibold">Signed in as</p>
+												<p className="font-semibold">{displayName}</p>
+											</>
+										</DropdownItem>
+									)}
 									<DropdownItem
-										key="profile"
-										className="h-14 gap-2"
-										textValue="Profile Details"
+										key="profile2"
+										onClick={() => router.push('/profile')}
+										textValue="My Profile"
 									>
-										<>
-											<p className="font-semibold">Signed in as</p>
-											<p className="font-semibold">{displayName}</p>
-										</>
+										My Profile
 									</DropdownItem>
-								)}
-								<DropdownItem
-									key="profile2"
-									onClick={() => router.push('/profile')}
-									textValue="My Profile"
-								>
-									My Profile
-								</DropdownItem>
-								{menuItems &&
-									menuItems.map((item, index) => {
-										if (
-											item.role === '*' ||
-											(userData.role && userData.role === item.role)
-										) {
-											return (
-												<DropdownItem
-													key={index}
-													onClick={() => handleRoute(item.route)}
-													textValue={item.name}
-												>
-													{item.name}
-												</DropdownItem>
-											);
-										}
-									})}
-								<DropdownItem key="logout" textValue="Logout">
-									<Button
-										type="submit"
-										color="danger"
-										variant="solid"
-										onClick={handleAuthButton}
-									>
-										Log Out
-									</Button>
-								</DropdownItem>
-							</DropdownMenu>
-						</Dropdown>
-					</>
-				)}
-			</NavbarContent>
-			{/* {Sidebar} */}
-			{userData ? (
-				<NavbarMenu>
-					{menuItems &&
-						menuItems.map((item, index) => {
-							if (item.role === '*' || (userData.role && userData.role === item.role)) {
-								return (
-									<NavbarMenuItem key={index}>
-										<Link href={item.route} onClick={() => handleRoute(item.route)}>
-											{item.name}
-										</Link>
-									</NavbarMenuItem>
-								);
-							}
-						})}
-				</NavbarMenu>
-			) : null}
-		</Navbar>
+									{menuItems &&
+										menuItems.map((item, index) => {
+											if (
+												item.role === '*' ||
+												(userData.role && userData.role === item.role)
+											) {
+												return (
+													<DropdownItem
+														key={index}
+														onClick={() => handleRoute(item.route)}
+														textValue={item.name}
+													>
+														{item.name}
+													</DropdownItem>
+												);
+											}
+										})}
+									<DropdownItem key="logout" textValue="Logout">
+										<Button
+											type="submit"
+											color="danger"
+											variant="solid"
+											onClick={handleAuthButton}
+										>
+											Log Out
+										</Button>
+									</DropdownItem>
+								</DropdownMenu>
+							</Dropdown>
+						</>
+					)}
+				</NavbarContent>
+				{/* {Sidebar} */}
+				{userData ? (
+					<NavbarMenu>
+						{menuItems &&
+							menuItems.map((item, index) => {
+								if (item.role === '*' || (userData.role && userData.role === item.role)) {
+									return (
+										<NavbarMenuItem key={index}>
+											<Link href={item.route} onClick={() => handleRoute(item.route)}>
+												{item.name}
+											</Link>
+										</NavbarMenuItem>
+									);
+								}
+							})}
+					</NavbarMenu>
+				) : null}
+			</Navbar>
+		</>
 	);
 }
 

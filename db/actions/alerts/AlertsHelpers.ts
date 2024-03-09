@@ -1,10 +1,29 @@
-// 'use server';
+'use server';
+
 import { db } from '@/db';
-import { Alert, AlertType } from '@/prisma/typescript.alerts';
+import { Alert, AlertType, UserAlert } from '@/prisma/typescript.alerts';
 import { getAuthUserFromDb } from '@/db/actions/user/helpers';
+import { revalidatePath } from 'next/cache';
 // import type { ApiResponse } from '@/index.d.ts';
 
 export type AlertWithoutId = Omit<Alert, 'id'>;
+
+export const dismissAlert = async (alertId: string, userId: string, url: string) => {
+	// console.log('Dismissing alert:', userId, alertId, url);
+	try {
+		const dismissedAlert = await db.UserAlert.create({
+			data: {
+				userId,
+				alertId,
+			},
+		});
+		revalidatePath(url);
+		return { success: true, message: 'Alert dimissed' };
+	} catch (error) {
+		console.error('Error dismissing alert:', error);
+		return { success: false, message: `Error dismissing alert ${error?.message}` };
+	}
+};
 
 export const getRelevantAlertForUser = async () => {
 	const user = await getAuthUserFromDb();
@@ -33,7 +52,14 @@ export const getRelevantAlertForUser = async () => {
 		},
 	});
 
-	return relevantAlert;
+	if (!relevantAlert) {
+		return null;
+	}
+
+	return {
+		alert: relevantAlert,
+		userId: user.id,
+	};
 };
 
 export const createAlert = async ({ message, type, enabled = true }: AlertWithoutId): Promise<ApiResponse> => {
