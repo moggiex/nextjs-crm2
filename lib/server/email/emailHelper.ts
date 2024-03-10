@@ -11,7 +11,9 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendForgotPasswordEmail = async (name: string, email: string, token: string) => {
-	const link = `${process.env.NEXT_PUBLIC_BASE_URL}/forgot-password/${token}`;
+	// Need to url encode the token other wise it fucks up
+	const encodedToken = encodeURIComponent(token);
+	const link = `${process.env.NEXT_PUBLIC_BASE_URL}/forgot-password/${encodedToken}`;
 
 	try {
 		const info = await transporter.sendMail({

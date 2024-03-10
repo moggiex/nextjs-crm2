@@ -25,7 +25,7 @@ This is a starter boilerplate for Next.js 14. It had everything you need to kick
 ```bash
 npx prisma generate
 npx prisma db push
-npx prisma migrate dev
+npx prisma migrate dev --name reason_for_migration_here
 npm run seed-counties       // run once for counties
 npm run seed-fake-data      // run create/recreate users
 npm run dev
@@ -44,7 +44,8 @@ Then visit http://localhost:5555/
 ```bash
 npx prisma generate
 npx prisma db push
-npx prisma migrate dev
+npx prisma migrate dev --name reason_for_migration_here
+npx prisma migrate deploy   // if in production enviroment
 npm run seed-counties       // run once for counties
 npm run seed-fake-data      // run create/recreate users
 npm run dev

@@ -35,7 +35,7 @@ model User {
   emailVerified DateTime?
   phone         String?
 	password      String
-  forgotPasswordToken String?
+  forgotPasswordToken String? @unique
   avatar        String?
 
 	role          UserRole    @default(Customer)

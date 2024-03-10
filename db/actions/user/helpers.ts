@@ -3,40 +3,88 @@ import { hashSync, compareSync, genSaltSync } from 'bcryptjs';
 import * as log from '@/lib/common/logger';
 import { getJwt, logout } from '@/lib/server/auth';
 import { db } from '@/db/index';
-import { ForgotPasswordFormSchema, forgotPasswordTokenSchema } from '@/db/actions/user/zod.user';
+import { emailValidation, forgotPasswordTokenSchema } from '@/lib/server/user/zod.user';
 import { sendForgotPasswordEmail } from '@/lib/server/email/emailHelper';
+import { ZodError } from 'zod';
 // import { User } from '@/prisma/typescript.user';
 
 export interface I_ApiUserLoginResponse extends ApiResponse {}
 
-const resetPassword = async (forgotPasswordToken, newPassword) => {
+export const resetPassword = async ({ forgotPasswordToken, password }) => {
 	// Find the user by forgotPasswordToken and update their password and reset the token
+	console.log(forgotPasswordToken, password);
+	// return;
 	try {
-		forgotPasswordTokenSchema.parse({ password: newPassword, forgotPasswordToken: forgotPasswordToken });
+		forgotPasswordTokenSchema.parse({ password, forgotPasswordToken });
 
 		const updatedUser = await db.user.update({
 			where: {
 				forgotPasswordToken: `${forgotPasswordToken}`,
 			},
 			data: {
-				password: hashSync(newPassword, 10), // Update to the new, hashed password
+				password: hashSync(password, 10), // Update to the new, hashed password
 				forgotPasswordToken: null, // Reset the forgotPasswordToken
 			},
 		});
 
+		if (!updatedUser) {
+			console.log(`Unable to update user record with forgotPasswordToken ${forgotPasswordToken}`);
+			const res: I_ApiUserLoginResponse = {
+				success: false,
+				message: 'Unable to update user record with Token',
+			};
+			return res;
+		}
+
 		// Handle success (e.g., return a success message or redirect)
 		console.log('Password reset successfully for:', updatedUser.email);
-		return { success: true, message: 'Password reset successfully.' };
+		const res: I_ApiUserLoginResponse = { success: true, message: 'Password reset successfully.' };
+		return res;
 	} catch (error) {
+		// ZodError
+		if (error instanceof ZodError) {
+			console.log(error);
+
+			error.errors.forEach(err => {
+				if (err.path[0] === 'password') {
+					// Check for 'email'
+					const res: I_ApiUserLoginResponse = {
+						success: false,
+						message: err.message,
+					};
+					return res;
+				} else if (err.path[0] === 'forgotPasswordToken') {
+					// setError(err.message.flatten());
+					const res: I_ApiUserLoginResponse = {
+						success: false,
+						message: err.message,
+					};
+					return res;
+				} else {
+					const res: I_ApiUserLoginResponse = {
+						success: false,
+						message: 'Validation Error',
+					};
+					return res;
+				}
+			});
+		}
+
 		// Handle errors (e.g., user not found or database error)
 		console.error('Error resetting password:', error);
-		return { success: false, message: 'Error resetting password.' };
+		const res: I_ApiUserLoginResponse = {
+			success: false,
+			message: error.message,
+		};
+		return res;
 	}
 };
 
 export const sendForgotPassword = async (payload: string) => {
 	try {
-		const validatedData = ForgotPasswordFormSchema.parse(payload);
+		// console.log(payload);
+
+		const validatedData = emailValidation.parse(payload);
 
 		console.log(validatedData.email.toLowerCase().trim());
 

@@ -1,11 +1,11 @@
 'use client';
-import InlineError from '@/components/InlineError';
+// import InlineError from '@/components/InlineError';
 import { Button, Input } from '@nextui-org/react';
 import React, { useState } from 'react';
 import { FaChevronLeft, FaEnvelope, FaExclamationTriangle, FaKey } from 'react-icons/fa';
 import { ZodError } from 'zod';
 import { sendForgotPassword } from '@/db/actions/user/helpers';
-import { ForgotPasswordFormSchema } from '@/db/actions/user/zod.user';
+import { emailValidation } from '@/lib/server/user/zod.user';
 
 const ForgotPasswordPage = () => {
 	const [error, setError] = useState('');
@@ -20,9 +20,10 @@ const ForgotPasswordPage = () => {
 			const payload = {
 				email: formData.get('email').trim(),
 			};
-			console.log('payload', payload);
+			// console.log('payload', payload);
 
-			const validatedData = ForgotPasswordFormSchema.parse(payload);
+			const validatedData = emailValidation.parse(payload);
+			// console.log(validatedData);
 
 			const response = await sendForgotPassword(validatedData);
 
@@ -79,7 +80,7 @@ const ForgotPasswordPage = () => {
 			) : (
 				<>
 					<h1 className="text-2xl mb-2">Reset Your Password</h1>
-					<p>
+					<p className="mb-2">
 						Enter your registered email address, if it matches an account, we'll email you
 						instructions.
 					</p>

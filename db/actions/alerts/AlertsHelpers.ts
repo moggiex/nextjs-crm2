@@ -27,8 +27,9 @@ export const dismissAlert = async (alertId: string, userId: string, url: string)
 
 export const getRelevantAlertForUser = async () => {
 	const user = await getAuthUserFromDb();
+	// TODO: This runs for non logged in users. Should not be the case
 	if (!user) {
-		console.log('User not found');
+		console.log('User not found. Thsi shoudl nto be running for non logged in users');
 		return null;
 	}
 
