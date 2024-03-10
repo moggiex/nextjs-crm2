@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyJwtToken } from '@/lib/server/auth';
 
 // Add whatever paths you want to PROTECT here
-const authRoutes = ['/app/*', '/profile/*', '/api/*', '/admin/*'];
+const authRoutes = ['/dashboard/*', '/profile/*', '/api/*', '/admin/*'];
 
 // Function to match the * wildcard character
 function matchesWildcard(path: string, pattern: string): boolean {
@@ -16,6 +16,14 @@ function matchesWildcard(path: string, pattern: string): boolean {
 // Function to delete auth cookies and redirect
 function deleteCookiesAndRedirect(url: string) {
 	const response = NextResponse.redirect(url);
+	response.cookies.delete('token');
+	response.cookies.delete('userData');
+	return response;
+}
+
+// Function to delete auth cookies and redirect
+function deleteCookiesAndRedirectHome() {
+	const response = NextResponse.redirect(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000');
 	response.cookies.delete('token');
 	response.cookies.delete('userData');
 	return response;
@@ -83,9 +91,26 @@ export async function middleware(request: NextRequest) {
 			}
 		}
 	}
+
+	// Forgot password, make sure they are not logged in
+	if (request.nextUrl.pathname === '/forgot-password') {
+		const token = request.cookies.get('token');
+		if (token) {
+			try {
+				const payload = await verifyJwtToken(token.value);
+				if (payload) {
+					return deleteCookiesAndRedirectHome();
+					// return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
+				}
+			} catch (error) {
+				return deleteCookiesAndRedirectHome();
+			}
+		}
+	}
+
 	if (redirectToApp) {
 		// Redirect to app dashboard
-		return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/app`);
+		return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`);
 	} else {
 		// Return the original response unaltered
 		return NextResponse.next();

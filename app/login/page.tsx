@@ -89,7 +89,7 @@ export default function LoginPage() {
 				if (redirect) {
 					router.push(redirect);
 				} else {
-					router.push('/app');
+					router.push('/dashboard');
 				}
 				return;
 			}
@@ -169,10 +169,7 @@ export default function LoginPage() {
 						className="p-2 mb-2"
 					/>
 
-					{error && (
-						<InlineError errorMessage={error} />
-	
-					)}
+					{error && <InlineError errorMessage={error} />}
 
 					<div className="flex justify-end mb-2">
 						<Button color="primary" variant="solid" onClick={handleLogin}>
@@ -191,6 +188,21 @@ export default function LoginPage() {
 						<Button as="a" color="success" variant="solid" className="text-white" href="/create">
 							{' '}
 							Create an Account
+						</Button>
+					</p>
+
+					<p className="flex justify-end">
+						Or... <br />
+						<br />
+						<Button
+							as="a"
+							color="secondary"
+							variant="solid"
+							className="text-white"
+							href="/forgot-password"
+						>
+							{' '}
+							Forgot Password?
 						</Button>
 					</p>
 				</div>

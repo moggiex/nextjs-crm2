@@ -1,12 +1,118 @@
 'use server';
-import { hashSync, compareSync } from 'bcryptjs';
+import { hashSync, compareSync, genSaltSync } from 'bcryptjs';
 import * as log from '@/lib/common/logger';
 import { getJwt, logout } from '@/lib/server/auth';
 import { db } from '@/db/index';
-// import { getByLoginId } from '@/db/helpers';
-// import { I_ApiUserLoginResponse } from '@/';
+import { ForgotPasswordFormSchema, forgotPasswordTokenSchema } from '@/db/actions/user/zod.user';
+import { sendForgotPasswordEmail } from '@/lib/server/email/emailHelper';
+// import { User } from '@/prisma/typescript.user';
 
 export interface I_ApiUserLoginResponse extends ApiResponse {}
+
+const resetPassword = async (forgotPasswordToken, newPassword) => {
+	// Find the user by forgotPasswordToken and update their password and reset the token
+	try {
+		forgotPasswordTokenSchema.parse({ password: newPassword, forgotPasswordToken: forgotPasswordToken });
+
+		const updatedUser = await db.user.update({
+			where: {
+				forgotPasswordToken: `${forgotPasswordToken}`,
+			},
+			data: {
+				password: hashSync(newPassword, 10), // Update to the new, hashed password
+				forgotPasswordToken: null, // Reset the forgotPasswordToken
+			},
+		});
+
+		// Handle success (e.g., return a success message or redirect)
+		console.log('Password reset successfully for:', updatedUser.email);
+		return { success: true, message: 'Password reset successfully.' };
+	} catch (error) {
+		// Handle errors (e.g., user not found or database error)
+		console.error('Error resetting password:', error);
+		return { success: false, message: 'Error resetting password.' };
+	}
+};
+
+export const sendForgotPassword = async (payload: string) => {
+	try {
+		const validatedData = ForgotPasswordFormSchema.parse(payload);
+
+		console.log(validatedData.email.toLowerCase().trim());
+
+		// see if user exists
+		const user = await db.user.findFirst({
+			where: { email: validatedData.email.toLowerCase().trim() },
+		});
+
+		if (!user) {
+			console.log(`No user found with that email ${validatedData.email}`);
+			const res: I_ApiUserLoginResponse = {
+				success: false,
+				message: 'No user found with that email',
+			};
+			return res;
+		}
+		// if user exists, create uuid in forgotPasswordToken field
+		const salt = genSaltSync(10); // 10 is the number of rounds for salt generation
+		const forgotPasswordToken = hashSync(Date.now().toString(), salt);
+
+		// Update the user record with the new forgotPasswordToken
+		const updatedUser = await db.user.update({
+			where: {
+				id: user.id, // Use the user's ID to identify the record to update
+			},
+			data: {
+				forgotPasswordToken: forgotPasswordToken, // Set the new token
+			},
+		});
+
+		if (!updatedUser) {
+			console.log(`Unable to update user record with forgotPasswordToken ${forgotPasswordToken}`);
+			const res: I_ApiUserLoginResponse = {
+				success: false,
+				message: 'Unable to update user record with Token',
+			};
+			return res;
+		}
+		// send password
+
+		// sort out the user name
+		let userName = '';
+		if (updatedUser.firstName && updatedUser.firstName.length > 0) {
+			userName = updatedUser.firstName;
+		}
+		if (updatedUser.lastName && updatedUser.lastName.length > 0) {
+			userName += ` ${updatedUser.lastName}`;
+		}
+		if (userName.length === 0) {
+			userName = updatedUser.email;
+		}
+
+		const emailSent = await sendForgotPasswordEmail(userName, user.email, forgotPasswordToken);
+
+		if (!emailSent) {
+			console.log(`Unable to send email to ${user.email}`);
+			const res: I_ApiUserLoginResponse = {
+				success: false,
+				message: 'Unable to send email',
+			};
+		}
+
+		const res: I_ApiUserLoginResponse = {
+			success: true,
+			message: 'Check your email for further instructions',
+		};
+		return res;
+	} catch (error) {
+		console.log(error);
+		const res: I_ApiUserLoginResponse = {
+			success: false,
+			message: 'An error occured, please try later',
+		};
+		return res;
+	}
+};
 
 export const getByLoginId = async (loginId: string) => {
 	const user = await db.user.findFirst({

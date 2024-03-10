@@ -5,6 +5,7 @@ import React from 'react';
 import { FaCheck, FaSearch, FaTimes } from 'react-icons/fa';
 import { AlertType, Alert } from '@/prisma/typescript.alerts';
 import { formatDateTime } from '@/lib/common/dateTime';
+// import { getAlertStyles } from '@/ultis/alert';
 
 interface AlertListType {
 	alerts: Alert[];
@@ -29,7 +30,9 @@ const AlertsList = ({ alerts }: AlertListType) => {
 					alerts.map(alert => (
 						<tr key={alert.id}>
 							<td className="p-2">
-								<Chip color={`${alert.type}`}>{alert.type}</Chip>
+								<Chip color={`${alert.type}`} className="border border-gray-300">
+									{alert.type}
+								</Chip>
 							</td>
 							<td>{alert.message}</td>
 							<td>

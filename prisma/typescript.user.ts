@@ -20,6 +20,7 @@ export interface User {
 	emailVerified?: Date | null;
 	phone?: string | null;
 	password: string;
+	forgotPasswordToken?: string;
 	avatar?: string | null;
 	role: UserRole;
 	status: UserStatus;

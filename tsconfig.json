@@ -27,7 +27,8 @@
 		"**/*.ts",
 		"**/*.tsx",
 		".next/types/**/*.ts",
-		"components/admin/alerts/SkeletonAlertForm.js"
+		"components/admin/alerts/SkeletonAlertForm.js",
+		"ultis/alert.js"
 	],
 	"exclude": ["node_modules"]
 }

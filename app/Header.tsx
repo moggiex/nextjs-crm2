@@ -25,6 +25,7 @@ import {
 	NavbarMenuToggle,
 	NavbarMenu,
 	NavbarMenuItem,
+	User,
 } from '@nextui-org/react';
 
 // import logo from '@/assets/svg/designly-logo-trans.svg';
@@ -147,15 +148,36 @@ export default function Header() {
 						<>
 							<Dropdown placement="bottom-end">
 								<DropdownTrigger>
-									<Avatar
-										isBordered
-										as="button"
-										className="transition-transform"
-										color="primary"
-										name="Jason Hughes"
+									{/* <Button> button</Button> */}
+									{/* <Image
+										src={profileDefaultImage.src}
+										alt="Profile Image"
+										width={displayWidth}
+										height={displayHeight}
+										className="rounded-full"
+									/> */}
+									<User
+										// name={displayName}
+										avatarProps={{
+											src: profileDefaultImage.src,
+										}}
+										// isBordered
+										// as="button"
+										// className="transition-transform"
+										// color="primary"
+										// name="profileButton"
+										// size="sm"
+										// src={profileDefaultImage.src}
+									/>
+									{/* <Avatar
+										// isBordered
+										// as="button"
+										// className="transition-transform"
+										// color="primary"
+										// name="profileButton"
 										size="sm"
 										src={profileDefaultImage.src}
-									/>
+									/> */}
 								</DropdownTrigger>
 								<DropdownMenu aria-label="Profile Actions" variant="flat">
 									{displayName && (
