@@ -8,12 +8,12 @@ import { useRouter } from 'nextjs13-progress';
 import Turnstile from 'react-hook-turnstile';
 
 import { I_ApiUserLoginRequest, I_ApiUserLoginResponse } from '../auth/login/route';
-import Link from 'next/link';
 import { Button, Input } from '@nextui-org/react';
-import { FaEnvelope, FaExclamationTriangle, FaKey } from 'react-icons/fa';
+import { FaArrowRight, FaEnvelope, FaExclamationTriangle, FaKey } from 'react-icons/fa';
 
 import { z } from 'zod';
 import InlineError from '@/components/InlineError';
+import LoginActionsCard from '@/components/LoginActionsCard';
 
 const invalid_type_error = 'Invalid type provided for this field';
 const required_error = 'This field cannot be blank';
@@ -117,96 +117,79 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div
-			className="m-auto flex flex-col items-center gap-6 p-10 w-full max-w-md border-2 rounded-xl"
-			// style={{ height: containerHeight }}
-		>
-			{loginIsComplete ? (
-				<div className="m-auto flex flex-col gap-6 items-center">
-					<div className="loading loading-spinner loading-lg"></div>
-					<h1 className="text-2xl">Getting things ready...</h1>
-				</div>
-			) : (
-				<div className="p-4 w-full">
-					<h1 className="text-2xl mb-2">Welcome Back!</h1>
-					<Input
-						id="email"
-						label="Email Address"
-						name="email"
-						type="email"
-						defaultValue=""
-						ref={loginRef}
-						placeholder="Email Address"
-						variant="bordered"
-						startContent={
-							<FaEnvelope className="text-default-400 pointer-events-none flex-shrink-0" />
-						}
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								if (passwordRef.current) {
-									passwordRef.current.focus();
-								}
-							}
-						}}
-						className="p-2 mb-2"
-					/>
-					{/* {errors.login && <span>Email is required</span>} */}
-					<Input
-						id="password"
-						label="Password"
-						name="password"
-						type="password"
-						defaultValue=""
-						ref={passwordRef}
-						placeholder="Password"
-						variant="bordered"
-						startContent={<FaKey className="text-default-400 pointer-events-none flex-shrink-0" />}
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								handleLogin();
-							}
-						}}
-						className="p-2 mb-2"
-					/>
-
-					{error && <InlineError errorMessage={error} />}
-
-					<div className="flex justify-end mb-2">
-						<Button color="primary" variant="solid" onClick={handleLogin}>
-							Login
-						</Button>
+		<>
+			<LoginActionsCard
+				title="Welcome Back!"
+				createAccount={true}
+				forgotPassword={true}
+				footertext="some footer text"
+			>
+				{loginIsComplete ? (
+					<div className="m-auto flex flex-col gap-6 items-center">
+						<div className="loading loading-spinner loading-lg"></div>
+						<p className="text-2xl">Getting things ready...</p>
 					</div>
-					{!isDev && !isLoading ? (
-						<Turnstile
-							sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-							onVerify={token => setTsToken(token)}
+				) : (
+					<>
+						<p className="pb-2">Use the form below to login to your account.</p>
+						<Input
+							id="email"
+							label="Email Address"
+							name="email"
+							type="email"
+							defaultValue=""
+							ref={loginRef}
+							placeholder="Email Address"
+							variant="bordered"
+							startContent={
+								<FaEnvelope className="text-default-400 pointer-events-none flex-shrink-0" />
+							}
+							onKeyDown={e => {
+								if (e.key === 'Enter') {
+									if (passwordRef.current) {
+										passwordRef.current.focus();
+									}
+								}
+							}}
+							className="p-2 mb-2"
 						/>
-					) : null}
-					<p className="flex justify-end">
-						Or... <br />
-						<br />
-						<Button as="a" color="success" variant="solid" className="text-white" href="/create">
-							{' '}
-							Create an Account
-						</Button>
-					</p>
+						{/* {errors.login && <span>Email is required</span>} */}
+						<Input
+							id="password"
+							label="Password"
+							name="password"
+							type="password"
+							defaultValue=""
+							ref={passwordRef}
+							placeholder="Password"
+							variant="bordered"
+							startContent={
+								<FaKey className="text-default-400 pointer-events-none flex-shrink-0" />
+							}
+							onKeyDown={e => {
+								if (e.key === 'Enter') {
+									handleLogin();
+								}
+							}}
+							className="p-2 mb-2"
+						/>
 
-					<p className="flex justify-end">
-						Or... <br />
-						<br />
-						<Button
-							as="a"
-							color="secondary"
-							variant="solid"
-							className="text-white"
-							href="/forgot-password"
-						>
-							{' '}
-							Forgot Password?
-						</Button>
-					</p>
-				</div>
-			)}
-		</div>
+						{error && <InlineError errorMessage={error} />}
+
+						<div className="flex justify-end mb-2">
+							<Button color="primary" variant="solid" onClick={handleLogin}>
+								Login <FaArrowRight />
+							</Button>
+						</div>
+						{!isDev && !isLoading ? (
+							<Turnstile
+								sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+								onVerify={token => setTsToken(token)}
+							/>
+						) : null}
+					</>
+				)}
+			</LoginActionsCard>
+		</>
 	);
 }

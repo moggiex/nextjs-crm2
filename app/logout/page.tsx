@@ -5,6 +5,7 @@ import { Link } from 'nextjs13-progress';
 
 import { useApp } from '@/contexts/AppContext';
 import { Button } from '@nextui-org/react';
+import { FaArrowLeft } from 'react-icons/fa';
 
 export default function LogoutPage() {
 	const [isLoading, setIsLoading] = useState(true);
@@ -40,10 +41,11 @@ export default function LogoutPage() {
 				<>
 					<h1 className="text-4xl font-bold">Logout</h1>
 					<p className="text-xl">
-						You have been logged out. You can <a href="/login">login</a> again.
+						You have been logged out. You can <Link href="/login">login</Link> again.
 					</p>
 					<Button as="a" color="primary" variant="solid" className="text-white" href="/">
 						{' '}
+						<FaArrowLeft className="mr-2" />
 						Go back Home
 					</Button>
 				</>
@@ -51,6 +53,11 @@ export default function LogoutPage() {
 				<>
 					<h1 className="text-4xl font-bold">Error</h1>
 					<p className="text-xl">Something went wrong! Try again.</p>
+					<Button as="a" color="primary" variant="solid" className="text-white" href="/">
+						{' '}
+						<FaArrowLeft className="mr-2" />
+						Go back Home
+					</Button>
 				</>
 			)}
 		</div>

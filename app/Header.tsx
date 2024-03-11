@@ -21,7 +21,6 @@ import {
 	DropdownTrigger,
 	Dropdown,
 	DropdownMenu,
-	Avatar,
 	NavbarMenuToggle,
 	NavbarMenu,
 	NavbarMenuItem,
@@ -29,7 +28,7 @@ import {
 } from '@nextui-org/react';
 
 // import logo from '@/assets/svg/designly-logo-trans.svg';
-import logo from '@/assets/svg/ebay-crm-logo-black.svg';
+import logo from '@/assets/svg/ebay-crm-logo-white.svg';
 import profileDefaultImage from '@/assets/images/profile.png';
 
 const originalWidth = 300;
@@ -77,10 +76,13 @@ export default function Header() {
 	};
 
 	const menuItems: MenuItem[] = [
-		{ name: 'Dashboard', route: '/app', role: '*' },
+		{ name: 'Dashboard', route: '/dashboard', role: '*' },
 		{ name: 'My Account', route: '/profile', role: '*' },
 		{ name: 'Support Tickets', route: '/tickets', role: '*' },
 		{ name: 'Admin Dashboard', route: '/admin', role: 'admin' },
+		{ name: 'Admin -> Alerts', route: '/admin/alerts', role: 'admin' },
+		{ name: 'Admin -> Users', route: '/admin/users', role: 'admin' },
+		{ name: 'Admin -> Colours', route: '/admin/colours', role: 'admin' },
 	];
 
 	return (
@@ -90,7 +92,7 @@ export default function Header() {
 				shouldHideOnScroll
 				isBordered
 				onMenuOpenChange={setisMobileMenuOpen}
-				// className="bg-white"
+				className="bg-primary text-white"
 				classNames={{
 					item: [
 						'flex',
@@ -139,7 +141,7 @@ export default function Header() {
 				<NavbarContent as="div" justify="end">
 					{!userData && (
 						<NavbarItem>
-							<Button type="submit" color="primary" variant="solid" onClick={handleAuthButton}>
+							<Button type="submit" color="success" variant="solid" onClick={handleAuthButton}>
 								Login
 							</Button>
 						</NavbarItem>
@@ -160,7 +162,12 @@ export default function Header() {
 										// name={displayName}
 										avatarProps={{
 											src: profileDefaultImage.src,
+											// radius: 'sm',
+											isBordered: true,
 										}}
+										style={{ cursor: 'pointer' }}
+
+										// className="border-2 border-secondary rounded-full m-0 p-0"
 										// isBordered
 										// as="button"
 										// className="transition-transform"
@@ -185,6 +192,7 @@ export default function Header() {
 											key="profile"
 											className="h-14 gap-2"
 											textValue="Profile Details"
+											anchorEl={anchorElUser}
 										>
 											<>
 												<p className="font-semibold">Signed in as</p>
@@ -210,17 +218,37 @@ export default function Header() {
 														key={index}
 														onClick={() => handleRoute(item.route)}
 														textValue={item.name}
+														anchorEl={anchorElUser}
 													>
 														{item.name}
 													</DropdownItem>
 												);
 											}
 										})}
+
+									{menuItems &&
+										menuItems.map((item, index) => {
+											if (
+												item.role === 'admin' ||
+												(userData.role && userData.role === item.role)
+											) {
+												return (
+													<DropdownItem
+														key={index}
+														onClick={() => handleRoute(item.route)}
+														textValue={item.name}
+													>
+														{item.name}
+													</DropdownItem>
+												);
+											}
+											return null;
+										})}
 									<DropdownItem key="logout" textValue="Logout">
 										<Button
 											type="submit"
-											color="danger"
-											variant="solid"
+											color="secondary"
+											// variant="solid"
 											onClick={handleAuthButton}
 										>
 											Log Out

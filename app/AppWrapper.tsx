@@ -28,7 +28,7 @@ export default function AppWrapper(props: Props) {
 				</div>
 				<LoadingOverlay />
 
-				<Next13NProgress height={7} color="rgb(0, 112, 240)" />
+				<Next13NProgress height={7} color="#36D399" />
 			</NextUIProvider>
 		</AppProvider>
 	);
