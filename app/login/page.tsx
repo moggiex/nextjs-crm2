@@ -122,7 +122,8 @@ export default function LoginPage() {
 				title="Welcome Back!"
 				createAccount={true}
 				forgotPassword={true}
-				footertext="some footer text"
+				login={false}
+				// footertext="some footer text"
 			>
 				{loginIsComplete ? (
 					<div className="m-auto flex flex-col gap-6 items-center">

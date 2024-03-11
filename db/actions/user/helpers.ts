@@ -68,6 +68,14 @@ export const resetPassword = async ({ forgotPasswordToken, password }) => {
 					return res;
 				}
 			});
+		} else {
+			if (error?.message.includes('prisma.user.update')) {
+				const res: I_ApiUserLoginResponse = {
+					success: false,
+					message: 'Unable to update account. Please reset your password again. This cannot be recovered from',
+				};
+				return res;
+			}
 		}
 
 		// Handle errors (e.g., user not found or database error)

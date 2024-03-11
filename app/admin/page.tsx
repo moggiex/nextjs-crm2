@@ -123,19 +123,19 @@ export default async function AdminMainPage() {
 	return (
 		<>
 			<div className="flex mb-4">
-				<Card className="w-1/4 p-4">
+				<Card className="w-1/4 p-4 mr-4">
 					<CardBody>
 						<FaUsers className="text-5xl text-green-800" />
 						{totalUsersCount} Total Users
 					</CardBody>
 				</Card>
-				<Card className="w-1/4 p-4">
+				<Card className="w-1/4 p-4 mr-4">
 					<CardBody>
 						<FaUserPlus className="text-5xl text-blue-800" />
 						{newUsers} New Users This Month
 					</CardBody>
 				</Card>
-				<Card className="w-1/4 p-4">
+				<Card className="w-1/4 p-4 mr-4">
 					<CardBody>
 						<FaUserSlash className="text-5xl text-red-800" />
 						{banndedUsers} Banned Users
@@ -149,18 +149,22 @@ export default async function AdminMainPage() {
 				</Card>
 			</div>
 
-			<div className="flex mb-4">
+			<div className="mb-4">
 				<UsersRegistrationChart dailyCounts={dailyCounts} />
 			</div>
 
-			<div className="flex mb-4">
-				<div>{users && <UserList users={users} />}</div>
-			</div>
-			<div className="flex mb-4">
+			<div className="mb-4">
+				<h2>Last Logged In</h2>
 				<LastLoggedInList users={latestLoggedInUsers} />
 			</div>
 
+			<div className="mb-4">
+				<h2>Users</h2>
+				<div>{users && <UserList users={users} />}</div>
+			</div>
+
 			<div>
+				<h2>Support Tickets</h2>
 				<TicketList status="Open" isAdmin={true} />
 				<TicketList status="Pending" isAdmin={true} />
 				<TicketList status="Closed" isAdmin={true} />

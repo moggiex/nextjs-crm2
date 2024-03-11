@@ -9,7 +9,7 @@ const TicketRepliesView = message => {
 			{/* {message && <pre>{JSON.stringify(message, null, 2)}</pre>} */}
 			<Card
 				className={`text-white my-4 ${
-					message.ticket.author.isAdmin || message.ticket.author.isSupport ? 'bg-lime-800' : 'bg-sky-800'
+					message.ticket.author.isAdmin || message.ticket.author.isSupport ? 'bg-success' : 'bg-primary'
 				}`}
 			>
 				<CardHeader className="justify-between">

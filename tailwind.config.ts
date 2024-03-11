@@ -48,7 +48,7 @@ const config: Config = {
 					// info: '#3ABFF8',
 					success: '#36D399',
 					warning: '#FBBD23',
-					error: '#F87272',
+					error: '#f31260', // '#c23232',
 
 					// Additional colors for NextUI-like button roles
 					default: '#AAABB8', // Assuming cool gray as the default button color

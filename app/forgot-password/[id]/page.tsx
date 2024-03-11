@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'nextjs13-progress';
 import { forgotPasswordTokenValidation, passwordMatchSchema } from '@/lib/server/user/zod.user';
 import { Button, Input } from '@nextui-org/react';
-import { FaExclamationTriangle, FaKey } from 'react-icons/fa';
+import { FaArrowRight, FaExclamationTriangle, FaKey } from 'react-icons/fa';
 import { resetPassword } from '@/db/actions/user/helpers';
 import { set } from 'date-fns';
 import { ZodError } from 'zod';
+import LoginActionsCard from '@/components/LoginActionsCard';
 
 const ForgotPasswordResetPage = ({ params }: { params: { id?: string } }) => {
 	const [error, setError] = useState(false);
@@ -21,7 +22,7 @@ const ForgotPasswordResetPage = ({ params }: { params: { id?: string } }) => {
 	// check id is present and valid
 	if (!params.id || params.id.length < 58 || params.id.length > 78) {
 		// if not, redirect to forgot password page
-		router.push('/forgot-password');
+		router.push('/forgot-password?error=invalid-token');
 	}
 
 	const id = decodeURIComponent(params.id);
@@ -87,28 +88,34 @@ const ForgotPasswordResetPage = ({ params }: { params: { id?: string } }) => {
 		}
 	};
 
-	// if valid, check to see if the token is valid
-	// if valid, present the reset password form
-	// process a new password for the user and send them back to the login page
-
-	// return loading ? <div>Loading...</div> : <div>Password Reset!</div>;
 	return (
 		<div>
 			{passwordUpdated ? (
-				<>
-					<h1>Password Updated!</h1>
+				<LoginActionsCard
+					title="Password Updated!"
+					createAccount={false}
+					forgotPassword={false}
+					login={true}
+					// footertext="some footer text"
+					headerBg="success"
+				>
 					<p className="mb-2">Congrats! Your password has been updated. You may now login.</p>
-					<Button as="a" color="primary" variant="solid" className="text-white" href="/login">
+					<Button as="a" color="success" variant="solid" className="text-white" href="/login">
 						{' '}
-						Login
+						Login <FaArrowRight />
 					</Button>
-				</>
+				</LoginActionsCard>
 			) : (
-				<>
-					<h1>Set a New Password</h1>
-					<p className="mb-2">
-						Enter your new password password, repleat the password and click the button to update it.
-					</p>
+				<LoginActionsCard
+					title="Set A New Password"
+					createAccount={false}
+					forgotPassword={true}
+					login={false}
+					// footertext="some footer text"
+					headerBg="primary"
+				>
+					<p className="mb-2">Enter your new password below.</p>
+					<p className="mb-2">Repeat the password and click the button to update it.</p>
 					<form action={handleResetPassword} name="">
 						<Input
 							id="password"
@@ -146,7 +153,7 @@ const ForgotPasswordResetPage = ({ params }: { params: { id?: string } }) => {
 
 						<div className="flex justify-end mb-2">
 							<Button type="submit" color="primary" variant="solid">
-								{isLoading ? 'Updating Password...' : 'Update Password'}
+								{isLoading ? 'Updating Password...' : 'Update Password'} <FaArrowRight />
 							</Button>
 						</div>
 
@@ -162,26 +169,8 @@ const ForgotPasswordResetPage = ({ params }: { params: { id?: string } }) => {
 					onVerify={token => setTsToken(token)}
 				/>
 			) : null} */}
-						<p className="flex justify-end">
-							Or... <br />
-							<br />
-							<Button
-								as="a"
-								color="success"
-								variant="solid"
-								className="text-white mr-2"
-								href="/create"
-							>
-								{' '}
-								Create an Account
-							</Button>
-							<Button as="a" color="primary" variant="solid" className="text-white" href="/login">
-								{' '}
-								Login
-							</Button>
-						</p>
 					</form>
-				</>
+				</LoginActionsCard>
 			)}
 		</div>
 	);

@@ -8,8 +8,11 @@ This is a starter boilerplate for Next.js 14. It had everything you need to kick
 -    DONE: Change site design
 -    DONE: Change to prismaclient and models
 -    DONE: Add alerts
--    Add alerts to users page in header area
+-    DONE: Add alerts to users page in header area
+-    Fix double alerts in admin area
+-    Pagination https://github.com/ezeparziale/nextjs-pagination/
 -    Check imports work
+-    Create admin edit user page
 -    Add zod for checking inputs
 -    xonsider updating syncDb.ts to run imports?
 -    DONE: Update user detail spage

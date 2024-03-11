@@ -3,8 +3,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-// import { Link } from 'nextjs13-progress';
-import Link from 'next/link';
+import { Link } from 'nextjs13-progress';
+// import Link from 'next/link';
 import { useApp } from '@/contexts/AppContext';
 import { useRouter } from 'nextjs13-progress';
 import { usePathname } from 'next/navigation';
@@ -118,7 +118,14 @@ export default function Header() {
 					/>
 					<NavbarBrand>
 						<Link href="/">
-							<Image src={logo} alt="Logo" width={0} height={0} priority />
+							<Image
+								src={logo}
+								alt="Logo"
+								width={0}
+								height={0}
+								priority
+								// onClick={() => router.push('/')}
+							/>
 						</Link>
 					</NavbarBrand>
 				</NavbarContent>

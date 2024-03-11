@@ -42,6 +42,7 @@ const TicketTable = ({ tickets, status = 'Open', isAdmin = false }) => {
 			}
 			selectionMode="single"
 			className="mb-4"
+			// color="success"
 		>
 			<TableHeader>
 				<TableColumn>Subject</TableColumn>

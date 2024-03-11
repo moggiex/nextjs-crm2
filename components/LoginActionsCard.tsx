@@ -1,24 +1,26 @@
-import React from 'react';
+// 'use client';
 
 import { Card, CardHeader, CardBody, CardFooter, Divider, Button } from '@nextui-org/react';
 import { FaArrowRight, FaPencilAlt, FaQuestion } from 'react-icons/fa';
-import { useRouter } from 'nextjs13-progress';
+// import { useRouter } from 'nextjs13-progress';
 
 const LoginActionsCard = ({
 	title = '',
 	children,
-	footertext = '',
+	footertext = null,
 	createAccount = false,
 	login = false,
 	forgotPassword = false,
+	headerBg = 'primary',
+	// goHome = false,
 }) => {
-	const router = useRouter();
+	// const router = useRouter();
 	return (
 		<Card className="max-w-[500px] m-auto mt-8">
 			{title && (
-				<CardHeader className="flex gap-3 bg-primary">
+				<CardHeader className={`flex gap-3 bg-${headerBg}`}>
 					<div className="flex flex-col text-center m-auto">
-						<h2 className="text-primary-content">{title}</h2>
+						<h2 className={`text-${headerBg}-content`}>{title}</h2>
 						{/* <p className="text-small text-default-500">nextui.org</p> */}
 					</div>
 				</CardHeader>
@@ -38,8 +40,8 @@ const LoginActionsCard = ({
 							color="secondary"
 							variant="bordered"
 							className=" mr-2"
-							// href="/forgot-password"
-							onClick={() => router.push('/forgot-password')}
+							href="/forgot-password"
+							// onClick={() => router.push('/forgot-password')}
 						>
 							{' '}
 							<FaQuestion />
@@ -51,10 +53,10 @@ const LoginActionsCard = ({
 						<Button
 							as="a"
 							color="success"
-							variant="solid"
-							className="text-white mr-2"
-							// href="/create"
-							onClick={() => router.push('/create')}
+							variant="bordered"
+							className="mr-2"
+							href="/create"
+							// onClick={() => router.push('/create')}
 						>
 							{' '}
 							<FaPencilAlt />
@@ -64,11 +66,11 @@ const LoginActionsCard = ({
 					{login && (
 						<Button
 							as="a"
-							color="primary"
-							variant="solid"
-							className="text-white mr-2"
-							// href="/login"
-							onClick={() => router.push('/login')}
+							color="secondary"
+							variant="bordered"
+							className="mr-2"
+							href="/login"
+							// onClick={() => router.push('/login')}
 						>
 							{' '}
 							Login

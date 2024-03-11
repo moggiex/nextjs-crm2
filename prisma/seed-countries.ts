@@ -1,18 +1,18 @@
 // import { PrismaClient } from '@prisma/client';
 const { PrismaClient } = require('@prisma/client');
 
-const db = new PrismaClient();
+const database = new PrismaClient();
 
 // Source: https://gist.github.com/ereli/0c94ec74a1807aaa895b912766556cc2
 
 async function main() {
-	const count = await db.country.count();
+	const count = await database.country.count();
 
 	if (count && count > 0) {
 		return 'Already counties loaded, not reloading them';
 	}
 
-	const result = await db.$executeRawUnsafe(`
+	const result = await database.$executeRawUnsafe(`
   INSERT INTO country (id, iso, name, nicename, iso3, numcode, phonecode) VALUES
   (1, 'AF', 'AFGHANISTAN', 'Afghanistan', 'AFG', 4, 93),
   (2, 'AL', 'ALBANIA', 'Albania', 'ALB', 8, 355),
@@ -275,5 +275,5 @@ main()
 		throw e;
 	})
 	.finally(async () => {
-		await db.$disconnect();
+		await database.$disconnect();
 	});

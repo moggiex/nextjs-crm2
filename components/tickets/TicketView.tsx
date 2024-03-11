@@ -72,7 +72,7 @@ const TicketView = ({ ticket }) => {
 				</TableBody>
 			</Table>
 
-			<Card className="text-white my-4 bg-sky-800">
+			<Card className="text-white my-4 bg-info">
 				<CardHeader className="justify-between">
 					<div className="flex gap-5">
 						<Avatar isBordered radius="full" size="md" src={profileDefaultImage.src} />
@@ -90,6 +90,13 @@ const TicketView = ({ ticket }) => {
 				<CardBody className="px-4 py-4 font-semibold">
 					<p>{ticket.message}</p>
 				</CardBody>
+				<CardFooter className="gap-3 flex justify-end">
+					<div className="flex gap-1">
+						<p className="text-small">
+							<b>Original Ticket</b>
+						</p>
+					</div>
+				</CardFooter>
 			</Card>
 		</>
 	);

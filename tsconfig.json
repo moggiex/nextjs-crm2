@@ -29,6 +29,6 @@
 		".next/types/**/*.ts",
 		"components/admin/alerts/SkeletonAlertForm.js",
 		"ultis/alert.js"
-	],
+, "db/index.ts"	],
 	"exclude": ["node_modules"]
 }
