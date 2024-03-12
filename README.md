@@ -9,7 +9,7 @@ This is a starter boilerplate for Next.js 14. It had everything you need to kick
 -    DONE: Change to prismaclient and models
 -    DONE: Add alerts
 -    DONE: Add alerts to users page in header area
--    Fix double alerts in admin area
+-    DONE: Fix double alerts
 -    Pagination https://github.com/ezeparziale/nextjs-pagination/
 -    Check imports work
 -    Create admin edit user page

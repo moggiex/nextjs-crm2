@@ -8,7 +8,7 @@ import { Link } from 'nextjs13-progress';
 import { useApp } from '@/contexts/AppContext';
 import { useRouter } from 'nextjs13-progress';
 import { usePathname } from 'next/navigation';
-import HeaderAlert from '@/components/admin/alerts/HeaderAlert';
+import HeaderAlert from '@/components/alerts/HeaderAlert';
 
 // Next UI
 import {
@@ -54,9 +54,9 @@ export default function Header() {
 
 	const handleAuthButton = () => {
 		if (userData) {
-			router.push('/logout');
+			router.push('/auth/logout');
 		} else {
-			router.push('/login');
+			router.push('/auth/login');
 		}
 		setAnchorElUser(null);
 	};

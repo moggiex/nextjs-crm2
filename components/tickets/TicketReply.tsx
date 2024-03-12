@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Button, Input, Textarea } from '@nextui-org/react';
-import InlineError from '../InlineError';
+import InlineError from '@/components/InlineError';
 import { useRouter } from 'nextjs13-progress';
 import { ZodError, z } from 'zod';
 import { FaQuestion } from 'react-icons/fa';

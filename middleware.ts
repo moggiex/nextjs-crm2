@@ -32,11 +32,17 @@ function deleteCookiesAndRedirectHome() {
 export async function middleware(request: NextRequest) {
 	// Shortcut for our login path redirect
 	// Note: you must use absolute URLs for middleware redirects
-	const LOGIN = `${process.env.NEXT_PUBLIC_BASE_URL}/login?redirect=${
+	const LOGIN = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/login?redirect=${
 		request.nextUrl.pathname + request.nextUrl.search
 	}`;
+
 	if (authRoutes.some(pattern => matchesWildcard(request.nextUrl.pathname, pattern))) {
 		const token = request.cookies.get('token');
+
+		// Add exceptions for public routes here
+		if (request.nextUrl.pathname.startsWith('/api/auth')) {
+			return NextResponse.next();
+		}
 		// For API routes, we want to return unauthorized instead of
 		// redirecting to login
 		if (request.nextUrl.pathname.startsWith('/api')) {
@@ -76,7 +82,7 @@ export async function middleware(request: NextRequest) {
 	}
 	let redirectToApp = false;
 	// Redirect login to app if already logged in
-	if (request.nextUrl.pathname === '/login') {
+	if (request.nextUrl.pathname === '/auth/login') {
 		const token = request.cookies.get('token');
 		if (token) {
 			try {
@@ -93,7 +99,7 @@ export async function middleware(request: NextRequest) {
 	}
 
 	// Forgot password, make sure they are not logged in
-	if (request.nextUrl.pathname === '/forgot-password') {
+	if (request.nextUrl.pathname === '/auth/forgot-password') {
 		const token = request.cookies.get('token');
 		if (token) {
 			try {

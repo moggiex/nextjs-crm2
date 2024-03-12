@@ -25,13 +25,22 @@ export const dismissAlert = async (alertId: string, userId: string, url: string)
 	}
 };
 
-export const getRelevantAlertForUser = async () => {
-	const user = await getAuthUserFromDb();
-	// TODO: This runs for non logged in users. Should not be the case
+export const getRelevantAlertForUser = async ({ user }) => {
+	// const user = await getAuthUserFromDb();
+	// // TODO: This runs for non logged in users. Should not be the case
+	// if (!user) {
+	// 	console.log('User not found. Thsi shoudl nto be running for non logged in users');
+	// 	return null;
+	// }
+
+	// console.log('User:', user);
+
 	if (!user) {
 		console.log('User not found. Thsi shoudl nto be running for non logged in users');
 		return null;
 	}
+
+	// console.log('User:', user);
 
 	const relevantAlert = await db.alert.findFirst({
 		where: {
@@ -52,6 +61,8 @@ export const getRelevantAlertForUser = async () => {
 			createdAt: 'asc', // Get the oldest relevant alert first
 		},
 	});
+
+	// console.log(relevantAlert);
 
 	if (!relevantAlert) {
 		return null;

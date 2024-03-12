@@ -1,4 +1,4 @@
-import { User } from './typescript.user';
+import { User } from '@/prisma/typescript.user';
 
 export enum AccountType {
 	ebay = 'ebay',

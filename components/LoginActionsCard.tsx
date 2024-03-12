@@ -32,6 +32,7 @@ const LoginActionsCard = ({
 			</CardBody>
 			<Divider />
 
+			{/* TODO: Should this be a child component and then useRouter? or us link instead? */}
 			{
 				<CardFooter className="flex min-h-14 bg-base-100 justify-end">
 					{forgotPassword && (
@@ -40,8 +41,8 @@ const LoginActionsCard = ({
 							color="secondary"
 							variant="bordered"
 							className=" mr-2"
-							href="/forgot-password"
-							// onClick={() => router.push('/forgot-password')}
+							href="/auth/forgot-password"
+							// onClick={() => router.push('/auth/forgot-password')}
 						>
 							{' '}
 							<FaQuestion />
@@ -55,8 +56,8 @@ const LoginActionsCard = ({
 							color="success"
 							variant="bordered"
 							className="mr-2"
-							href="/create"
-							// onClick={() => router.push('/create')}
+							href="/auth/create"
+							// onClick={() => router.push('/auth/create')}
 						>
 							{' '}
 							<FaPencilAlt />
@@ -69,8 +70,8 @@ const LoginActionsCard = ({
 							color="secondary"
 							variant="bordered"
 							className="mr-2"
-							href="/login"
-							// onClick={() => router.push('/login')}
+							href="/auth/login"
+							// onClick={() => router.push('/auth/login')}
 						>
 							{' '}
 							Login

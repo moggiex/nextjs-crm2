@@ -3,6 +3,7 @@ import { getUserData, isLoggedIn } from '@/lib/client/auth';
 import { usePathname } from 'next/navigation';
 // import { I_UserPublic } from '@/models/User.types';
 import { I_ApiAuthResponse } from '@/app/api/auth/route';
+import { getRelevantAlertForUser } from '@/db/actions/alerts/AlertsHelpers';
 
 interface AppContextProps {
 	isLoading: boolean;
@@ -11,6 +12,7 @@ interface AppContextProps {
 	userData: any | null; // I_UserPublic
 	userDataLoaded: boolean;
 	loadUserData: () => void;
+	systemAlerts: any | null;
 }
 
 export interface I_ModalProps {
@@ -34,10 +36,12 @@ export const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) =
 	const [userData, setUserData] = useState<any | null>(null); // I_UserPublic
 	const [userDataLoaded, setUserDataLoaded] = useState<boolean>(false);
 	const [userDataLastLoad, setUserDataLastLoad] = useState<Date>(new Date());
+	const [systemAlerts, setSystemAlerts] = useState<any | null>(null);
 
 	const logoutCleanup = async () => {
 		setUserData(null);
 		setUserDataLoaded(false);
+		setSystemAlerts(null);
 	};
 	const loadUserData = () => {
 		setUserDataLoaded(false);
@@ -82,6 +86,19 @@ export const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) =
 				loadUserDataFromServer();
 			}
 		}
+
+		// Get Alerts
+		const fetchData = async user => {
+			const result = await getRelevantAlertForUser(user);
+			// console.log(result);
+			if (!result) return;
+			setSystemAlerts(result);
+		};
+		if (userData) {
+			// console.log('fetching alerts');
+			// console.log(userData);
+			fetchData({ user: userData });
+		}
 	}, [pathname]);
 	// console.log(userData);
 	return (
@@ -93,6 +110,7 @@ export const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) =
 				userData,
 				userDataLoaded,
 				loadUserData,
+				systemAlerts,
 			}}
 		>
 			{children}

@@ -1,12 +1,5 @@
-import {
-	FaExclamationCircle,
-	FaInfoCircle,
-	FaCheckCircle,
-	FaExclamationTriangle,
-	FaQuestionCircle,
-	FaTimes,
-} from 'react-icons/fa';
-import React, { useState } from 'react';
+import { FaTimes, FaTimesCircle } from 'react-icons/fa';
+import { useState } from 'react';
 import { Alert, AlertType } from '@/prisma/typescript.alerts';
 import { dismissAlert } from '@/db/actions/alerts/AlertsHelpers';
 import { usePathname } from 'next/navigation';
@@ -34,7 +27,7 @@ const HeaderAltertContainer = ({ theAlert, userId }: Alert) => {
 	return (
 		<>
 			{isAlertVisible && (
-				<div className={`${style.style} w-full relative`}>
+				<div className={`${style.style} w-full relative my-1`}>
 					<div className="max-w-4xl mx-auto p-4 flex items-center">
 						<style.Icon className="inline-block mr-4 text-3xl" />
 						<div className="flex-grow">
@@ -53,7 +46,7 @@ const HeaderAltertContainer = ({ theAlert, userId }: Alert) => {
 								Dismiss
 							</a>
 						</div>
-						<FaTimes
+						<FaTimesCircle
 							onClick={() =>
 								handleDismissAlert(theAlert.id, userId, `${window.location.origin}${pathname}`)
 							}

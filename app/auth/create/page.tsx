@@ -7,7 +7,7 @@ import { useRouter } from 'nextjs13-progress';
 
 import Turnstile from 'react-hook-turnstile';
 
-import { I_ApiUserCreateRequest, I_ApiUserCreateResponse } from '../auth/create/route';
+import { I_ApiUserCreateRequest, I_ApiUserCreateResponse } from '@/app/api/auth/create/route';
 // import Link from 'next/link';
 import { Button, Input } from '@nextui-org/react';
 import { FaArrowRight, FaKey, FaUser } from 'react-icons/fa';
@@ -85,7 +85,7 @@ export default function CreatePage() {
 			CreateAccountFormSchema.parse(payload);
 
 			// create the account
-			const response = await fetch('/auth/create', {
+			const response = await fetch('/api/auth/create', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

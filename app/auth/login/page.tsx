@@ -7,7 +7,7 @@ import { useRouter } from 'nextjs13-progress';
 
 import Turnstile from 'react-hook-turnstile';
 
-import { I_ApiUserLoginRequest, I_ApiUserLoginResponse } from '../auth/login/route';
+import { I_ApiUserLoginRequest, I_ApiUserLoginResponse } from '@/app/api/auth/login/route';
 import { Button, Input } from '@nextui-org/react';
 import { FaArrowRight, FaEnvelope, FaExclamationTriangle, FaKey } from 'react-icons/fa';
 
@@ -70,7 +70,7 @@ export default function LoginPage() {
 
 			LoginFormSchema.parse(payload);
 
-			const response = await fetch('/auth/login', {
+			const response = await fetch('/api/auth/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

@@ -314,7 +314,7 @@ export const filterPublic = (user: any) => {
 export const exportPublic = (user: any | null) => {
 	if (!user) return null;
 
-	const { password, status, isAdmin, isSupport, ...userWithoutSensitiveData } = user;
+	const { password, status, isAdmin, isSupport, forgotPasswordToken, ...userWithoutSensitiveData } = user;
 	return userWithoutSensitiveData;
 };
 

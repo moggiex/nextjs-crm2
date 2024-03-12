@@ -1,10 +1,6 @@
 'use client';
 
-import React from 'react';
-// q: can this be simplified to a functional component?
 import { useApp } from '@/contexts/AppContext';
-// import { FaCircleNotch } from 'react-icons/fa';
-// import './loading.css';
 import { Spinner } from '@nextui-org/react';
 
 export default function LoadingOverlay() {

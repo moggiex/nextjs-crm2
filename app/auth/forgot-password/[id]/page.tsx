@@ -22,7 +22,7 @@ const ForgotPasswordResetPage = ({ params }: { params: { id?: string } }) => {
 	// check id is present and valid
 	if (!params.id || params.id.length < 58 || params.id.length > 78) {
 		// if not, redirect to forgot password page
-		router.push('/forgot-password?error=invalid-token');
+		router.push('/auth/forgot-password?error=invalid-token');
 	}
 
 	const id = decodeURIComponent(params.id);
@@ -81,8 +81,6 @@ const ForgotPasswordResetPage = ({ params }: { params: { id?: string } }) => {
 				}
 				setError(mess);
 			}
-
-			// router.push('/forgot-password');
 		} finally {
 			setIsLoading(false);
 		}

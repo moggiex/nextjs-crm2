@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 		// Update last seen timesamp and save
 		const updatedUser = await db.user.update({
 			where: {
-				id: user.id, // Assuming `id` is the identifier for the user
+				id: user.id,
 			},
 			data: {
 				lastSeen: new Date(), // Set the lastSeen field to the current date
@@ -35,7 +35,6 @@ export async function GET(request: NextRequest) {
 
 		// Refresh our userdata cookie in case information was changed elsewhere
 		setUserDataCookie(userData);
-		// setUserDataCookie(userData);
 		// console.log('userData::::', userData);
 
 		return new Response(JSON.stringify(response), {
