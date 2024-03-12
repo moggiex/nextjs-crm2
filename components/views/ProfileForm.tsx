@@ -46,35 +46,7 @@ const UpdateUserFormSchema = z.object({
 const ProfileForm: React.FC<ProfileFormProps> = ({ userDetails, countries }) => {
 	const user = userDetails;
 	// console.log(user.address);
-
-	// const [emailError, setEmailError] = useState('');
-	// const [usernameError, setUsernameError] = useState('');
-	// const [firstNameError, setFirstNameError] = useState('');
-	// const [lastNameError, setLastNameError] = useState('');
-	// const [phoneError, setPhoneError] = useState('');
-	// // States for address fields
-	// const [businessNameError, setBusinessNameError] = useState('');
-	// const [addressLine1Error, setAddressLine1Error] = useState('');
-	// const [addressLine2Error, setAddressLine2Error] = useState('');
-	// const [cityError, setCityError] = useState('');
-	// const [countyOrStateError, setCountyOrStateError] = useState('');
-	// const [postZipCodeError, setPostZipCodeError] = useState('');
-	// const [countryIdError, setCountryIdError] = useState('');
-
-	// const [image, setImage] = useState(null);
-	// const [imageUrl, setImageUrl] = useState((''));
-
-	// const handleImageChange = e => {
-	// 	const file = e.target.files[0];
-	// 	if (file) {
-	// 		setImage(file);
-	// 		const reader = new FileReader();
-	// 		reader.onload = e => {
-	// 			setImageUrl(e.target.result);
-	// 		};
-	// 		reader.readAsDataURL(file);
-	// 	}
-	// };
+	// console.log(countries);
 
 	return (
 		<>

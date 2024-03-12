@@ -1,7 +1,7 @@
 export enum UserRole {
-	Admin = 'Admin',
-	Support = 'Support',
-	Customer = 'Customer',
+    Admin = 'Admin',
+    Support = 'Support',
+    Customer = 'Customer',
 }
 
 export enum UserStatus {
@@ -20,7 +20,7 @@ export interface User {
 	emailVerified?: Date | null;
 	phone?: string | null;
 	password: string;
-	forgotPasswordToken?: string;
+	forgotPasswordToken?: string | null;
 	avatar?: string | null;
 	role: UserRole;
 	status: UserStatus;

@@ -6,7 +6,7 @@ export default function Footer() {
 		// <div className="flex-1 w-full px-4 md:px-6 lg:px-8 pt-8">
 		// 				<div className="max-w-4xl mx-auto border-x-medium">{children}</div>
 		// 			</div>
-		<footer className="flex-1 w-full px-4 md:px-6 lg:px-8 pt-8 bg-neutral text-white p-6 mt-6">
+		<footer className="w-full px-4 md:px-6 lg:px-8 pt-8 bg-neutral text-white p-6">
 			<div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 justify-items-center">
 				{/* <!-- Column 1 --> */}
 				<div className="mb-6 md:mb-0">

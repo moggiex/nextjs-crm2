@@ -1,7 +1,8 @@
 'use client';
+import { User } from '@/prisma/typescript.user';
 import { useRouter } from 'nextjs13-progress';
 
-const LastLoggedInList = ({ users }) => {
+const LastLoggedInList = ({ users }: User[]) => {
 	const router = useRouter();
 	// console.log(users);
 	// return;

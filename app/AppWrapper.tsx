@@ -17,7 +17,7 @@ export default function AppWrapper(props: Props) {
 	return (
 		<AppProvider>
 			<NextUIProvider>
-				<div className="flex flex-col min-h-screen text-base-content">
+				<div className="flex flex-col justify-between min-h-screen text-base-content">
 					<Header />
 
 					<main className="flex-1 w-full px-4 md:px-6 lg:px-0 pt-8">

@@ -1,7 +1,34 @@
-import React from 'react';
+import { getUsers } from '@/db/actions/admin/helpers';
+import UserList from '@/components/admin/dashboard/UserList';
+import { Button } from '@nextui-org/react';
+import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa';
 
-const AdminUsersPage = () => {
-	return <div>AdminUsersPage</div>;
+/**
+ * get all users
+ * make a table
+ * make the row clickable
+ * TODO: Consider pagination?
+ */
+
+const AdminUsersPage = async () => {
+	const users = await getUsers({ limit: 100 });
+	return (
+		<>
+			<div className="flex items-center">
+				<h1 className="mr-auto">User List</h1>
+				<Button as="a" color="primary" variant="ghost" className="justify-end mr-2" href="/admin/">
+					<FaArrowLeft /> Back to Admin
+				</Button>
+				<Button color="primary" variant="ghost" className="justify-end">
+					<FaPencilAlt /> Create User
+				</Button>
+			</div>
+
+			<p className="mb-2">Below is a list of all the users limited to 100.</p>
+
+			{users && <UserList users={users} />}
+		</>
+	);
 };
 
 export default AdminUsersPage;
