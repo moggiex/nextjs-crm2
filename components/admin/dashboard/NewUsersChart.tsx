@@ -1,13 +1,17 @@
-'use client';
+// 'use client';
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
-import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { getUsersCountByDayForMonth } from '@/db/actions/admin/helpers';
 
-// Register Chart.js components
-Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+import { getUsersCountByDayForMonth } from '@/db/actions/admin/helpers';
+import NewUsersChartBar from '@/components/admin/dashboard/NewUsersChartBar';
 
 const NewUsersChart = async () => {
+	function delay(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+	await delay(5000); // 5000 milliseconds = 5 seconds
+
+	const now = new Date();
 	const dailyCounts = await getUsersCountByDayForMonth(now.getFullYear(), now.getMonth());
 
 	const labels = Object.keys(dailyCounts);
@@ -23,7 +27,8 @@ const NewUsersChart = async () => {
 		],
 	};
 
-	return <Bar data={data} />;
+	// return <div>loaded</div>;
+	return <NewUsersChartBar data={data} />;
 };
 
 export default NewUsersChart;

@@ -23,7 +23,6 @@ export default async function AdminMainPage() {
 	const newUsers = await getUserCountWithinOneMonth();
 	const banndedUsers = await getBannedUserCount();
 	const inactiveUsers = await getInactiveUserCount();
-	const now = new Date();
 
 	const latestLoggedInUsers = await getLatestLoggedInUsers();
 
@@ -57,7 +56,9 @@ export default async function AdminMainPage() {
 			</div>
 
 			<div className="mb-4">
+				<h2>Users This Month</h2>
 				<Suspense fallback={<NewUsersChartSkeleton />}>
+					{/* <Suspense fallback={<div>Loading...</div>}> */}
 					<NewUsersChart />
 				</Suspense>
 			</div>
