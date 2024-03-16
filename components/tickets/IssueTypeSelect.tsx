@@ -1,6 +1,6 @@
 'use client';
 import { Select, SelectItem } from '@nextui-org/react';
-// import InlineError from '@/components/InlineError';
+// import InlineMessage from '@/components/InlineMessage';
 
 const IssueTypeSelect = ({ onIssueTypeChange, typeError }) => {
 	return (
@@ -26,7 +26,7 @@ const IssueTypeSelect = ({ onIssueTypeChange, typeError }) => {
 				</SelectItem>
 			</Select>
 
-			{/* {typeError && <InlineError errorMessage={typeError} />} */}
+			{/* {typeError && <InlineMessage message={typeError} />} */}
 		</>
 	);
 };

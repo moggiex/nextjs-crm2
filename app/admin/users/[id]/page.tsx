@@ -6,7 +6,7 @@ import { updateProfile } from '@/db/actions/user/profile';
 import { Input, Button, Chip, Divider, Switch } from '@nextui-org/react';
 import { FaArrowLeft, FaEnvelope, FaImage, FaPencilAlt, FaPhone, FaUser, FaUserAlt } from 'react-icons/fa';
 import CountriesSelect from '@/components/CountriesSelect';
-import InlineError from '@/components/InlineError';
+import InlineMessage from '@/components/InlineMessage';
 import EmailField from '@/components/admin/users/EmailField';
 import BreadcrumbTrail from '@/components/BreadcrumbTrail';
 
@@ -205,7 +205,7 @@ const AdminUserIdViewPage = async ({ params }: { params: { id?: string } }) => {
 						)}
 
 						{countries.length === 0 && (
-							<InlineError errorMessage="No countries found. Did we load the countires to the database? npm run seed-countries" />
+							<InlineMessage message="No countries found. Did we load the countires to the database? npm run seed-countries" />
 						)}
 
 						<Button type="submit" color="primary" variant="solid" className="mt-4">

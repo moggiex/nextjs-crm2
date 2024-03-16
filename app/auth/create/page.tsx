@@ -13,7 +13,7 @@ import { Button, Input } from '@nextui-org/react';
 import { FaArrowRight, FaKey, FaUser } from 'react-icons/fa';
 
 import { ZodError, z } from 'zod';
-import InlineError from '@/components/InlineError';
+import InlineMessage from '@/components/InlineMessage';
 import LoginActionsCard from '@/components/LoginActionsCard';
 
 const requiredError = 'This field cannot be blank'; // This is generally used for .min() or similar validations
@@ -231,7 +231,7 @@ export default function CreatePage() {
 						className="p-2 mb-2"
 					/>
 
-					{error && <InlineError errorMessage={error} />}
+					{error && <InlineMessage message={error} />}
 
 					<div className="flex justify-end mb-2">
 						<Button

@@ -1,5 +1,5 @@
 import BreadcrumbTrail from '@/components/BreadcrumbTrail';
-import InlineError from '@/components/InlineError';
+import InlineMessage from '@/components/InlineMessage';
 import SystemEmailForm from '@/components/admin/system/emails/SystemEmailForm';
 import { getSystemEmailById } from '@/db/actions/system/emails/helper';
 import { Divider } from '@nextui-org/react';
@@ -9,7 +9,7 @@ const EmailTemplateSettingsEditPage = async ({ params }: { params: { id?: string
 	const template = await getSystemEmailById({ id: params.id });
 
 	if (!template) {
-		return <InlineError errorMessage="System Email Template not found" />;
+		return <InlineMessage message="System Email Template not found" />;
 	}
 
 	// const handleSubmit = async (formData: FormData) => {

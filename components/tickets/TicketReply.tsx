@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Button, Input, Textarea } from '@nextui-org/react';
-import InlineError from '@/components/InlineError';
+import InlineMessage from '@/components/InlineMessage';
 import { useRouter } from 'nextjs13-progress';
 import { ZodError, z } from 'zod';
 import { FaQuestion } from 'react-icons/fa';
@@ -94,9 +94,9 @@ const TicketReply = ({ parentTicketId }) => {
 					startContent={<FaQuestion className="text-default-400 pointer-events-none flex-shrink-0" />}
 					className="p-2 mb-2"
 				/>
-				{messageError && <InlineError errorMessage={messageError} />}
+				{messageError && <InlineMessage message={messageError} />}
 
-				{error && <InlineError errorMessage={error} />}
+				{error && <InlineMessage message={error} />}
 
 				<div className="flex justify-end mb-2">
 					<Button

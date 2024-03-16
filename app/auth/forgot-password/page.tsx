@@ -1,5 +1,5 @@
 'use client';
-// import InlineError from '@/components/InlineError';
+
 import { useSearchParams } from 'next/navigation';
 import { Button, Input } from '@nextui-org/react';
 import React, { useState } from 'react';
@@ -9,7 +9,7 @@ import { sendForgotPassword } from '@/db/actions/user/helpers';
 import { emailValidation } from '@/lib/server/user/zod.user';
 import LoginActionsCard from '@/components/LoginActionsCard';
 import Turnstile from 'react-hook-turnstile';
-import InlineError from '@/components/InlineError';
+import InlineMessage from '@/components/InlineMessage';
 
 const ForgotPasswordPage = () => {
 	const searchParams = useSearchParams();
@@ -80,8 +80,8 @@ const ForgotPasswordPage = () => {
 	return (
 		<>
 			{searchParamsError && (
-				<InlineError
-					errorMessage={
+				<InlineMessage
+					message={
 						'You have ben redirected here due to an error reseting your password. Please use the form below to try again'
 					}
 				/>

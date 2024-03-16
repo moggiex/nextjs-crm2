@@ -1,5 +1,5 @@
 'use client';
-import InlineError from '@/components/InlineError';
+import InlineMessage from '@/components/InlineMessage';
 import { Input, Switch } from '@nextui-org/react';
 import React, { useState } from 'react';
 import { FaEnvelope } from 'react-icons/fa';
@@ -27,7 +27,7 @@ const EmailField = ({ email, emailError, emailErrorMessage }) => {
 				errorMessage={emailErrorMessage}
 			/>
 			{isSelected && (
-				<InlineError errorMessage="With is enabled, you will change the users email address when updating" />
+				<InlineMessage message="With is enabled, you will change the users email address when updating" />
 			)}
 
 			<Switch

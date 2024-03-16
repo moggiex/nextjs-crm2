@@ -12,7 +12,7 @@ import { Button, Input } from '@nextui-org/react';
 import { FaArrowRight, FaEnvelope, FaExclamationTriangle, FaKey } from 'react-icons/fa';
 
 import { z } from 'zod';
-import InlineError from '@/components/InlineError';
+import InlineMessage from '@/components/InlineMessage';
 import LoginActionsCard from '@/components/LoginActionsCard';
 
 const invalid_type_error = 'Invalid type provided for this field';
@@ -175,7 +175,7 @@ export default function LoginPage() {
 							className="p-2 mb-2"
 						/>
 
-						{error && <InlineError errorMessage={error} />}
+						{error && <InlineMessage message={error} />}
 
 						<div className="flex justify-end mb-2">
 							<Button color="primary" variant="solid" onClick={handleLogin}>

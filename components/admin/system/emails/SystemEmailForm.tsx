@@ -6,12 +6,14 @@ import { Input, Select, SelectItem, Snippet, Switch, Textarea } from '@nextui-or
 import { FaCode, FaEnvelope, FaList, FaToggleOn } from 'react-icons/fa';
 import SubmitButton from '@/components/SubmitButton';
 import { updateSystemEmail } from '@/db/actions/system/emails/helper';
-// import { useFormState } from 'react-dom';
+import InlineMessage from '@/components/InlineMessage';
+import VariableSnippets from '@/components/admin/system/emails/VariableSnippets';
+
+// Quill
 import dynamic from 'next/dynamic';
 const QuillEditor = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
-import InlineError from '@/components/InlineError';
-import VariableSnippets from '@/components/admin/system/emails/VariableSnippets';
+import { quillFormats, quillModules } from '@/lib/common/quill';
 
 const SystemEmailForm = ({ template }) => {
 	// console.log('template', template);
@@ -29,35 +31,6 @@ const SystemEmailForm = ({ template }) => {
 	const [isEnabled, setIsEnabled] = useState(template?.enabled ? true : false);
 	const [type, setType] = useState(template?.type || 'customer');
 	const [isError, setIsError] = useState();
-
-	const quillModules = {
-		toolbar: [
-			[{ header: [1, 2, 3, false] }],
-			['bold', 'italic', 'underline', 'strike', 'blockquote'],
-			[{ list: 'ordered' }, { list: 'bullet' }],
-			['link', 'image'],
-			[{ align: [] }],
-			[{ color: [] }],
-			['code-block'],
-			['clean'],
-		],
-	};
-
-	const quillFormats = [
-		'header',
-		'bold',
-		'italic',
-		'underline',
-		'strike',
-		'blockquote',
-		'list',
-		'bullet',
-		'link',
-		'image',
-		'align',
-		'color',
-		'code-block',
-	];
 
 	// const handleQuillChange = (content, delta, source, editor) => {
 	// 	setHtmlBody(editor.getHTML()); // Get HTML content
@@ -95,7 +68,7 @@ const SystemEmailForm = ({ template }) => {
 	return (
 		<form action={formAction}>
 			<div className="flex w-full">
-				{isError && <InlineError errorMessage={isError} />}
+				{isError && <InlineMessage message={isError} />}
 				<div className=" w-1/2 pr-4">
 					<Input
 						id="templateName"

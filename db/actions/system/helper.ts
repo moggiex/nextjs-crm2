@@ -1,55 +1,39 @@
 'use server';
 import { db } from '@/db/index';
-import { SystemEmailTemplateSchema } from '@/lib/server/system/systememailtemplate/zod.systememailtemplate';
+import SystemSettingSchema from '@/lib/server/system/zod.SystemSetting';
+import { SystemSetting } from '@/prisma/typescript.systemSetting';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
-export const getSystemEmailTemplates = async () => {
-	return await db?.systemEmailTemplate.findMany({ orderBy: { id: 'asc' } });
-};
-
-export const getSystemEmailById = async ({ id }) => {
-	return await db.systemEmailTemplate.findFirst({ where: { id: Number(id) }, orderBy: { id: 'asc' } });
-};
-
-type FormState = {
-	message: string;
-};
 
 
-
-export const updateSystemEmail = async data => {
+export const updateSystemSettings = async (data: SystemSetting) => {
 	let errors: string[] | z.ZodError = [];
-
-	// console.log(data);
-	// return;
-
-	// const { id, templateName, internalName, emailSubject, htmlBody, type, htmlEnabled, isEnabled } = data;
-
-	// console.log(id, templateName, internalName, emailSubject, htmlBody, type, isEnabled, htmlEnabled);
 
 	try {
 		if (data.id) {
 			// Logic to update the existing record using Prisma
-			const updatedRecord = await db.systemEmailTemplate.update({
+			const updatedRecord = await db.systemSetting.update({
 				where: { id: data.id },
 				data: data,
 			});
-			revalidatePath('/admin/system/emails');
-			revalidatePath(`/admin/system/emails/${data.id}`);
+
+			revalidatePath(`/admin/system}`);
 			return { success: true, message: 'Record updated successfully', data: updatedRecord, errors };
 		} else {
 			// Logic to create a new record using Prisma
-			const createdRecord = await db.systemEmailTemplate.create({
+			data.id = 1;
+			const createdRecord = await db.systemSetting.create({
 				data: data,
 			});
+			revalidatePath('/admin/system');
 			return { success: true, message: 'Record created successfully', data: createdRecord, errors };
 		}
 
 		// TODO: ZOD
 
 		// Validate the incoming data against the schema
-		// const validatedData = SystemEmailTemplateSchema.parse(data);
+		// const validatedData = SystemSettingSchema.parse(data);
 
 		// if (validatedData.id) {
 		// 	// Logic to update the existing record using Prisma
@@ -78,4 +62,8 @@ export const updateSystemEmail = async data => {
 
 		return { success: false, message: 'Failed to process the request', errors };
 	}
+};
+
+export const getSystemSettings = async () => {
+	return await db.systemSetting.findFirst();
 };

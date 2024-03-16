@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import InlineError from '@/components/InlineError';
+import InlineMessage from '@/components/InlineMessage';
 import IssueTypeSelect from '@/components/tickets/IssueTypeSelect';
 import { Input, Textarea, Select, SelectSection, SelectItem, Button, Divider } from '@nextui-org/react';
 import React from 'react';
@@ -112,7 +112,7 @@ const CreateTicketPage = () => {
 			<p>Use the form below to create a support ticket</p>
 			<form action={handleCreateTicket}>
 				<IssueTypeSelect onIssueTypeChange={handleIssueTypeChange} typeError={typeError} />
-				{/* {issueTypeError && <InlineError errorMessage={issueTypeError} />} */}
+				{/* {issueTypeError && <InlineMessage message={issueTypeError} />} */}
 
 				<Input
 					id="subject"
@@ -136,7 +136,7 @@ const CreateTicketPage = () => {
 					// }}
 					className="p-2 mb-2"
 				/>
-				{subjectError && <InlineError errorMessage={subjectError} />}
+				{subjectError && <InlineMessage message={subjectError} />}
 
 				<Textarea
 					id="message"
@@ -160,9 +160,9 @@ const CreateTicketPage = () => {
 					// }}
 					className="p-2 mb-2"
 				/>
-				{messageError && <InlineError errorMessage={messageError} />}
+				{messageError && <InlineMessage message={messageError} />}
 
-				{error && <InlineError errorMessage={error} />}
+				{error && <InlineMessage message={error} />}
 
 				<div className="flex justify-end mb-2">
 					<Button

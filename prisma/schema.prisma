@@ -251,24 +251,30 @@ model UserActivityLog {
 // System Settings
 model SystemSetting {
   id                     Int            @id @default(1)
-  siteName               String
-  siteURL                String
-  siteEmailAddress       String
+  siteName               String         @default("My Site")  
+  siteURL                String         @default("http://localhost:3000")
+  siteEmailAddress       String         @default("email@email.com")
+  
   loginEnabled           Boolean        @default(true)  
   loginDisabledMessage   String?
-  createAccountEnabled   Boolean?        @default(true)
+
+  createAccountEnabled   Boolean?       @default(true)
   createAccountDisabledMessage String?
-  registrationEnabled    Boolean?        @default(true)
+
+  registrationEnabled    Boolean?       @default(true)
   registrationDisabledMessage String?
-  forgotPasswordEnabled  Boolean?         @default(true)
+
+  forgotPasswordEnabled  Boolean?        @default(true)
   forgotPasswordDisabledMessage String?
-  emailEnabled           Boolean?         @default(true)
+
+  emailEnabled           Boolean?       @default(true)
   emailFrom              String?
   emailServerUser        String?
   emailServerPassword    String?
   emailServerHost        String?
   emailServerPort        Int?           @default(587)
   emailServerSecure      Boolean?       @default(true)
+
   businessName           String?
   addressLine1           String?
   addressLine2           String?

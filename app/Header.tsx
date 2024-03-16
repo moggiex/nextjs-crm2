@@ -83,7 +83,7 @@ export default function Header() {
 		{ name: 'Admin -> Alerts', route: '/admin/alerts', role: 'admin' },
 		{ name: 'Admin -> Users', route: '/admin/users', role: 'admin' },
 		{ name: 'Admin -> Colours', route: '/admin/colours', role: 'admin' },
-		{ name: 'Admin -> System', route: '/admin/system', role: 'admin' },
+		{ name: 'Admin -> System Settings', route: '/admin/system', role: 'admin' },
 		{ name: 'Admin -> System -> Emails', route: '/admin/system/emails', role: 'admin' },
 		{ name: 'Admin -> System -> Data Loader', route: '/admin/system/data-loader', role: 'admin' },
 	];
