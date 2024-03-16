@@ -57,6 +57,7 @@ model User {
   sessions        Session[]
   createdTickets  Ticket[]
   userAlerts      UserAlert[]
+  activityLogs      UserActivityLog[]
 
   // Tickets assigned to the user (for support staff and 'god' users)
   assignedTickets Ticket[] @relation("SupportUser")
@@ -234,4 +235,66 @@ model UserAlert {
   alert Alert @relation(fields: [alertId], references: [id])
 
   @@unique([userId, alertId])
+}
+
+// User Activty Logs
+model UserActivityLog {
+  id        Int      @id @default(autoincrement())
+  userId    String      // Assuming you have a User model to relate to
+  action    String
+  details   String?  // Additional details about the action, JSON or string
+  createdAt DateTime @default(now())
+
+  user      User  @relation(fields: [userId], references: [id])
+}
+
+// System Settings
+model SystemSetting {
+  id                     Int            @id @default(1)
+  siteName               String
+  siteURL                String
+  siteEmailAddress       String
+  loginEnabled           Boolean        @default(true)  
+  loginDisabledMessage   String?
+  createAccountEnabled   Boolean?        @default(true)
+  createAccountDisabledMessage String?
+  registrationEnabled    Boolean?        @default(true)
+  registrationDisabledMessage String?
+  forgotPasswordEnabled  Boolean?         @default(true)
+  forgotPasswordDisabledMessage String?
+  emailEnabled           Boolean?         @default(true)
+  emailFrom              String?
+  emailServerUser        String?
+  emailServerPassword    String?
+  emailServerHost        String?
+  emailServerPort        Int?           @default(587)
+  emailServerSecure      Boolean?       @default(true)
+  businessName           String?
+  addressLine1           String?
+  addressLine2           String?
+  cityState              String?
+  postcodeZipCode        String?
+  country                String?
+  phoneNumber            String?
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+}
+
+// System Emails
+enum SystemEmailTemplateType {
+  admin
+  customer
+}
+
+model SystemEmailTemplate {
+  id            Int          @id @default(autoincrement())
+  templateName  String       @unique
+  internalName  String       @unique
+  enabled       Boolean      @default(true)
+  emailSubject  String
+  htmlBody      String       @db.Text
+  htmlEnabled   Boolean      @default(true)
+  type          SystemEmailTemplateType @default(customer)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 }

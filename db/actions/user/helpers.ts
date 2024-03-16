@@ -6,7 +6,7 @@ import { db } from '@/db/index';
 import { emailValidation, forgotPasswordTokenSchema } from '@/lib/server/user/zod.user';
 import { sendForgotPasswordEmail } from '@/lib/server/email/emailHelper';
 import { ZodError } from 'zod';
-// import { User } from '@/prisma/typescript.user';
+import { authConfig } from '@/lib/server/auth';
 
 export interface I_ApiUserLoginResponse extends ApiResponse {}
 
@@ -22,7 +22,7 @@ export const resetPassword = async ({ forgotPasswordToken, password }) => {
 				forgotPasswordToken: `${forgotPasswordToken}`,
 			},
 			data: {
-				password: hashSync(password, 10), // Update to the new, hashed password
+				password: hashSync(password, authConfig.saltRounds), // Update to the new, hashed password
 				forgotPasswordToken: null, // Reset the forgotPasswordToken
 			},
 		});
@@ -43,7 +43,7 @@ export const resetPassword = async ({ forgotPasswordToken, password }) => {
 	} catch (error) {
 		// ZodError
 		if (error instanceof ZodError) {
-			console.log(error);
+			// console.log(error);
 
 			error.errors.forEach(err => {
 				if (err.path[0] === 'password') {
@@ -82,7 +82,7 @@ export const resetPassword = async ({ forgotPasswordToken, password }) => {
 		console.error('Error resetting password:', error);
 		const res: I_ApiUserLoginResponse = {
 			success: false,
-			message: error.message,
+			message: error?.message ? error.message : 'Error resetting password:',
 		};
 		return res;
 	}
@@ -110,7 +110,7 @@ export const sendForgotPassword = async (payload: string) => {
 			return res;
 		}
 		// if user exists, create uuid in forgotPasswordToken field
-		const salt = genSaltSync(10); // 10 is the number of rounds for salt generation
+		const salt = genSaltSync(authConfig.saltRounds); // 10 is the number of rounds for salt generation
 		const forgotPasswordToken = hashSync(Date.now().toString(), salt);
 
 		// Update the user record with the new forgotPasswordToken
@@ -224,10 +224,6 @@ export const login = async (email: string, password: string) => {
 			},
 		});
 
-		// console.log(`--------`);
-		// console.log(updatedUser);
-		// console.log(`--------`);
-
 		return updatedUser;
 	} catch (error: any) {
 		log.error(error);
@@ -260,7 +256,7 @@ export const createAccount = async (firstName: string, email: string, password: 
 		const newUser = await db.user.create({
 			data: {
 				email: cleanEmail,
-				password: hashSync(password, 10), // Hash the password; adjust salt rounds as needed
+				password: hashSync(password, authConfig.saltRounds), // Hash the password; adjust salt rounds as needed
 				firstName: firstName.trim(),
 				// status: 'Pending', // Or any default status you wish to set for new users
 

@@ -8,6 +8,7 @@ import { FaArrowLeft, FaEnvelope, FaImage, FaPencilAlt, FaPhone, FaUser, FaUserA
 import CountriesSelect from '@/components/CountriesSelect';
 import InlineError from '@/components/InlineError';
 import EmailField from '@/components/admin/users/EmailField';
+import BreadcrumbTrail from '@/components/BreadcrumbTrail';
 
 const AdminUserIdViewPage = async ({ params }: { params: { id?: string } }) => {
 	const { id } = params;
@@ -17,11 +18,16 @@ const AdminUserIdViewPage = async ({ params }: { params: { id?: string } }) => {
 
 	return (
 		<>
+			<BreadcrumbTrail
+				items={[
+					{ name: 'Home', href: '/' },
+					{ name: 'Admin', href: '/admin' },
+					{ name: 'Users', href: '/admin/users' },
+					{ name: 'Edit User', href: `/admin/users/${id}` },
+				]}
+			/>
 			<div className="flex items-center">
 				<h1 className="mr-auto">User ID: {user.email}</h1>
-				<Button as="a" color="primary" variant="ghost" className="justify-end" href="/admin/users/">
-					<FaArrowLeft /> Back to Users
-				</Button>
 			</div>
 			<pre>{JSON.stringify(user, null, 2)}</pre>
 

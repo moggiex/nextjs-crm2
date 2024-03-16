@@ -1,7 +1,8 @@
 import React from 'react';
 import { db } from '@/db';
 import AlertsList from '@/components/admin/alerts/AlertsList';
-import { Button } from '@nextui-org/react';
+import { Button, Divider } from '@nextui-org/react';
+import BreadcrumbTrail from '@/components/BreadcrumbTrail';
 // import { useRouter } from 'nextjs13-progress';
 
 const AlertsAdminPage = async () => {
@@ -13,7 +14,15 @@ const AlertsAdminPage = async () => {
 	});
 	return (
 		<>
+			<BreadcrumbTrail
+				items={[
+					{ name: 'Home', href: '/' },
+					{ name: 'Admin', href: '/admin' },
+					{ name: 'Alerts', href: '/admin/alerts' },
+				]}
+			/>
 			<h1>Alerts</h1>
+			<Divider className="mb-4" />
 			<p className="mb-4">
 				These are system wide alerts that appear at the top of the homepage. They are shown to all users,
 				but can be dismissed by a user and its not shown again. If the user is new, only alerts created

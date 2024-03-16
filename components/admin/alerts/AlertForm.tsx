@@ -7,12 +7,13 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { Alert } from '@/prisma/typescript.alerts';
+import BreadcrumbTrail from '@/components/BreadcrumbTrail';
 
-const AlertForm = async ({ id = null }) => {
+const AlertForm = async ({ alertId = null }: Number | null) => {
 	let theAlert: Alert | null = null;
 
-	if (id) {
-		theAlert = await getAlertById(id);
+	if (alertId) {
+		theAlert = await getAlertById(alertId);
 	} else {
 		theAlert = { message: '', type: 'primary', enabled: true };
 	}
@@ -32,8 +33,8 @@ const AlertForm = async ({ id = null }) => {
 
 		let resp = null;
 
-		if (id) {
-			theAlert.id = id;
+		if (alertId) {
+			theAlert.id = alertId;
 			resp = await updateAlert(theAlert);
 		} else {
 			resp = await createAlert(theAlert);
@@ -45,12 +46,22 @@ const AlertForm = async ({ id = null }) => {
 			return;
 		}
 		revalidatePath('/admin/alerts');
-		revalidatePath(`/admin/alerts/${id}`);
+		revalidatePath(`/admin/alerts/${alertId}`);
 		redirect('/admin/alerts');
 	};
 
+	// Todo, add error messaging to inputs
+
 	return (
 		<>
+		<BreadcrumbTrail
+				items={[
+					{ name: 'Home', href: '/' },
+					{ name: 'Admin', href: '/admin' },
+					{ name: 'Alerts', href: '/admin/alerts' },
+					{ name: 'Create', href: `/admin/alerts` },
+				]}
+			/>
 			<h2 className="text-xl font-bold mb-2">Alert Details</h2>
 			<p className="mb-4">
 				Use the form below to edit this alert noting that this will not reset the users that have seen and

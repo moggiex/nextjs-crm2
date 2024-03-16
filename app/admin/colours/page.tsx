@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 
 import { Button, Card } from '@nextui-org/react';
+import BreadcrumbTrail from '@/components/BreadcrumbTrail';
 
 const ColorShowcase = () => {
 	const [visibleSnippets, setVisibleSnippets] = useState({});
@@ -43,6 +44,13 @@ const ColorShowcase = () => {
 
 	return (
 		<>
+			<BreadcrumbTrail
+				items={[
+					{ name: 'Home', href: '/' },
+					{ name: 'Admin', href: '/admin' },
+					{ name: 'Colours', href: '/' },
+				]}
+			/>
 			<div className="space-y-4 p-4">
 				<h1>Typography</h1>
 				<div>

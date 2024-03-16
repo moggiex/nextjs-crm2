@@ -83,6 +83,9 @@ export default function Header() {
 		{ name: 'Admin -> Alerts', route: '/admin/alerts', role: 'admin' },
 		{ name: 'Admin -> Users', route: '/admin/users', role: 'admin' },
 		{ name: 'Admin -> Colours', route: '/admin/colours', role: 'admin' },
+		{ name: 'Admin -> System', route: '/admin/system', role: 'admin' },
+		{ name: 'Admin -> System -> Emails', route: '/admin/system/emails', role: 'admin' },
+		{ name: 'Admin -> System -> Data Loader', route: '/admin/system/data-loader', role: 'admin' },
 	];
 
 	return (
@@ -272,6 +275,18 @@ export default function Header() {
 						{menuItems &&
 							menuItems.map((item, index) => {
 								if (item.role === '*' || (userData.role && userData.role === item.role)) {
+									return (
+										<NavbarMenuItem key={index}>
+											<Link href={item.route} onClick={() => handleRoute(item.route)}>
+												{item.name}
+											</Link>
+										</NavbarMenuItem>
+									);
+								}
+							})}
+						{menuItems &&
+							menuItems.map((item, index) => {
+								if (item.role === 'admin' || (userData.role && userData.role === item.role)) {
 									return (
 										<NavbarMenuItem key={index}>
 											<Link href={item.route} onClick={() => handleRoute(item.route)}>

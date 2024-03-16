@@ -5,6 +5,7 @@ import React from 'react';
 import { User as UserType } from '@/prisma/typescript.models';
 import { FaSearch, FaTimes } from 'react-icons/fa';
 import styles from '@/components/tickets/style.module.css';
+import { getStatusColour } from '@/lib/server/user/userHelper';
 
 interface UsersType {
 	users: UserType[];
@@ -12,28 +13,7 @@ interface UsersType {
 
 const UserList = ({ users }) => {
 	const router = useRouter();
-	const getStatusColour = (accountStatus: string) => {
-		type ChipColor = 'success' | 'default' | 'warning' | 'primary' | 'secondary' | 'danger';
 
-		let chipColor: ChipColor;
-		switch (accountStatus) {
-			case 'Active':
-				chipColor = 'success'; // Assuming 'success' color indicates open tickets
-				break;
-			case 'Pending':
-				chipColor = 'warning'; // Assuming 'default' or another color indicates closed tickets
-				break;
-			case 'Banned':
-				chipColor = 'danger'; // 'warning' color for pending tickets
-				break;
-			case 'Inactive':
-				chipColor = 'danger'; // 'warning' color for pending tickets
-				break;
-			default:
-				chipColor = 'default'; // Fallback color
-		}
-		return chipColor;
-	};
 	return (
 		<>
 			<Table
@@ -69,7 +49,11 @@ const UserList = ({ users }) => {
 					)}
 					{users.length > 0 &&
 						users.map(user => (
-							<TableRow key={user.id} className={styles.clickableRow}>
+							<TableRow
+								key={user.id}
+								className={`${styles.clickableRow} cursor-pointer`}
+								onClick={() => router.push(`/admin/users/${user.id}`)}
+							>
 								<TableCell className={styles.clickableRow}>{user.email}</TableCell>
 								<TableCell>{`${user.firstName} ${user.lastName} (${user.email})`}</TableCell>
 								<TableCell>

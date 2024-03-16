@@ -4,32 +4,90 @@ This is a starter boilerplate for Next.js 14. It had everything you need to kick
 
 ## to do
 
+-
+-    Email templates
+     -    Keywords
+          -    Email
+          -    First Name
+          -    Last Name
+          -    Link
+          -    Dashboard
+     -    Template Name, internal name, enabled, emailSubject, htmlBody, type (admin or customer), createdAt, UpdatedAt
+     -    Header
+     -    Footer
+     -    User registered (admin)
+     -    User registered (customer) Include confirmation link?    
+     -    Forgot password (customer)
+     -    Forgot password (admin)
+     -    Account Added (ebay/amazon) (customer) account_added account name & link o accounts
+     -    Account added (ebay/amazon) (admin)
+     -    Support ticket
+          -    created
+          -    replied to
+          -    Status changed
+          -    Closed
+-    System settings
+     -    Site Name?
+     -    Site URL
+     -    Site Email Address
+     -    Logins
+          -    Login Enabled
+               -    Message if disabled
+          -    Create Account
+               -    Message if disabled
+          -    Registation Enabled
+               -    Message if disabled
+          -    Forgot Password Enabled
+               -    Message if disabled
+     -    Email Settings
+          -    EMAIL_SERVER_USER=''
+          -    EMAIL_SERVER_PASSWORD=''
+          -    EMAIL_SERVER_HOST='smtp-relay.brevo.com'
+          -    EMAIL_SERVER_PORT=465 #587
+          -    EMAIL_SERVER_SECURE=true
+          -    EMAIL_FROM=''
+     -    Address
+          -    Business Name
+          -    AddressLine 1
+          -    AddressLine 2
+          -    City / State
+          -    Postcode /ZipCode
+          -    Country
+          -    Phone Number
+     -
+     -
+-    Pagination https://github.com/ezeparziale/nextjs-pagination/
+-    Add Subscriptions table & payment history table
+
+-    Admin Users
+     -    Create admin edit user page
+          -    Address
+          -    Accounts
+     -    Resend user verification link/action
+     -    Add zod for checking inputs to user edit page
+     -    Check imports work
+-    Consider updating syncDb.ts to run imports?
+-    accounts table
+-    add messages fields
+-    Support:
+     -    Create admin support tickets page
+     -    Allow uploads to support tickets
+-    DONE: Update user detail spage
+-    DONE: Create support tickets database and pages
 -    DONE: Create account page and api route
 -    DONE: Change site design
 -    DONE: Change to prismaclient and models
 -    DONE: Add alerts
 -    DONE: Add alerts to users page in header area
 -    DONE: Fix double alerts
--    Pagination https://github.com/ezeparziale/nextjs-pagination/
--    Check imports work
--    Create admin edit user page
--    Add zod for checking inputs
--    xonsider updating syncDb.ts to run imports?
--    DONE: Update user detail spage
--    accounts table
--    add messages fields
--    DONE: Create support tickets database and pages
--    Crated admin support tickets page
--    Allow uploads to support tickets
--
 
 ## Steps to first start
 
 ```bash
 npx prisma generate
 npx prisma db push
-npx prisma migrate dev --name reason_for_migration_here
-npm run seed-counties       // run once for counties
+npx prisma migrate dev --name add s
+npm run seed-countries      // run once for counties
 npm run seed-fake-data      // run create/recreate users
 npm run dev
 ```

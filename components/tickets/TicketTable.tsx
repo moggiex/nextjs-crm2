@@ -21,7 +21,7 @@ const TicketTable = ({ tickets, status = 'Open', isAdmin = false }) => {
 				chipColor = 'warning'; // 'warning' color for pending tickets
 				break;
 			default:
-				chipColor = ''; // Fallback color
+				chipColor = 'default'; // Fallback color
 		}
 		return chipColor;
 	};

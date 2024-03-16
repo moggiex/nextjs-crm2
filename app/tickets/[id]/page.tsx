@@ -9,6 +9,7 @@ import '@/app/loading.css';
 import TicketView from '@/components/tickets/TicketView';
 import TicketRepliesView from '@/components/tickets/TicketRepliesView';
 import TicketReply from '@/components/tickets/TicketReply';
+import BreadcrumbTrail from '@/components/BreadcrumbTrail';
 
 const TicketViewPage = () => {
 	const { id } = useParams();
@@ -50,7 +51,14 @@ const TicketViewPage = () => {
 		}
 	}, [id, ticket]);
 	return (
-		<div className="mb-4">
+		<>
+			<BreadcrumbTrail
+				items={[
+					{ name: 'Home', href: '/' },
+					{ name: 'Tickets', href: '/tickets' },
+					{ name: 'Edit Ticket', href: `/tickets/${id}` },
+				]}
+			/>
 			{loading && (
 				<div>
 					<FaCircleNotch className="spinner text-3xl" />
@@ -69,7 +77,7 @@ const TicketViewPage = () => {
 				ticket.messages.map((message, index) => <TicketRepliesView key={index} ticket={message} />)}
 
 			{!loading && ticket && <TicketReply parentTicketId={ticket.id} />}
-		</div>
+		</>
 	);
 	// return <div>text</div>;
 };

@@ -28,7 +28,11 @@ const AlertsList = ({ alerts }: AlertListType) => {
 			<tbody>
 				{alerts &&
 					alerts.map(alert => (
-						<tr key={alert.id}>
+						<tr
+							key={alert.id}
+							onClick={() => router.push(`/admin/alerts/${alert.id}`)}
+							className="cursor-pointer hover:bg-default"
+						>
 							<td className="p-2">
 								<Chip color={`${alert.type}`} className="border border-gray-300">
 									{alert.type}

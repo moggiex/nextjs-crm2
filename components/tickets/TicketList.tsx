@@ -10,7 +10,11 @@ const TicketList = async ({ status = 'Open', isAdmin = false }): Promise<T> => {
 	} else {
 		response = await getTickets(status);
 	}
-	// const response = await getTickets(status);
+
+	
+
+	// await delay(5000);
+	// // const response = await getTickets(status);
 
 	return (
 		<>

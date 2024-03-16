@@ -1,18 +1,19 @@
-// import { PrismaClient } from '@prisma/client';
-const { PrismaClient } = require('@prisma/client');
+'use server';
+export const importCountries = async (forceImport = false) => {
+	console.log(forceImport);
 
-const database = new PrismaClient();
+	if (!forceImport) {
+		const count = await db.country.count();
 
-// Source: https://gist.github.com/ereli/0c94ec74a1807aaa895b912766556cc2
-
-async function main() {
-	const count = await database.country.count();
-
-	if (count && count > 0) {
-		return 'Already counties loaded, not reloading them';
+		if (count && count > 0) {
+			return { success: false, message: 'Already counties loaded, not reloading them' };
+		}
 	}
 
-	const result = await database.$executeRawUnsafe(`
+	console.log('Importing countries');
+	await db.country.deleteMany({});
+
+	const result = await db.$executeRawUnsafe(`
   INSERT INTO country (id, iso, name, nicename, iso3, numcode, phonecode) VALUES
   (1, 'AF', 'AFGHANISTAN', 'Afghanistan', 'AFG', 4, 93),
   (2, 'AL', 'ALBANIA', 'Albania', 'ALB', 8, 355),
@@ -268,12 +269,5 @@ async function main() {
   `);
 
 	console.log(`Inserted ${result} rows into country table`);
-}
-
-main()
-	.catch(e => {
-		throw e;
-	})
-	.finally(async () => {
-		await database.$disconnect();
-	});
+	return { success: true, message: `Inserted ${result} rows into country table` };
+};

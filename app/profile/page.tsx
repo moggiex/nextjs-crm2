@@ -2,6 +2,7 @@
 import React from 'react';
 import { getUserProfile, getCountries } from '@/db/actions/user/profile';
 import ProfileForm from '@/components/views/ProfileForm';
+import BreadcrumbTrail from '@/components/BreadcrumbTrail';
 // import PlaceholderView from '@/components/views/PlaceholderView';
 // import { useApp } from '@/contexts/AppContext';
 // import ProfielView from '@/components/views/ProfileView';
@@ -18,8 +19,13 @@ export default async function AccountMainPage() {
 	// console.log(user);
 	return (
 		<>
-			{/* <pre>{JSON.stringify(userData, null, 2)}</pre> */}
-			{/* <PlaceholderView title="Account Main Page" text="This page is only accessible to logged in users!" /> */}
+			<BreadcrumbTrail
+				items={[
+					{ name: 'Home', href: '/' },
+					{ name: 'Profile', href: '/profile' },
+					{ name: 'Edit Profile', href: '/profile' },
+				]}
+			/>
 			<ProfileForm userDetails={userDetails} countries={countries} />
 		</>
 	);

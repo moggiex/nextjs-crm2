@@ -11,28 +11,11 @@ const config: Config = {
 	theme: {
 		extend: {},
 	},
-	arkMode: 'class',
+	darkMode: 'class',
 	plugins: [require('daisyui'), nextui()],
 	daisyui: {
 		themes: [
 			{
-				// customTheme: {
-				// 	// Name your theme
-				// 	primary: '#2C2C54',
-				// 	'primary-content': '#ECECEC', // For readable text on primary, using light gray
-				// 	secondary: '#474787',
-				// 	'secondary-content': '#ECECEC', // For readable text on secondary, using light gray
-				// 	accent: '#AAABB8',
-				// 	'accent-content': '#2C2C54', // Dark text on the cool gray accent background
-				// 	neutral: '#AAABB8',
-				// 	'neutral-content': '#2C2C54', // Dark text on cool gray for contrast
-				// 	'base-100': '#ECECEC',
-				// 	'base-content': '#2C2C54', // Dark text on light gray background
-				// 	info: '#3ABFF8', // Default daisyUI info color
-				// 	success: '#36D399', // Default daisyUI success color
-				// 	warning: '#FBBD23', // Default daisyUI warning color
-				// 	error: '#F87272', // Default daisyUI error color
-				// },
 				customTheme: {
 					// Previously included colors
 					primary: '#2C2C54',
@@ -46,9 +29,9 @@ const config: Config = {
 					'base-100': '#ECECEC',
 					'base-content': '#2C2C54',
 					// info: '#3ABFF8',
-					success: '#36D399',
-					warning: '#FBBD23',
-					error: '#f31260', // '#c23232',
+					success: '#36D399', // Default daisyUI success color
+					warning: '#FBBD23', // Default daisyUI warning color
+					error: '#f31260', // Default daisyUI error color
 
 					// Additional colors for NextUI-like button roles
 					default: '#AAABB8', // Assuming cool gray as the default button color

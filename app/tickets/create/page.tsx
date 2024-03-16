@@ -2,12 +2,13 @@
 import { useEffect, useState } from 'react';
 import InlineError from '@/components/InlineError';
 import IssueTypeSelect from '@/components/tickets/IssueTypeSelect';
-import { Input, Textarea, Select, SelectSection, SelectItem, Button } from '@nextui-org/react';
+import { Input, Textarea, Select, SelectSection, SelectItem, Button, Divider } from '@nextui-org/react';
 import React from 'react';
 import { FaInfo, FaQuestion } from 'react-icons/fa';
 import { createTicket } from '@/db/actions/tickets/tickets';
 import { useRouter } from 'nextjs13-progress';
 import { ZodError, z } from 'zod';
+import BreadcrumbTrail from '@/components/BreadcrumbTrail';
 
 const CreateTicketPage = () => {
 	const [selectedIssueType, setSelectedIssueType] = useState('Issue'); // Default selection
@@ -98,8 +99,16 @@ const CreateTicketPage = () => {
 	};
 
 	return (
-		<div>
+		<>
+			<BreadcrumbTrail
+				items={[
+					{ name: 'Home', href: '/' },
+					{ name: 'Tickets', href: '/tickets' },
+					{ name: 'Create Ticket', href: `/tickets/create` },
+				]}
+			/>
 			<h1>Create a Ticket</h1>
+			<Divider className="mb-4" />
 			<p>Use the form below to create a support ticket</p>
 			<form action={handleCreateTicket}>
 				<IssueTypeSelect onIssueTypeChange={handleIssueTypeChange} typeError={typeError} />
@@ -189,7 +198,7 @@ const CreateTicketPage = () => {
 					</Button>
 				</div>
 			</form>
-		</div>
+		</>
 	);
 };
 

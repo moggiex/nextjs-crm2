@@ -1,3 +1,4 @@
+'use server';
 import { formatDistanceToNow } from 'date-fns';
 import { User } from '@/prisma/typescript.user';
 import { db } from '@/db';
