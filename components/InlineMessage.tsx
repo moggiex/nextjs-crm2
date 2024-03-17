@@ -16,7 +16,8 @@ const InlineMessage: React.FC<InlineMessageProps> = ({
 			) : (
 				<FaCheck className="mx-2 inline-block" />
 			)}
-			{message}
+			{/* {message} */}
+			<span dangerouslySetInnerHTML={{ __html: message }} />
 		</div>
 	);
 };

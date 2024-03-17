@@ -1,8 +1,9 @@
 'use client';
+import BreadcrumbTrail from '@/components/BreadcrumbTrail';
 import InlineMessage from '@/components/InlineMessage';
 import { importCountries } from '@/db/actions/system/data-loader/CountriesImport';
 import { importEmailTemplates } from '@/db/actions/system/data-loader/EmailImports';
-import { exportRecord, imporSystemSettings } from '@/db/actions/system/data-loader/SystemSettings';
+import { exportTableRecords, imporSystemSettings } from '@/db/actions/system/data-loader/SystemSettings';
 import { Button, Divider } from '@nextui-org/react';
 import React, { useState } from 'react';
 import { useFormStatus } from 'react-dom';
@@ -37,7 +38,7 @@ const DataLoadingPage = () => {
 	const runExportTable = async () => {
 		// 'use server';
 		console.log('Running export table ');
-		const resp = await exportRecord();
+		const resp = await exportTableRecords();
 		if (!resp || resp.success === false) {
 			setExportTableMessage(resp.message);
 		} else {
@@ -57,6 +58,14 @@ const DataLoadingPage = () => {
 
 	return (
 		<>
+			<BreadcrumbTrail
+				items={[
+					{ name: 'Home', href: '/' },
+					{ name: 'Admin Dashboard', href: '/admin' },
+					{ name: 'System', href: '/admin/system' },
+					{ name: 'Data Loader', href: '/admin/data-loader' },
+				]}
+			/>
 			<h1>Data Loader</h1>
 			<Divider className="mb-4" />
 

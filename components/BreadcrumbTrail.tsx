@@ -12,7 +12,7 @@ const BreadcrumbTrail = ({ items = [{ name: 'Home', href: '/' }] }) => {
 	};
 
 	return (
-		<div className="flex justify-between items-center mb-4">
+		<section className="flex justify-between items-center mb-4">
 			<Breadcrumbs radius="sm" variant="solid" color="secondary" className="mb-4">
 				{items.map((item, index) => (
 					<BreadcrumbItem key={index} onClick={() => router.push(item.href)}>
@@ -25,7 +25,7 @@ const BreadcrumbTrail = ({ items = [{ name: 'Home', href: '/' }] }) => {
 					<FaArrowLeft /> Back to {items[items.length - 2].name}
 				</Button>
 			)}
-		</div>
+		</section>
 	);
 };
 

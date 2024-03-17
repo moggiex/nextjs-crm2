@@ -9,7 +9,6 @@
 		"start": "next start",
 		"lint": "next lint",
 		"postinstall": "prisma generate",
-		"seed-countries": "ts-node prisma/seed-countries.ts",
 		"seed-data": "ts-node prisma/seed-fake-data.ts"
 	},
 	"dependencies": {

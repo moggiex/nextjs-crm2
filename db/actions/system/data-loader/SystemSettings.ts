@@ -53,9 +53,9 @@ export const imporSystemSettings = async () => {
 	return { success: true, message: 'System settings imported successfully' };
 };
 
-export const exportRecord = async () => {
+export const exportTableRecords = async () => {
 	try {
-		const record = await db.systemSetting.findFirst({});
+		const record = await db.user.findFirst({});
 
 		if (record) {
 			console.log(

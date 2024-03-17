@@ -5,17 +5,16 @@ import NewUsersChart from '@/components/admin/dashboard/NewUsersChart';
 import NewUsersChartSkeleton from '@/components/admin/dashboard/NewUsersChartSkeleton';
 import LastLoggedInList from '@/components/admin/dashboard/LastLoggedInList';
 
-import { getLatestLoggedInUsers, getUsers } from '@/db/actions/admin/helpers';
+import { getUsers } from '@/db/actions/admin/helpers';
 import DashboardCardsSkeleton from '@/components/admin/dashboard/DashboardCardsSkeleton';
 import DashboardCards from '@/components/admin/dashboard/DashboardCards';
 import TableSkeleton from '@/components/admin/dashboard/TableSkeleton';
 import { Divider } from '@nextui-org/react';
 import BreadcrumbTrail from '@/components/BreadcrumbTrail';
+import SystemSettingsCheck from '@/components/admin/SystemSettingsCheck';
 
 export default async function AdminMainPage() {
 	const users = await getUsers({ limit: 10 });
-
-	// const latestLoggedInUsers = await getLatestLoggedInUsers();
 
 	return (
 		<>
@@ -25,13 +24,16 @@ export default async function AdminMainPage() {
 					{ name: 'Admin Dashboard', href: '/admin' },
 				]}
 			/>
+			<div className="mb-4">
+				<Suspense fallback={<DashboardCardsSkeleton />}>
+					<SystemSettingsCheck />
+				</Suspense>
+			</div>
 			<div className="flex mb-4">
 				<Suspense fallback={<DashboardCardsSkeleton />}>
-					{/* <Suspense fallback={<div>Loading...</div>}> */}
 					<DashboardCards />
 				</Suspense>
 			</div>
-
 			<div className="mb-4">
 				<h2>Users This Month</h2>
 				<Suspense fallback={<NewUsersChartSkeleton />}>
@@ -39,19 +41,16 @@ export default async function AdminMainPage() {
 					<NewUsersChart />
 				</Suspense>
 			</div>
-
 			<div className="mb-4">
 				<h2>Last Logged In</h2>
 				<Suspense fallback={<TableSkeleton />}>
 					<LastLoggedInList />
 				</Suspense>
 			</div>
-
 			<div className="mb-4">
 				<h2>Users</h2>
 				<div>{users && <UserList users={users} />}</div>
 			</div>
-
 			<div>
 				<h2>Support Tickets</h2>
 				<Divider className="mb-2" />
