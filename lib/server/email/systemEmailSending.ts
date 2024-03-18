@@ -4,7 +4,7 @@ import { SystemSetting } from '@/prisma/typescript.systemSetting';
 import { SystemEmailTemplate } from '@/prisma/typescript.systememailtemplate';
 import { User } from '@/prisma/typescript.user';
 import { replaceKeywordsInEmailBody, systemEmailKeywordParser } from './keywordParsing';
-
+const nodemailer = require('nodemailer');
 /**
  * Things to do for email sending
  * DONE: Parse keywords
@@ -43,6 +43,18 @@ export const sendEmail = async (user: User, internalEmailName: any, forgotPasswo
 	}
 
 	email.htmlBody = replaceKeywordsInEmailBody(parsedKeywords.data, email.htmlBody);
+
+	const transporter = nodemailer.createTransport({
+		host: process.env.EMAIL_SERVER_HOST ? process.env.EMAIL_SERVER_HOST : systemSetttings.emailServerHost,
+		port: process.env.EMAIL_SERVER_PORT ? process.env.EMAIL_SERVER_PORT : systemSetttings.emailServerPort,
+		secure: process.env.EMAIL_SERVER_SECURE ? process.env.EMAIL_SERVER_SECURE : systemSetttings.emailServerSecure, // Use `true` for port 465, `false` for all other ports
+		auth: {
+			user: process.env.EMAIL_SERVER_USER ? process.env.EMAIL_SERVER_USER : systemSetttings.emailServerUser,
+			pass: process.env.EMAIL_SERVER_PASSWORD
+				? process.env.EMAIL_SERVER_PASSWORD
+				: systemSetttings.emailServerPassword,
+		},
+	});
 
 	// now send the email
 };

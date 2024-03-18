@@ -177,7 +177,12 @@ export const systemEmailKeywordParser = async (
 
 	return { success: true, data };
 };
-
+/**
+ *
+ * @param emailBody html template from system settings
+ * @param data the data var with the options already made in
+ * @returns sendable emailBody
+ */
 export const replaceKeywordsInEmailBody = (emailBody: string, data: KeywordGroups): string => {
 	let updatedEmailBody = emailBody;
 

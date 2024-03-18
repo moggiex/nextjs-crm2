@@ -220,6 +220,13 @@ const SystemSettingsForm = () => {
 									disabled={!settings.emailEnabled}
 									className="mb-4"
 								/>
+								{Boolean(process.env.EMAIL_SERVER_USER) && (
+									<InlineMessage
+										message={`process.env.EMAIL_SERVER_USER has already been set to ${process.env.EMAIL_SERVER_USER}`}
+										type="error"
+									/>
+								)}
+
 								<Input
 									id="emailServerPassword"
 									label="Email Server Password"
@@ -234,6 +241,13 @@ const SystemSettingsForm = () => {
 									type="password"
 									className="mb-4"
 								/>
+								{Boolean(process.env.EMAIL_SERVER_PASSWORD) && (
+									<InlineMessage
+										message={`process.env.EMAIL_SERVER_PASSWORD has already been set to ${process.env.EMAIL_SERVER_PASSWORD}`}
+										type="error"
+									/>
+								)}
+
 								<Input
 									id="emailServerHost"
 									label="Email Server Host"
@@ -247,6 +261,13 @@ const SystemSettingsForm = () => {
 									disabled={!settings.emailEnabled}
 									className="mb-4"
 								/>
+								{Boolean(process.env.EMAIL_SERVER_HOST) && (
+									<InlineMessage
+										message={`process.env.EMAIL_SERVER_HOST has already been set to ${process.env.EMAIL_SERVER_HOST}`}
+										type="error"
+									/>
+								)}
+
 								<Input
 									id="emailServerPort"
 									label="Email Server Port"
@@ -260,6 +281,13 @@ const SystemSettingsForm = () => {
 									disabled={!settings.emailEnabled}
 									className="mb-4"
 								/>
+								{Boolean(process.env.EMAIL_SERVER_PORT) && (
+									<InlineMessage
+										message={`process.env.EMAIL_SERVER_PORT has already been set to ${process.env.EMAIL_SERVER_PORT}`}
+										type="error"
+									/>
+								)}
+
 								<Switch
 									name="emailServerSecure"
 									isSelected={settings.emailServerSecure}
@@ -268,6 +296,12 @@ const SystemSettingsForm = () => {
 								>
 									Secure Server?
 								</Switch>
+								{Boolean(process.env.EMAIL_SERVER_SECURE) && (
+									<InlineMessage
+										message={`process.env.EMAIL_SERVER_SECURE has already been set to ${process.env.EMAIL_SERVER_SECURE?.toString()}`}
+										type="error"
+									/>
+								)}
 							</div>
 
 							<div className="w-1/2">
