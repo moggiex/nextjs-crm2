@@ -3,27 +3,19 @@
  */
 
 import { getSystemSettings } from '@/db/actions/system/helper';
+import { SystemSetting } from '@/prisma/typescript.systemSetting';
+import { User } from '@/prisma/typescript.user';
 
-// Variables organized by category
-export const customerVariables = [
-	'%%fullName%%',
-	'%%firstName%%',
-	'%%lastName%%',
-	'%%username%%',
-	'%%userEmail%%',
-	'%%userPhoneNumber%%',
-];
-export const linkVariables = [
-	'%%link%%',
-	'%%siteLink%%',
-	'%%dashboardLink%%',
-	'%%loginLink%%',
-	'%%forgotPasswordLink%%',
-	'%%resetPasswordLink%%',
-];
-export const siteVariables = ['%%siteName%%', '%%siteEmail%%', '%%siteAddress%%', '%%sitePhoneNumber%%'];
+interface KeywordGroups {
+	userKeywords: Record<string, string | Date | boolean | number>;
+	linkKeywords: Record<string, string | Date | boolean | number>;
+	siteKeywords: Record<string, string | Date | boolean | number>;
+}
 
-export const keywords = {
+/**
+ * Keywords for variables like %%fullName%%
+ */
+export const keywords: KeywordGroups = {
 	userKeywords: {
 		'%%fullName%%': '',
 		'%%firstName%%': '',
@@ -53,9 +45,14 @@ export const keywords = {
 		'%%sitePhoneNumber%%': '',
 	},
 };
-
-const updateUserKeywords = (data, user) => {
-	const safeAccess = key => (user[key] ? user[key] : '');
+/**
+ *
+ * @param data on going data var
+ * @param user : User
+ * @returns data var with user keywords populated
+ */
+const updateUserKeywords = (data: KeywordGroups, user: User) => {
+	const safeAccess = (key: keyof User) => user[key] ?? '';
 
 	const firstName = safeAccess('firstName');
 	const lastName = safeAccess('lastName');
@@ -65,28 +62,34 @@ const updateUserKeywords = (data, user) => {
 	data.userKeywords['%%lastName%%'] = lastName;
 	data.userKeywords['%%username%%'] = safeAccess('username');
 	data.userKeywords['%%userEmail%%'] = safeAccess('email');
-	data.userKeywords['%%userPhoneNumber%%'] = safeAccess('phoneNumber');
+	data.userKeywords['%%userPhone%%'] = safeAccess('phone');
 
-	return data.userKeywords;
+	return data;
 };
-// Assuming systemSettings is the object containing the settings data
-const updateSiteKeywords = (data, systemSettings) => {
+/**
+ *
+ * @param data on going data var
+ * @param systemSettings : SystemSettings
+ * @returns data cvar with site keywords completed
+ */
+const updateSiteKeywords = (data: KeywordGroups, systemSettings: SystemSetting) => {
 	// Helper function to safely access system settings and fallback to an empty string if undefined or null
-	const safeAccess = key => (systemSettings[key] ? systemSettings[key] : '');
+	// const safeAccess = key => (systemSettings[key] ? systemSettings[key] : '');
+	const safeSiteAccess = (key: keyof SystemSetting) => systemSettings[key] ?? '';
 
 	// Update keywords with corresponding data points, removing 'site' prefix and ensuring non-empty values
-	data.siteKeywords['%%siteName%%'] = safeAccess('siteName');
-	data.siteKeywords['%%siteEmailAddress%%'] = safeAccess('siteEmailAddress');
-	data.siteKeywords['%%siteBusinessName%%'] = safeAccess('businessName');
-	data.siteKeywords['%%siteURL%%'] = safeAccess('siteURL');
-	data.siteKeywords['%%sitePhoneNumber%%'] = safeAccess('phoneNumber');
+	data.siteKeywords['%%siteName%%'] = safeSiteAccess('siteName');
+	data.siteKeywords['%%siteEmailAddress%%'] = safeSiteAccess('siteEmailAddress');
+	data.siteKeywords['%%siteBusinessName%%'] = safeSiteAccess('businessName');
+	data.siteKeywords['%%siteURL%%'] = safeSiteAccess('siteURL');
+	data.siteKeywords['%%sitePhoneNumber%%'] = safeSiteAccess('phoneNumber');
 
 	// Concatenating address details, ensuring each value is set
-	const addressLine1 = safeAccess('addressLine1');
-	const addressLine2 = safeAccess('addressLine2');
-	const cityState = safeAccess('cityState');
-	const postcodeZipCode = safeAccess('postcodeZipCode');
-	const country = safeAccess('country');
+	const addressLine1 = safeSiteAccess('addressLine1');
+	const addressLine2 = safeSiteAccess('addressLine2');
+	const cityState = safeSiteAccess('cityState');
+	const postcodeZipCode = safeSiteAccess('postcodeZipCode');
+	const country = safeSiteAccess('country');
 
 	// Construct the full address, adding each part only if it's not empty, and joining with a comma
 	const fullAddress = [addressLine1, addressLine2, cityState, postcodeZipCode, country]
@@ -102,14 +105,26 @@ const updateSiteKeywords = (data, systemSettings) => {
 	data.siteKeywords['%%sitePostcodeZipCode%%'] = postcodeZipCode;
 	data.siteKeywords['%%siteCountry%%'] = country;
 
-	return data.siteKeywords;
+	return data;
 };
 
-// Assuming systemSettings is the object containing the settings data
-const updateLinks = (data, user, systemSettings, forgotPasswordKey = null) => {
+/**
+ *
+ * @param data data var
+ * @param user : User
+ * @param systemSettings : SystemSettings
+ * @param forgotPasswordKey : decodeed
+ * @returns Updated links in data var
+ */
+const updateLinks = (
+	data: KeywordGroups,
+	user: User,
+	systemSettings: SystemSetting,
+	forgotPasswordKey: string | null,
+) => {
 	// Helper function to safely access system settings and fallback to an empty string if undefined or null
-	const safeSiteAccess = key => (systemSettings[key] ? systemSettings[key] : '');
-	const safeUserAccess = key => (user[key] ? user[key] : '');
+	// const safeSiteAccess = key => (systemSettings[key] ? systemSettings[key] : '');
+	const safeSiteAccess = (key: keyof SystemSetting) => systemSettings[key] ?? '';
 
 	const siteLink = process.env.NEXT_PUBLIC_HOST_URL ? process.env.NEXT_PUBLIC_HOST_URL : safeSiteAccess('siteURL');
 
@@ -120,17 +135,26 @@ const updateLinks = (data, user, systemSettings, forgotPasswordKey = null) => {
 	data.linkKeywords['%%forgotPasswordLink%%'] = `${siteLink}/auth/forgot-password`;
 	data.linkKeywords['%%resetPasswordLink%%'] = `${siteLink}/auth/${forgotPasswordKey}`;
 
-	return data.linkKeywords;
+	return data;
 };
 
 // Make sure to call `updateSiteKeywords(systemSettings)` somewhere in your code, passing in the actual systemSettings object.
 
-export const keywordParser = async ({ user, forgotPasswordKey = null }) => {
+/**
+ *
+ * @param user : User
+ * @param systemSettings : SystemSetting
+ * @param forgotPasswordKey : decoded key
+ * @returns parsed keywords to new values
+ */
+export const systemEmailKeywordParser = async (
+	user: User,
+	systemSetttings: SystemSetting,
+	forgotPasswordKey: string | null,
+) => {
 	if (!user) {
 		return { success: false, message: 'No user provided' };
 	}
-
-	const systemSetttings = await getSystemSettings();
 
 	if (!systemSetttings) {
 		return { success: false, message: 'No system settings set' };
@@ -140,14 +164,34 @@ export const keywordParser = async ({ user, forgotPasswordKey = null }) => {
 		return { success: false, message: 'Emails sending disabled, see system settings' };
 	}
 
-	const data = keywords;
+	let data = keywords;
 
 	// Parse customer
-	data.userKeywords = updateUserKeywords(data, user);
+	data = updateUserKeywords(data, user);
 
 	// Settings
-	data.siteKeywords = updateSiteKeywords(data, systemSetttings);
+	data = updateSiteKeywords(data, systemSetttings);
 
 	// And links
-	data.linkKeywords = updateLinks(data, user, systemSettings, forgotPasswordKey);
+	data = updateLinks(data, user, systemSetttings, forgotPasswordKey);
+
+	return { success: true, data };
+};
+
+export const replaceKeywordsInEmailBody = (emailBody: string, data: KeywordGroups): string => {
+	let updatedEmailBody = emailBody;
+
+	// Function to replace keywords in the current text
+	const replaceKeywords = (keywords: Record<string, string>) => {
+		Object.entries(keywords).forEach(([keyword, value]) => {
+			updatedEmailBody = updatedEmailBody.replace(new RegExp(keyword, 'g'), value);
+		});
+	};
+
+	// Replace keywords for each group
+	replaceKeywords(data.userKeywords);
+	replaceKeywords(data.linkKeywords);
+	replaceKeywords(data.siteKeywords);
+
+	return updatedEmailBody;
 };

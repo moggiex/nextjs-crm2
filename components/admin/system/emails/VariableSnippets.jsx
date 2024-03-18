@@ -1,7 +1,6 @@
 import { Button, Snippet } from '@nextui-org/react';
 import { useState } from 'react';
-
-import { customerVariables, linkVariables, siteVariables } from '@/lib/server/email/keywordParsing';
+import { keywords } from '@/lib/server/email/keywordParsing';
 
 const VariableSnippets = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -18,7 +17,7 @@ const VariableSnippets = () => {
 				<div>
 					<b>Customer:</b>
 					<br />
-					{customerVariables.map((variable, index) => (
+					{keywords.customerVariables.map((variable, index) => (
 						<Snippet
 							key={`customer-${index}`}
 							size="sm"
@@ -33,7 +32,7 @@ const VariableSnippets = () => {
 				<div>
 					<b>Links:</b>
 					<br />
-					{linkVariables.map((variable, index) => (
+					{keywords.linkVariables.map((variable, index) => (
 						<Snippet
 							key={`link-${index}`}
 							size="sm"
@@ -48,7 +47,7 @@ const VariableSnippets = () => {
 				<div>
 					<b>Site:</b>
 					<br />
-					{siteVariables.map((variable, index) => (
+					{keywords.siteVariables.map((variable, index) => (
 						<Snippet
 							key={`site-${index}`}
 							size="sm"

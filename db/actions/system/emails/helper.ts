@@ -1,33 +1,44 @@
 'use server';
 import { db } from '@/db/index';
-import { SystemEmailTemplateSchema } from '@/lib/server/system/systememailtemplate/zod.systememailtemplate';
+import { SystemEmailTemplate } from '@/prisma/typescript.systememailtemplate';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { SystemEmailTemplateSchema } from '@/lib/server/system/systememailtemplate/zod.systememailtemplate';
 
-export const getSystemEmailTemplates = async () => {
+/**
+ *
+ * @returns SystemEmailTemplate[]
+ */
+export const getSystemEmailTemplates = async (): Promise<SystemEmailTemplate[]> => {
 	return await db?.systemEmailTemplate.findMany({ orderBy: { id: 'asc' } });
 };
-
-export const getSystemEmailById = async ({ id }) => {
+/**
+ *
+ * @param { id }
+ * @returns SystemEmailTemplate
+ */
+export const getSystemEmailById = async ({ id }: { id: string | number }): Promise<SystemEmailTemplate> => {
 	return await db.systemEmailTemplate.findFirst({ where: { id: Number(id) }, orderBy: { id: 'asc' } });
+};
+/**
+ *
+ * @param internalName such as internal_name
+ * @returns SystemEmailTemplate | null
+ */
+export const getSystemEmailByInternalName = async (internalName: string): Promise<SystemEmailTemplate | null> => {
+	return await db.systemEmailTemplate.findFirst({
+		where: {
+			internalName,
+		},
+	});
 };
 
 type FormState = {
 	message: string;
 };
 
-
-
-export const updateSystemEmail = async data => {
+export const updateSystemEmail = async (data: SystemEmailTemplate) => {
 	let errors: string[] | z.ZodError = [];
-
-	// console.log(data);
-	// return;
-
-	// const { id, templateName, internalName, emailSubject, htmlBody, type, htmlEnabled, isEnabled } = data;
-
-	// console.log(id, templateName, internalName, emailSubject, htmlBody, type, isEnabled, htmlEnabled);
-
 	try {
 		if (data.id) {
 			// Logic to update the existing record using Prisma
