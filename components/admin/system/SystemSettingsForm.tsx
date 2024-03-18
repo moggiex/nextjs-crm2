@@ -1,22 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Divider, Input, Select, SelectItem, Snippet, Switch, Textarea } from '@nextui-org/react';
-import {
-	FaAddressBook,
-	FaCode,
-	FaEnvelope,
-	FaGlobe,
-	FaKey,
-	FaLessThan,
-	FaLink,
-	FaList,
-	FaMapMarker,
-	FaPhone,
-	FaPlug,
-	FaServer,
-	FaToggleOn,
-	FaUser,
-} from 'react-icons/fa';
+import { FaAddressBook, FaGlobe, FaKey, FaLink, FaMapMarker, FaPhone, FaPlug, FaServer, FaUser } from 'react-icons/fa';
 import SubmitButton from '@/components/SubmitButton';
 import InlineMessage from '@/components/InlineMessage';
 import BreadcrumbTrail from '@/components/BreadcrumbTrail';
@@ -220,6 +205,7 @@ const SystemSettingsForm = () => {
 									disabled={!settings.emailEnabled}
 									className="mb-4"
 								/>
+								{process.env.EMAIL_SERVER_USER ? 'yes' : 'no'}
 								{Boolean(process.env.EMAIL_SERVER_USER) && (
 									<InlineMessage
 										message={`process.env.EMAIL_SERVER_USER has already been set to ${process.env.EMAIL_SERVER_USER}`}

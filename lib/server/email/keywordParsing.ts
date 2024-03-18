@@ -6,11 +6,11 @@ import { getSystemSettings } from '@/db/actions/system/helper';
 import { SystemSetting } from '@/prisma/typescript.systemSetting';
 import { User } from '@/prisma/typescript.user';
 
-interface KeywordGroups {
+export type KeywordGroups = {
 	userKeywords: Record<string, string | Date | boolean | number>;
 	linkKeywords: Record<string, string | Date | boolean | number>;
 	siteKeywords: Record<string, string | Date | boolean | number>;
-}
+};
 
 /**
  * Keywords for variables like %%fullName%%
@@ -128,12 +128,17 @@ const updateLinks = (
 
 	const siteLink = process.env.NEXT_PUBLIC_HOST_URL ? process.env.NEXT_PUBLIC_HOST_URL : safeSiteAccess('siteURL');
 
+	if (forgotPasswordKey && forgotPasswordKey.length > 1) {
+		// Needs to be URL encoded
+		forgotPasswordKey = encodeURIComponent(forgotPasswordKey);
+	}
+
 	data.linkKeywords['%%link%%'] = siteLink;
 	data.linkKeywords['%%siteLink%%'] = siteLink;
 	data.linkKeywords['%%dashboardLink%%'] = `${siteLink}/dashboard`;
 	data.linkKeywords['%%loginLink%%'] = `${siteLink}/auth/login`;
 	data.linkKeywords['%%forgotPasswordLink%%'] = `${siteLink}/auth/forgot-password`;
-	data.linkKeywords['%%resetPasswordLink%%'] = `${siteLink}/auth/${forgotPasswordKey}`;
+	data.linkKeywords['%%resetPasswordLink%%'] = forgotPasswordKey ? `${siteLink}/auth/${forgotPasswordKey}` : '';
 
 	return data;
 };

@@ -3,7 +3,7 @@ import { getSystemSettings } from '@/db/actions/system/helper';
 import { SystemSetting } from '@/prisma/typescript.systemSetting';
 import { SystemEmailTemplate } from '@/prisma/typescript.systememailtemplate';
 import { User } from '@/prisma/typescript.user';
-import { replaceKeywordsInEmailBody, systemEmailKeywordParser } from './keywordParsing';
+import { KeywordGroups, replaceKeywordsInEmailBody, systemEmailKeywordParser } from './keywordParsing';
 const nodemailer = require('nodemailer');
 /**
  * Things to do for email sending
@@ -13,11 +13,15 @@ const nodemailer = require('nodemailer');
  * send the email
  */
 
-export const sendEmail = async (user: User, internalEmailName: any, forgotPasswordId: string | null) => {
+export const sendEmail = async (
+	user: User,
+	internalEmailName: any,
+	forgotPasswordId: string | null,
+): Promise<ApiResponse> => {
 	// get system details
 	const systemSetttings: SystemSetting = await getSystemSettings();
 
-	if (!systemSetttings.emailEnabled) {
+	if (!systemSetttings || !systemSetttings.emailEnabled) {
 		return { success: false, message: 'Sending Emails disabled in systems settings' };
 	}
 
@@ -29,32 +33,67 @@ export const sendEmail = async (user: User, internalEmailName: any, forgotPasswo
 		return { success: false, message: 'Invalid email type' };
 	}
 
-	const email: SystemEmailTemplate | null = await getSystemEmailByInternalName(internalEmailName);
+	const emailTemplate: SystemEmailTemplate | null = await getSystemEmailByInternalName(internalEmailName);
 
-	if (!email) {
+	if (!emailTemplate) {
 		return { success: false, message: `Email template not found: ${internalEmailName}` };
 	}
 
 	// get keywords
-	const parsedKeywords = await systemEmailKeywordParser(user, systemSetttings, forgotPasswordId);
+	const parsedKeywords: {
+		success: boolean;
+		message?: string;
+		data?: KeywordGroups;
+	} = await systemEmailKeywordParser(user, systemSetttings, forgotPasswordId);
 
 	if (!parsedKeywords || !parsedKeywords.success) {
 		return { success: false, message: parsedKeywords.message };
 	}
 
-	email.htmlBody = replaceKeywordsInEmailBody(parsedKeywords.data, email.htmlBody);
+	emailTemplate.htmlBody = replaceKeywordsInEmailBody(parsedKeywords.data, emailTemplate.htmlBody);
+
+	const {
+		EMAIL_SERVER_HOST,
+		EMAIL_SERVER_PORT,
+		EMAIL_SERVER_SECURE,
+		EMAIL_SERVER_USER,
+		EMAIL_SERVER_PASSWORD,
+		EMAIL_FROM,
+	} = process.env;
 
 	const transporter = nodemailer.createTransport({
-		host: process.env.EMAIL_SERVER_HOST ? process.env.EMAIL_SERVER_HOST : systemSetttings.emailServerHost,
-		port: process.env.EMAIL_SERVER_PORT ? process.env.EMAIL_SERVER_PORT : systemSetttings.emailServerPort,
-		secure: process.env.EMAIL_SERVER_SECURE ? process.env.EMAIL_SERVER_SECURE : systemSetttings.emailServerSecure, // Use `true` for port 465, `false` for all other ports
+		host: EMAIL_SERVER_HOST ? EMAIL_SERVER_HOST : systemSetttings.emailServerHost,
+		port: EMAIL_SERVER_PORT ? EMAIL_SERVER_PORT : systemSetttings.emailServerPort,
+		secure: EMAIL_SERVER_SECURE ? EMAIL_SERVER_SECURE : systemSetttings.emailServerSecure, // Use `true` for port 465, `false` for all other ports
 		auth: {
-			user: process.env.EMAIL_SERVER_USER ? process.env.EMAIL_SERVER_USER : systemSetttings.emailServerUser,
-			pass: process.env.EMAIL_SERVER_PASSWORD
-				? process.env.EMAIL_SERVER_PASSWORD
-				: systemSetttings.emailServerPassword,
+			user: EMAIL_SERVER_USER ? EMAIL_SERVER_USER : systemSetttings.emailServerUser,
+			pass: EMAIL_SERVER_PASSWORD ? EMAIL_SERVER_PASSWORD : systemSetttings.emailServerPassword,
 		},
 	});
 
+	const fromEmailAddress = EMAIL_FROM ? EMAIL_FROM : systemSetttings.emailFrom;
+
 	// now send the email
+	try {
+		const info = await transporter.sendMail({
+			from: `"${emailTemplate.emailSubject}" <${fromEmailAddress}>`, // sender address
+			to: `${user.email}`, // list of receivers
+			subject: `${emailTemplate.emailSubject}`, // Subject line
+			// text: 'Hello world?', // plain text body
+			html: `${emailTemplate.htmlBody}`,
+			dsn: {
+				id: `${user.id}-${emailTemplate.internalName}-${Date.now().toLocaleString()}`,
+				return: 'headers',
+				notify: ['failure', 'delay'],
+				recipient: `${fromEmailAddress}`,
+			},
+		});
+		// TODO: see here for better handling
+		// https://nodemailer.com/usage/
+		console.log('Message sent: %s', info.messageId);
+		return { success: true, message: `Message sent sucessfully ${info.messageId}` };
+	} catch (error) {
+		console.error(error);
+		return { success: false, message: error?.message };
+	}
 };

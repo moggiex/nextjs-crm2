@@ -60,7 +60,6 @@ export async function getJwt() {
 					role: payload.role as string,
 					iat: payload.iat as number,
 					exp: payload.exp as number,
-					openIdSub: payload.openIdSub as string,
 				};
 				return authPayload;
 			}

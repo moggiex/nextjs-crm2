@@ -5,8 +5,6 @@ import { SystemSetting } from '@/prisma/typescript.systemSetting';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
-
-
 export const updateSystemSettings = async (data: SystemSetting) => {
 	let errors: string[] | z.ZodError = [];
 
@@ -64,6 +62,6 @@ export const updateSystemSettings = async (data: SystemSetting) => {
 	}
 };
 
-export const getSystemSettings = async () => {
+export const getSystemSettings = async (): Promise<SystemSetting | null> => {
 	return await db.systemSetting.findFirst();
 };
