@@ -1,24 +1,7 @@
 import { Button, Snippet } from '@nextui-org/react';
 import { useState } from 'react';
 
-// Variables organized by category
-const customerVariables = [
-	'%%fullName%%',
-	'%%firstName%%',
-	'%%lastName%%',
-	'%%username%%',
-	'%%userEmail%%',
-	'%%userPhoneNumber%%',
-];
-const linkVariables = [
-	'%%link%%',
-	'%%siteLink%%',
-	'%%dashboardLink%%',
-	'%%loginLink%%',
-	'%%forgotPasswordLink%%',
-	'%%resetPasswordLink%%',
-];
-const siteVariables = ['%%siteName%%', '%%siteEmail%%', '%%siteAddress%%', '%%sitePhoneNumber%%'];
+import { customerVariables, linkVariables, siteVariables } from '@/lib/server/email/keywordParsing';
 
 const VariableSnippets = () => {
 	const [isVisible, setIsVisible] = useState(false);
