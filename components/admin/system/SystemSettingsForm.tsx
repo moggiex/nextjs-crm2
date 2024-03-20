@@ -1,7 +1,19 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Divider, Input, Select, SelectItem, Snippet, Switch, Textarea } from '@nextui-org/react';
-import { FaAddressBook, FaGlobe, FaKey, FaLink, FaMapMarker, FaPhone, FaPlug, FaServer, FaUser } from 'react-icons/fa';
+import {
+	FaAddressBook,
+	FaGlobe,
+	FaKey,
+	FaLink,
+	FaList,
+	FaMapMarker,
+	FaEnvelope,
+	FaPhone,
+	FaPlug,
+	FaServer,
+	FaUser,
+} from 'react-icons/fa';
 import SubmitButton from '@/components/SubmitButton';
 import InlineMessage from '@/components/InlineMessage';
 import BreadcrumbTrail from '@/components/BreadcrumbTrail';

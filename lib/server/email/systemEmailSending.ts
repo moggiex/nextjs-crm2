@@ -90,6 +90,7 @@ export const sendEmail = async (
 		});
 		// TODO: see here for better handling
 		// https://nodemailer.com/usage/
+		// TODO: I think we these need to be logged, especially for errors as we may have an issue with emails being sent and not even know!
 		console.log('Message sent: %s', info.messageId);
 		return { success: true, message: `Message sent sucessfully ${info.messageId}` };
 	} catch (error) {
