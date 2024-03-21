@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import PayPalScriptProviderWrapper from '@/components/paypal/PayPalScriptProviderWrapper';
 /**
@@ -19,20 +19,26 @@ P-6CF12634K75782638MX4GRTY
 basic subscription plan
  */
 
-const WrapperPage = ({ children }) => {
+type WrapperPageProps = {
+	children: React.ReactNode;
+};
+
+const WrapperPage: React.FC<WrapperPageProps> = ({ children }) => {
 	return <PayPalScriptProviderWrapper>{children}</PayPalScriptProviderWrapper>;
 };
 
 const thePage = () => {
 	return (
 		<WrapperPage>
-			<SubscriptionsPage type="subscription" />
+			<SubscriptionsPage />
 		</WrapperPage>
 	);
 };
 
-const SubscriptionsPage = ({ type }) => {
+const SubscriptionsPage = () => {
 	const [{ options }, dispatch] = usePayPalScriptReducer();
+	const [errorMessage, setErrorMessage] = useState<string>('');
+	const [successMessage, setSuccessMessage] = useState<string>('');
 
 	useEffect(() => {
 		dispatch({
@@ -42,12 +48,13 @@ const SubscriptionsPage = ({ type }) => {
 				intent: 'subscription',
 			},
 		});
-	}, [type]);
+	}, []);
 
 	return (
 		<div className="flex flex-col items-center justify-center">
 			<div className="w-1/2">
 				<PayPalButtons
+					key={'P-0HP19123C9159423MMX5MORA'}
 					createSubscription={async (data, actions) => {
 						const orderId = await actions.subscription.create({
 							plan_id: 'P-0HP19123C9159423MMX5MORA',
@@ -58,37 +65,43 @@ const SubscriptionsPage = ({ type }) => {
 					onApprove={async (data, actions) => {
 						// onApprove {orderID: '0G9476059T206172G', subscriptionID: 'I-A9W2NW3MP0PN', facilitatorAccessToken: 'A21AALuvP2HrFDK7LkGiwqBHasXVuKcnIn5jp2a3EbkJHtAT1Xw-70pyj0tNbEGGL12l73zYfBx9mFmLJ5Rv5gW_TKwCxEUZw', paymentSource: 'paypal'}
 						console.log('onApprove');
-						console.log(data);
-						await fetch('/api/paypal', {
+						// console.log(data);
+						const resp = await fetch('/api/paypal/create-subscription', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json',
 							},
 							body: JSON.stringify(data),
 						});
-						// Use `await` for any asynchronous operations you need to perform
-						// For example, if you need to call an API or perform some async task:
-						// await someAsyncFunction(data);
 
-						// No need to explicitly return `Promise.resolve()` when using async/await
-						// The async function implicitly returns a Promise that resolves when the function completes
+						setSuccessMessage('Subscription process successful. Welcome aboard!');
 					}}
 					onCancel={async (data, actions) => {
 						// onCancel {orderID: '8LL69672L2676553C'}
-						console.log('onCancel');
-						console.log(data);
+						setErrorMessage('Subscription process cancelled, please try again.');
+						// console.log('onCancel');
+						// console.log(data);
 					}}
 					onError={err => {
 						console.error('onError');
 						console.error(err);
+						setErrorMessage('An error ocuured, please try again.');
 					}}
 					style={{
 						label: 'subscribe',
 					}}
+					onClick={() => {
+						setErrorMessage('');
+						setSuccessMessage('');
+					}}
 				/>
 			</div>
+
+			{errorMessage && <div className="text-red-500">{errorMessage}</div>}
+			{successMessage && <div className="text-green-500">{successMessage}</div>}
 			<div className="w-1/2">
 				<PayPalButtons
+					key={'P-2S2130582W077020PMX5MPWA'}
 					createSubscription={(data, actions) => {
 						return actions.subscription
 							.create({

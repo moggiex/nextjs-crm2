@@ -43,13 +43,16 @@ export async function middleware(request: NextRequest) {
 		if (request.nextUrl.pathname.startsWith('/api/auth')) {
 			return NextResponse.next();
 		}
+		if (request.nextUrl.pathname.startsWith('/api/paypal')) {
+			return NextResponse.next();
+		}
 		// For API routes, we want to return unauthorized instead of
 		// redirecting to login
 		if (request.nextUrl.pathname.startsWith('/api')) {
 			if (!token) {
 				const response: ApiResponse = {
 					success: false,
-					message: 'Unauthorized',
+					message: 'Unauthorized API Access',
 				};
 				return NextResponse.json(response, { status: 401 });
 			}
