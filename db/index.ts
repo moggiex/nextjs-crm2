@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 // Use a global variable to store the PrismaClient instance, so it's reused across hot reloads in development
 declare global {
-	var db: PrismaClient; //  | undefined
+	var db: PrismaClient | undefined;
 }
 
 const db =

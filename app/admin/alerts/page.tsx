@@ -1,17 +1,13 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { db } from '@/db';
 import AlertsList from '@/components/admin/alerts/AlertsList';
 import { Button, Divider } from '@nextui-org/react';
 import BreadcrumbTrail from '@/components/BreadcrumbTrail';
-// import { useRouter } from 'nextjs13-progress';
+import { getAlerts } from '@/db/actions/alerts/AlertsHelpers';
 
 const AlertsAdminPage = async () => {
 	// const router = useRouter();
-	const alerts = await db.alert.findMany({
-		orderBy: {
-			createdAt: 'desc',
-		},
-	});
+	const alerts = await getAlerts();
 	return (
 		<>
 			<BreadcrumbTrail
@@ -28,7 +24,9 @@ const AlertsAdminPage = async () => {
 				but can be dismissed by a user and its not shown again. If the user is new, only alerts created
 				after them joining are shown to to them.
 			</p>
-			<AlertsList alerts={alerts} />
+			<Suspense fallback={<div>Loading...</div>}>
+				<AlertsList alerts={alerts} />
+			</Suspense>
 			<div className="justify-end mt-4">
 				<Button as="a" color="primary" href="/admin/alerts/create">
 					Create New Alert

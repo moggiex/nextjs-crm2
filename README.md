@@ -4,8 +4,12 @@ This is a starter boilerplate for Next.js 14. It had everything you need to kick
 
 ## to do
 
+-    Add eBay Accounts
 -    Email processing script for notifications
-     -    parse keywords
+     -    implement to fuctions
+     -    complete basic email html
+     -    Save basic html for importing base data
+     -    
 -    Pagination https://github.com/ezeparziale/nextjs-pagination/
 -    Add Subscriptions table & payment history table
 

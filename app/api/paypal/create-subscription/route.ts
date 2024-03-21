@@ -1,16 +1,15 @@
 import { getUserId } from '@/db/actions/user/profile';
-import { getUserData } from '@/lib/client/auth';
 import { apiErrorResponse } from '@/lib/server/api/errorResponse';
-import { PayPalSubscription } from '@/prisma/typescript.PayPalSubscription';
-import fs from 'fs';
+import { PayPalSubscriptionEventInput } from '@/prisma/zod.PayPalSubscriptionEvent';
 import { NextRequest } from 'next/server';
 import path from 'path';
+import fs from 'fs';
 
 // POST: http://localhost:3000/api/paypal/create-subscription
 export async function POST(request: NextRequest) {
 	try {
 		// {orderID: '0G9476059T206172G', subscriptionID: 'I-A9W2NW3MP0PN', facilitatorAccessToken: 'A21AALuvP2HrFDK7LkGiwqBHasXVuKcnIn5jp2a3EbkJHtAT1Xw-70pyj0tNbEGGL12l73zYfBx9mFmLJ5Rv5gW_TKwCxEUZw', paymentSource: 'paypal'}
-		const { orderID, subscriptionID, facilitatorAccessToken, paymentSource }: PayPalSubscription =
+		const { orderID, subscriptionID, facilitatorAccessToken, paymentSource }: PayPalSubscriptionEventInput =
 			await request.json();
 
 		// get users id

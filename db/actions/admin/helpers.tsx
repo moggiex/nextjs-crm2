@@ -2,24 +2,45 @@
 import { formatDistanceToNow } from 'date-fns';
 import { User } from '@/prisma/typescript.user';
 import { db } from '@/db';
+import { UserInput } from '@/prisma/zod.user';
 
 type GetUsersParams = {
 	limit?: number;
 };
 
-export const getUserById = async (id: string) => {
-	return await db.user.findFirst({
+export const getUserById = async (id: string): Promise<UserInput> => {
+	const resp = await db.user.findFirst({
 		where: {
 			id, // Replace 'id' with the actual primary key field name if it's different
 		},
 		include: {
 			address: true,
+			messages: true,
+			accounts: true,
+			createdTickets: true,
+			// userAlerts: true,
+			userAlerts: {
+				include: {
+					alert: true, // Include the related Alert details for each UserAlert
+				},
+			},
+			activityLogs: true,
+			payPalSubscriptionEvents: true,
 		},
 	});
+
+	if (!resp) {
+		throw new Error('User not found');
+	}
+	return resp;
 };
 
-export const getUsersCount = async () => {
-	return await db.user.count();
+export const getUsersCount = async (): Promise<Number> => {
+	const resp = await db.user.count();
+	if (!resp) {
+		return 0;
+	}
+	return resp;
 };
 
 export const getUsers = async ({ limit = 10 }: GetUsersParams): Promise<User[]> => {

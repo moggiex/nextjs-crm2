@@ -120,6 +120,18 @@ export const updateAlert = async ({ id, message, type, enabled = true }: Alert):
 	}
 };
 
+export const getAlerts = async (): Promise<Alert[]> => {
+	const alerts = await db.alert.findMany({
+		orderBy: {
+			createdAt: 'desc',
+		},
+	});
+	if (!alerts) {
+		return [];
+	}
+	return alerts;
+};
+
 export const getAlertById = async (id: string): Promise<Alert | null> => {
 	const userAlert = await db.alert.findUnique({
 		where: {
